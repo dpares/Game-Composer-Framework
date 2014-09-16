@@ -1,0 +1,51 @@
+{
+
+	"app_name": "orchestrator.js",
+	"app_version": "0.0.1",
+
+	"web_console": {
+		"marketing_mode": true
+	},
+
+	"server" : {
+		"host" : "localhost",
+		"port" : 9000,
+		"socketio_debug": true
+	},
+
+	"database" : "socialDevicesOrchestratorDB",
+
+	"require_authentication" : true,
+	"admin_users" : ["admin", "nikkis"],
+
+	"log_path" : "/logs/",
+
+
+	"resources" : {
+		"actions" :          "/resources/actions/",
+		"capabilities" :     "/resources/capabilities/",
+		"capability_stubs" : "/resources/capability_stubs/",
+		"apps" : "/resources/observers/"
+	},
+
+	"clients_path" : "/../clients/app_clients/",
+
+	"services": {
+
+		"ojsDeviceRegistry" : {
+			"enabled": true,
+			"port" : 9002,
+			"debug": true
+		},
+
+		"ojsConsole": {
+			"enabled": true,			
+			"port" : 9001,
+			"debug": true
+		}
+	},
+
+	"device_types": ["android", "gadgeteer", "arduino", "ios" ],
+
+	"api" : "1"
+}

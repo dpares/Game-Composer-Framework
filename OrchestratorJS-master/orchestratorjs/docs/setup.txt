@@ -1,0 +1,10 @@
+
+
+# stop/start tracking changes for resources and config
+
+git update-index --assume-unchanged <resource>
+git update-index --no-assume-unchanged <resource>
+	config.json
+	resources/
+
+

@@ -1,0 +1,78 @@
+<!--
+<div class="large-12 columns">
+<center>
+
+	<div class="row">
+		<div class="large-2 columns">
+			<p>
+				<a class="editStopEditLink" ng-click="pushToCloud()" >
+					<i class="fi-plus myEditIcon"></i>
+				</a>
+			</p>
+		</div>
+
+	</div>
+
+</center>
+</div>
+-->
+
+<!--
+<a ng-click="testClick()">test</a>
+<table class="testTable">
+	<td>jaajaa</td>
+</table>
+-->
+
+<div class="row contents">
+	<div class="large-12 columns">
+
+		<center>
+		<div class="table-container">
+		  <table>
+		    <thead>
+		      <tr>
+		      	<!--<th width="50"></th>-->
+		        <th width="120">Identity</th>
+		        <th width="130"><i class="fi-bluetooth ojs-device-icon"></i>MAC</th>
+		        <th width="120">Owner</th>
+		        <th width="100">Type</th>
+		        <th>Capabilities</th>
+		        <th>proximityDevices</th>
+		        <th ng-repeat="metadataTitle in metadataFields">{{metadataTitle}}</th>
+		      </tr>
+		    </thead>
+		    <tbody>
+		      <tr ng-repeat="device in devices">
+		      	<!--<td><a>edit</a></td>-->
+		        <td class="{{device.identity.replace('@','AT')}}_online" style="background-color:#{{ (device.online) ? '2BA6CB' : ''}};"><p ng-bind="device.identity"></p></td>
+
+		        <td><p ng-bind="( device.bluetoothMAC ) ? device.bluetoothMAC : 'N/A'"></p></td>
+		        <td><p ng-bind="device.username" ></p></td>
+		        
+						<td><i class="fi-social-{{device.type == 'gadgeteer' ? 'windows' : device.type }} ojs-device-icon"></i>{{device.type}}</td>
+
+		        <td>
+		        	
+		        	<table>
+		        		<tr>
+		        			<td ng-repeat="capability in device.capabilities" class="has-tooltip" style="background-color: #{{capability.color}};" title="{{capability.name}}" ></td>
+		        		</tr>
+		        	</table>
+		        
+		        </td>
+
+		       	<td class="{{device.identity.replace('@','AT')}}_proximityDevices"><a ng-href="#/user/{{device.username}}/device/{{device.deviceName}}/proximity" ng-bind="( !device.metadata.proximityDevices ) ? 'N/A': ( device.metadata.proximityDevices.join().length > 30 ) ? device.metadata.proximityDevices.join().substring(0,27) + '..' : device.metadata.proximityDevices"></a></td>
+
+
+		       	<td ng-repeat="metadataTitle in metadataFields" class="{{device.identity.replace('@','AT')}}_{{metadataTitle}}"><p ng-bind="( !device.metadata[ metadataTitle ] ) ? 'N/A': ( device.metadata[metadataTitle].join().length > 30 ) ? device.metadata[metadataTitle].join().substring(0,27) + '..' : device.metadata[metadataTitle]"></p></td>
+		      </tr>
+
+		    </tbody>
+		  </table>
+		</div>
+
+		</center>
+
+	</div>
+</div>

@@ -1,0 +1,84 @@
+
+<form id="formi" name="form" class="css-form">
+
+<div class="large-12 columns codeEditContainer">
+	<div class="row">
+		<div class="large-1 columns">
+			<p>
+				<a class="editStopEditLink" ng-click="pushToCloud()" >
+					<i class="fi-upload-cloud myEditIcon"></i>
+				</a>
+			</p>
+		</div>
+
+		<div class="large-2 columns">
+			<p>
+				<a ng-click="ensureDeleteApp()" >
+					<i class="fi-trash myRemoveIcon"></i>
+				</a>
+			</p>
+		</div>
+
+		<div class="large-4 columns right fileNameEdit">
+			
+			<div class="row">
+				<div class="large-12 columns">
+					<input ng-model="fileName" type="text" id="fileNameInput" />
+				</div>
+			</div>
+
+		</div>
+
+
+	</div>
+
+	<div class="row">
+		<div class="large-12 columns editCode">
+			
+				<!--<textarea id="code_area" style="height: 450px; width: 100%;" name="file_content">{{code}}</textarea>-->
+				<textarea id="code" ></textarea>
+				<input type="hidden" name="web_console" value="True" />
+			
+		</div>
+	</div>
+
+	<br/>
+
+	<div class="row fileNameEdit">
+		<div class="large-12 columns">
+			<input ng-model="appDesc" type="text" id="appDescriptionInput" placeholder="Write your app description here and hit save." ng-maxlength="150" name="appDesc" />
+		</div>
+	</div>
+
+
+  <hr>
+  <center style="padding-bottom: 2em;">
+    <a ng-click="startApp(fileName)" class="">start</a>
+    <a ng-href="#/apps" style="margin-right: 2em; margin-left: 2em;" class="edit-instance-btn">apps</a>
+    <a ng-click="stopApp(fileName)" class="">stop</a>
+  </center>
+
+</div>
+
+</form>
+
+
+
+
+
+<script>
+  editor = CodeMirror.fromTextArea(document.getElementById("code"), {
+    lineNumbers: true,
+    indentWithTabs: false,
+		tabSize: 2,
+    extraKeys: {"Ctrl-Space": "autocomplete"},
+    mode: {name: "javascript", globalVars: true},
+    theme: 'monokai'
+  } );
+	
+	editor.setSize('100%', '450px');
+
+</script>
+
+
+

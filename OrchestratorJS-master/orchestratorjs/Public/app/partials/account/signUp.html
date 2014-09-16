@@ -1,0 +1,47 @@
+<style type="text/css">
+	.css-form input.ng-invalid-pattern {
+    background-color: #FA787E;
+  }
+  .css-form input.ng-invalid-password-verify {
+    background-color: #FA787E;
+  }
+</style>
+
+<div ng-controller="SignUpController">
+	<div class="row contents">
+		<div class="large-3 large-centered columns">
+
+			<center>
+
+				<form novalidate name="form" class="css-form">
+				  <fieldset>
+				    <legend style="background: none;">sign up</legend>
+
+				    <label>username
+				      <input type="text" ng-model="user.username" name="username" placeholder="Only letters and numbers allowed" ng-pattern="/^[A-Za-z0-9_]{3,10}$/" >
+				    </label>
+				    <div ng-show="form.username.$error.pattern">only letters and numbers allowed</div>
+				    <label>password
+				      <input data-ng-model='user.password' type="password" name='password' placeholder='password' ng-pattern="/^[A-Za-z0-9!@#$%^&*()_]{6,20}$/" required>
+				    </label>
+				    <div ng-show="form.username.$error.pattern">only letters and numbers allowed</div>
+
+				    <label>confirm password
+				      <input ng-model='user.password_verify' type="password" name='confirm_password' placeholder='confirm password' required data-password-verify="user.password" ng-keypress='keyPressed($event)'>
+				    </label>
+				    <div ng-show="form.confirm_password.$error.passwordVerify">passwords do not match!</div>
+
+				    <a ng-click="signUpSubmit();" ng-show="form.$valid">register</a>
+				  </fieldset>
+
+
+				</form>
+
+			</center>
+
+		</div>
+	</div>
+</div>
+
+
+

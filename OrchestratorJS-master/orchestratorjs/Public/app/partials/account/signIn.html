@@ -1,0 +1,42 @@
+<style type="text/css">
+  .css-form input.ng-invalid.ng-dirty {
+    background-color: #FA787E;
+  }
+ 
+  .css-form input.ng-valid.ng-dirty {
+    background-color: #78FA89;
+  }
+</style>
+
+<div ng-controller="SignInController">
+	<div class="row contents">
+		<div class="large-3 large-centered columns">
+
+			<center>
+
+				
+				<form novalidate name="form" class="css-form">
+				  <fieldset>
+				    <legend style="background: none;">sign in</legend>
+
+				    <label>username
+				      <input type="text" ng-model="user.username" name="username" placeholder="username" ng-pattern="/^[A-Za-z0-9_]{3,10}$/" ng-keypress='keyPressed($event)'>
+				    </label>
+
+				    <label>password
+				      <input data-ng-model='user.password' type="password" name='password' placeholder='password' ng-pattern="/^[A-Za-z0-9!@#$%^&*()_]{6,20}$/" required ng-keypress='keyPressed($event)'>
+				    </label>
+				    
+				    <a ng-click="signInSubmit();" ng-show="form.$valid">sign in</a>
+				  </fieldset>
+
+				  <p>Not yet registered? <a href="#/signUp">Sign up</a></p>
+
+
+				</form>
+
+			</center>
+
+		</div>
+	</div>
+</div>
