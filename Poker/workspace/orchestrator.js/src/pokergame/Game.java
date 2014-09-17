@@ -139,6 +139,35 @@ public class Game {
                 communityCards.add(deck.draw());
             showCurrentState();
 
+            int bettingRound = 0;
+            while(countActivePlayers() > 1 && bettingRound < 3){
+                do {
+                    int numPlayers = countActivePlayers();
+                    for (int i = 0; i < numPlayers; i++) {
+                        Player currentPlayer = players.get(currentPlayerIndex);
+                        // STEP 12: Announce the start of the betting turn
+                        System.out.println(currentPlayer.getName() + "'S TURN");
+
+                        // STEP 13: Call/Check/Raise/Fold
+                        int betDiff = currentPlayer.chooseAction(biggestBet);
+                        if (betDiff > 0)
+                            biggestBet += betDiff;
+
+                        // STEP 14: Show current state and move index to next player
+                        showCurrentState();
+                        currentPlayerIndex = nextPlayer(currentPlayerIndex);
+                    }
+                } while (!bettingConsensus(biggestBet));
+
+                // STEP 15: New Community Card
+                if(bettingRound < 2) {
+                    deck.discard();
+                    communityCards.add(deck.draw());
+                }
+
+                bettingRound++;
+            }
+
             // STEP 16: Obtaining players' best hands and calculating this hand's pot
             List<BestHand> hands = new ArrayList<BestHand>();
             int pot = 0;
