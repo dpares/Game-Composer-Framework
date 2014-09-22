@@ -9,18 +9,14 @@ import java.util.ArrayList;
  * Created by fare on 11/09/14.
  */
 public class Player {
-    public static final int PLAYER_DEFAULT = 0;
-    public static final int PLAYER_DEALER = 1;
-    public static final int PLAYER_SMALL_BLIND = 2;
-    public static final int PLAYER_BIG_BLIND = 3;
-    public static final int PLAYER_NOT_PLAYING = 4;
+    public enum State {DEFAULT, DEALER, SMALL_BLIND, BIG_BLIND, NOT_PLAYING}
 
     private int funds;
     private int currentBet;
     private String name;
     private ArrayList<Card> holeCards;
     private boolean active;
-    private int status;
+    private State currentState;
 
     private static int id = 0;
 
@@ -28,7 +24,7 @@ public class Player {
         this.funds = initialFunds;
         this.currentBet = 0;
         this.holeCards = new ArrayList<Card>();
-        this.status = PLAYER_DEFAULT;
+        this.currentState = State.DEFAULT;
         this.active = true;
         name = new Integer(id).toString();
         id++;
@@ -42,12 +38,12 @@ public class Player {
         this.active = value;
     }
 
-    public int getStatus() {
-        return this.status;
+    public State getState() {
+        return this.currentState;
     }
 
-    public void setStatus(int value) {
-        this.status = value;
+    public void setState(State value) {
+        this.currentState = value;
     }
 
     public void addNewHoleCard(Card c) {
@@ -65,15 +61,15 @@ public class Player {
     public void newHand() {
         this.holeCards = new ArrayList<Card>();
         this.currentBet = 0;
-        this.status = PLAYER_DEFAULT;
+        this.currentState = State.DEFAULT;
         this.active = true;
     }
 
     public void newBet(int amount) {
         if (amount >= this.funds) {
-            this.currentBet = this.funds;
+            this.currentBet += this.funds;
             this.funds = 0;
-            this.status = PLAYER_NOT_PLAYING;
+            this.currentState = State.NOT_PLAYING;
         } else {
             this.currentBet += amount;
             this.funds -= amount;
@@ -93,7 +89,7 @@ public class Player {
         /*** MUST BE CHANGED ***/
         int betDiff = 0;
 
-        if(this.funds > 0) {
+        if (this.funds > 0) {
             if (this.name.equals("0")) {
                 BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
                 System.out.println(">>> YOUR TURN");
@@ -108,7 +104,7 @@ public class Player {
                         this.newBet(biggestBet - currentBet + 100);
                         betDiff = 100;
                     } else if (line.equalsIgnoreCase("f")) {
-                        this.status = PLAYER_NOT_PLAYING;
+                        this.currentState = State.NOT_PLAYING;
                         betDiff = -1;
                     }
                 } catch (Exception e) {
@@ -125,7 +121,7 @@ public class Player {
         return this.name;
     }
 
-    public ArrayList<Card> getHoleCards(){
+    public ArrayList<Card> getHoleCards() {
         return this.holeCards;
     }
 

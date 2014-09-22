@@ -13,7 +13,7 @@ import java.util.Random;
 public class Game {
     private static final int INITIAL_FUNDS = 1000;
     private static final int INITIAL_SMALL_BLIND = 100;
-    private static final int TURNS_PER_BIND = 5;
+    private static final int TURNS_PER_BLIND = 5;
 
     private static ArrayList<Player> players;
     private static Deck deck;
@@ -35,7 +35,8 @@ public class Game {
             res++;
             if (res == players.size())
                 res = 0;
-        } while(!players.get(res).isActive() || players.get(res).getStatus() == Player.PLAYER_NOT_PLAYING);
+        }
+        while (!players.get(res).isActive() || players.get(res).getState() == Player.State.NOT_PLAYING);
         return res;
     }
 
@@ -44,7 +45,7 @@ public class Game {
         int i = 0;
         while (i < players.size() && res) {
             Player p = players.get(i);
-            if (!p.isActive() || p.getStatus() == Player.PLAYER_NOT_PLAYING || p.getBet() == biggestBet)
+            if (!p.isActive() || p.getState() == Player.State.NOT_PLAYING || p.getBet() == biggestBet)
                 i++;
             else
                 res = false;
@@ -55,7 +56,7 @@ public class Game {
     private static int countActivePlayers() {
         int res = 0;
         for (Player p : players) {
-            if (p.isActive() || p.getStatus() != Player.PLAYER_NOT_PLAYING)
+            if (p.isActive() || p.getState() != Player.State.NOT_PLAYING)
                 res++;
         }
         return res;
@@ -74,19 +75,19 @@ public class Game {
         // STEP 2: Selecting the first dealer
         Random rnd = new Random();
         dealer = rnd.nextInt(players.size());
-        players.get(dealer).setStatus(Player.PLAYER_DEALER);
+        players.get(dealer).setState(Player.State.DEALER);
 
         while (countActivePlayers() > 1) {
 
             // STEP 3: Showing initial state to players
             showCurrentState();
 
-            // STEP 4: Assigning binds (Note: Player 1 is the closest player to Player 0, clock-wise)
+            // STEP 4: Assigning blinds (Note: Player 1 is the closest player to Player 0, clock-wise)
             if (players.size() > 2) { // If there are only 2 players, the dealer chip acts as the small blind
-                players.get(nextPlayer(dealer)).setStatus(Player.PLAYER_SMALL_BLIND);
-                players.get(nextPlayer(nextPlayer(dealer))).setStatus(Player.PLAYER_BIG_BLIND);
+                players.get(nextPlayer(dealer)).setState(Player.State.SMALL_BLIND);
+                players.get(nextPlayer(nextPlayer(dealer))).setState(Player.State.BIG_BLIND);
             } else
-                players.get(nextPlayer(dealer)).setStatus(Player.PLAYER_BIG_BLIND);
+                players.get(nextPlayer(dealer)).setState(Player.State.BIG_BLIND);
 
             // STEP 5: Dealing the hole cards
             System.out.println("DEALING HOLE CARDS");
@@ -104,10 +105,10 @@ public class Game {
 
             // STEP 7: Paying the blinds
             for (Player p : players) {
-                if (p.getStatus() == Player.PLAYER_SMALL_BLIND || (p.getStatus() ==
-                        Player.PLAYER_DEALER && players.size() == 2))
+                if (p.getState() == Player.State.SMALL_BLIND || (p.getState() ==
+                        Player.State.DEALER && players.size() == 2))
                     p.newBet(INITIAL_SMALL_BLIND);
-                else if (p.getStatus() == Player.PLAYER_BIG_BLIND)
+                else if (p.getState() == Player.State.BIG_BLIND)
                     p.newBet(INITIAL_SMALL_BLIND * 2);
             }
             showCurrentState();
@@ -119,6 +120,8 @@ public class Game {
                 int numPlayers = countActivePlayers();
                 for (int i = 0; i < numPlayers; i++) {
                     Player currentPlayer = players.get(currentPlayerIndex);
+                    if(currentPlayer.getFunds()==0)
+                        ;
                     // STEP 8: Announce the start of the betting turn
                     System.out.println(currentPlayer.getName() + "'S TURN");
 
@@ -139,8 +142,7 @@ public class Game {
                 communityCards.add(deck.draw());
             showCurrentState();
 
-            int bettingRound = 0;
-            while(countActivePlayers() > 1 && bettingRound < 3){
+            for(int round=0;round<3;round++) {
                 do {
                     int numPlayers = countActivePlayers();
                     for (int i = 0; i < numPlayers; i++) {
@@ -160,12 +162,11 @@ public class Game {
                 } while (!bettingConsensus(biggestBet));
 
                 // STEP 15: New Community Card
-                if(bettingRound < 2) {
+                if(round<3) {
                     deck.discard();
                     communityCards.add(deck.draw());
+                    showCurrentState();
                 }
-
-                bettingRound++;
             }
 
             // STEP 16: Obtaining players' best hands and calculating this hand's pot
@@ -181,38 +182,38 @@ public class Game {
             System.out.println(hands);
             Collections.sort(hands, Collections.reverseOrder());
             int numWinners = 1;
-            while (numWinners < hands.size() && hands.get(numWinners-1).equals(hands.get(numWinners)))
+            while (numWinners < hands.size() && hands.get(numWinners - 1).equals(hands.get(numWinners)))
                 numWinners++;
             if (numWinners > 1)
                 System.out.println("TIE");
             else
                 System.out.println(hands.get(0).getOwner().getName() + " WINS");
-            for(int i=0;i<numWinners;i++)
-                hands.get(i).getOwner().addFunds(pot/numWinners);
-            for(Player p: players){
-                if(p.isActive() && p.getFunds() == 0){
+            for (int i = 0; i < numWinners; i++)
+                hands.get(i).getOwner().addFunds(pot / numWinners);
+            for (Player p : players) {
+                if (p.isActive() && p.getFunds() == 0) {
                     System.out.println(p.getName() + " HAS LOST THE GAME");
                     p.setActive(false);
                 }
             }
 
-            if(countActivePlayers() > 1){
+            if (countActivePlayers() > 1) {
                 // STEP 18. Rotating the dealer chip
-                players.get(dealer).setStatus(Player.PLAYER_DEFAULT);
+                players.get(dealer).setState(Player.State.DEFAULT);
                 dealer = nextPlayer(dealer);
-                players.get(dealer).setStatus(Player.PLAYER_DEALER);
+                players.get(dealer).setState(Player.State.DEALER);
 
                 // STEP 19. Cleaning up before a new hand starts
                 deck.newHand();
                 communityCards = new ArrayList<Card>();
-                for(Player p: players)
-                    if(p.isActive())
+                for (Player p : players)
+                    if (p.isActive())
                         p.newHand();
             }
         }
         // STEP 20. Endgame
-        for(Player p: players)
-            if(p.isActive())
+        for (Player p : players)
+            if (p.isActive())
                 System.out.println("PLAYER " + p.getName() + " WINS THE GAME");
 
         /*** ADD LOOP TO RESTART THE GAME ***/

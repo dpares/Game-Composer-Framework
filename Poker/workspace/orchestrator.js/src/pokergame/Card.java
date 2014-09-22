@@ -4,6 +4,10 @@ package pokergame;
  * Created by fare on 09/09/14.
  */
 public class Card implements Comparable<Card>{
+
+    public enum Suit {HEART, DIAMOND, SPADE, CLUB}
+    public static final int HIGHEST_VALUE = 14;
+
     private int rank, suit;
     private static String[] suits = {"♥", "♦", "♠", "♣"};
     private static String[] ranks = {"A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"};
@@ -16,7 +20,7 @@ public class Card implements Comparable<Card>{
     public int getRank() {
         int res = this.rank + 1; // ranks[0] = "A"
         if(res == 1)
-            res = 14; // Aces have the biggest value
+            res = HIGHEST_VALUE; // Aces have the biggest value
         return res;
     }
 
@@ -29,11 +33,11 @@ public class Card implements Comparable<Card>{
     }
 
     public int compareTo(Card c){
-        int a = (this.rank == 0) ? 13 : this.rank;
-        int b = (c.rank == 0) ? 13 : c.rank;
+        int a = this.getRank();
+        int b = c.getRank();
         int res = new Integer(a).compareTo(b);
         if(res == 0)
-            res = new Integer(this.suit).compareTo(c.getSuit());
+            res = new Integer(this.suit).compareTo(c.suit);
         return res;
     }
 }

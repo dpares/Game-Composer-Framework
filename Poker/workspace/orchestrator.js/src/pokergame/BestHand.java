@@ -17,8 +17,6 @@ public class BestHand implements Comparable<BestHand> {
         FOUR_OF_A_KIND, STRAIGHT_FLUSH
     }
 
-    ;
-
     private Type type;
     private int[] highValues;
     private Player owner;
@@ -33,16 +31,16 @@ public class BestHand implements Comparable<BestHand> {
         return array;
     }
 
-    private BestHand bestCombination(List<Card> cards){
+    private BestHand bestCombination(List<Card> cards) {
         BestHand res, best = null;
-        if(cards.size() > 5){
+        if (cards.size() > 5) {
             Card aux;
-            for(int i=0;i<cards.size();i++){
+            for (int i = 0; i < cards.size(); i++) {
                 aux = cards.remove(i);
                 res = bestCombination(cards);
-                if(best == null || best.compareTo(res) < 0)
+                if (best == null || best.compareTo(res) < 0)
                     best = res;
-                cards.add(i,aux);
+                cards.add(i, aux);
             }
             return best;
         } else {
@@ -54,11 +52,11 @@ public class BestHand implements Comparable<BestHand> {
             Type type;
 
             for (Card c : cards) {
-                rankHistogram[c.getRank()-1]++;
+                rankHistogram[c.getRank() - 1]++;
                 suitHistogram[c.getSuit()]++;
                 if (isStraight) {
                     if (previousCard == null || previousCard.getRank() + 1 == c.getRank() ||
-                            previousCard.getRank() == 4 && c.getRank() == 14) // A2345 Straight
+                            previousCard.getRank() == 5 && c.getRank() == Card.HIGHEST_VALUE) // A2345 Straight
                         previousCard = c;
                     else
                         isStraight = false;
@@ -144,17 +142,17 @@ public class BestHand implements Comparable<BestHand> {
                     }
                     i++;
                 }
-                highValues[highValues.length-1] = -1;
+                highValues[highValues.length - 1] = -1;
             } else {
                 type = Type.HIGH_CARD;
                 for (int i = 0; i < 5; i++)
                     highValues[i] = cards.get(cards.size() - i - 1).getRank();
             }
-            return new BestHand(type,highValues);
+            return new BestHand(type, highValues);
         }
     }
 
-    private BestHand(Type type, int[] highValues){
+    private BestHand(Type type, int[] highValues) {
         this.type = type;
         this.highValues = highValues;
     }
@@ -180,9 +178,9 @@ public class BestHand implements Comparable<BestHand> {
         return res;
     }
 
-    public boolean equals(Object o){
-        return o instanceof BestHand && ((BestHand)o).type.equals(this.type) &&
-                Arrays.equals(((BestHand)o).highValues,this.highValues);
+    public boolean equals(Object o) {
+        return o instanceof BestHand && ((BestHand) o).type.equals(this.type) &&
+                Arrays.equals(((BestHand) o).highValues, this.highValues);
     }
 
     public Type getType() {
