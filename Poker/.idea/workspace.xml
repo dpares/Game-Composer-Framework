@@ -53,108 +53,9 @@
       <file leaf-file-name="BestHandTest.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/workspace/orchestrator.js/test/pokergame/BestHandTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="7260" max-vertical-offset="7635">
+            <state vertical-scroll-proportion="0.0" vertical-offset="6254" max-vertical-offset="7575">
               <caret line="497" column="37" selection-start-line="497" selection-start-column="37" selection-end-line="497" selection-end-column="37" />
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#318#324#0" expanded="true" />
-                <element signature="e#377#383#0" expanded="true" />
-                <element signature="e#903#909#0" expanded="true" />
-                <element signature="e#962#968#0" expanded="true" />
-                <element signature="e#1486#1492#0" expanded="true" />
-                <element signature="e#1545#1551#0" expanded="true" />
-                <element signature="e#2074#2080#0" expanded="true" />
-                <element signature="e#2133#2139#0" expanded="true" />
-                <element signature="e#2665#2671#0" expanded="true" />
-                <element signature="e#2724#2730#0" expanded="true" />
-                <element signature="e#3246#3252#0" expanded="true" />
-                <element signature="e#3305#3311#0" expanded="true" />
-                <element signature="e#3829#3835#0" expanded="true" />
-                <element signature="e#3888#3894#0" expanded="true" />
-                <element signature="e#4418#4424#0" expanded="true" />
-                <element signature="e#4477#4483#0" expanded="true" />
-                <element signature="e#5013#5019#0" expanded="true" />
-                <element signature="e#5072#5078#0" expanded="true" />
-                <element signature="e#5618#5624#0" expanded="true" />
-                <element signature="e#5677#5683#0" expanded="true" />
-                <element signature="e#6224#6230#0" expanded="true" />
-                <element signature="e#6283#6289#0" expanded="true" />
-                <element signature="e#6834#6840#0" expanded="true" />
-                <element signature="e#6889#6895#0" expanded="true" />
-                <element signature="e#6948#6954#0" expanded="true" />
-                <element signature="e#7620#7626#0" expanded="true" />
-                <element signature="e#7675#7681#0" expanded="true" />
-                <element signature="e#7734#7740#0" expanded="true" />
-                <element signature="e#8400#8406#0" expanded="true" />
-                <element signature="e#8455#8461#0" expanded="true" />
-                <element signature="e#8514#8520#0" expanded="true" />
-                <element signature="e#9186#9192#0" expanded="true" />
-                <element signature="e#9241#9247#0" expanded="true" />
-                <element signature="e#9300#9306#0" expanded="true" />
-                <element signature="e#9969#9975#0" expanded="true" />
-                <element signature="e#10024#10030#0" expanded="true" />
-                <element signature="e#10083#10089#0" expanded="true" />
-                <element signature="e#10765#10771#0" expanded="true" />
-                <element signature="e#10820#10826#0" expanded="true" />
-                <element signature="e#10879#10885#0" expanded="true" />
-                <element signature="e#11555#11561#0" expanded="true" />
-                <element signature="e#11610#11616#0" expanded="true" />
-                <element signature="e#11669#11675#0" expanded="true" />
-                <element signature="e#12355#12361#0" expanded="true" />
-                <element signature="e#12410#12416#0" expanded="true" />
-                <element signature="e#12469#12475#0" expanded="true" />
-                <element signature="e#13139#13145#0" expanded="true" />
-                <element signature="e#13194#13200#0" expanded="true" />
-                <element signature="e#13253#13259#0" expanded="true" />
-                <element signature="e#13926#13932#0" expanded="true" />
-                <element signature="e#13981#13987#0" expanded="true" />
-                <element signature="e#14040#14046#0" expanded="true" />
-                <element signature="e#14703#14709#0" expanded="true" />
-                <element signature="e#14758#14764#0" expanded="true" />
-                <element signature="e#14817#14823#0" expanded="true" />
-                <element signature="e#15488#15494#0" expanded="true" />
-                <element signature="e#15543#15549#0" expanded="true" />
-                <element signature="e#15602#15608#0" expanded="true" />
-                <element signature="e#16267#16273#0" expanded="true" />
-                <element signature="e#16322#16328#0" expanded="true" />
-                <element signature="e#16381#16387#0" expanded="true" />
-                <element signature="e#17059#17065#0" expanded="true" />
-                <element signature="e#17114#17120#0" expanded="true" />
-                <element signature="e#17173#17179#0" expanded="true" />
-                <element signature="e#17842#17848#0" expanded="true" />
-                <element signature="e#17897#17903#0" expanded="true" />
-                <element signature="e#17956#17962#0" expanded="true" />
-                <element signature="e#18639#18645#0" expanded="true" />
-                <element signature="e#18694#18700#0" expanded="true" />
-                <element signature="e#18753#18759#0" expanded="true" />
-                <element signature="e#19426#19432#0" expanded="true" />
-                <element signature="e#19481#19487#0" expanded="true" />
-                <element signature="e#19540#19546#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="CardTest.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/workspace/orchestrator.js/test/pokergame/CardTest.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="616" max-vertical-offset="990">
-              <caret line="32" column="45" selection-start-line="32" selection-start-column="45" selection-end-line="32" selection-end-column="45" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="PlayerTest.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/workspace/orchestrator.js/test/pokergame/PlayerTest.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="101" max-vertical-offset="525">
-              <caret line="20" column="41" selection-start-line="20" selection-start-column="41" selection-end-line="20" selection-end-column="41" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
+              <folding />
             </state>
           </provider>
         </entry>
@@ -172,8 +73,8 @@
       <file leaf-file-name="Game.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/workspace/orchestrator.js/src/pokergame/Game.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="1.1657754" vertical-offset="1949" max-vertical-offset="3330">
-              <caret line="164" column="24" selection-start-line="164" selection-start-column="24" selection-end-line="164" selection-end-column="24" />
+            <state vertical-scroll-proportion="0.43103448" vertical-offset="510" max-vertical-offset="3495">
+              <caret line="49" column="35" selection-start-line="49" selection-start-column="35" selection-end-line="49" selection-end-column="35" />
               <folding />
             </state>
           </provider>
@@ -182,8 +83,18 @@
       <file leaf-file-name="Player.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/workspace/orchestrator.js/src/pokergame/Player.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="563" max-vertical-offset="1650">
-              <caret line="64" column="13" selection-start-line="64" selection-start-column="13" selection-end-line="64" selection-end-column="13" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="1005" max-vertical-offset="1650">
+              <caret line="103" column="40" selection-start-line="103" selection-start-column="40" selection-end-line="103" selection-end-column="40" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="PlayerTest.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/workspace/orchestrator.js/test/pokergame/PlayerTest.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="510">
+              <caret line="22" column="61" selection-start-line="22" selection-start-column="61" selection-end-line="22" selection-end-column="61" />
               <folding />
             </state>
           </provider>
@@ -192,7 +103,7 @@
       <file leaf-file-name="BestHand.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/workspace/orchestrator.js/src/pokergame/BestHand.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="2306" max-vertical-offset="2925">
+            <state vertical-scroll-proportion="0.0" vertical-offset="255" max-vertical-offset="2925">
               <caret line="34" column="0" selection-start-line="34" selection-start-column="0" selection-end-line="34" selection-end-column="0" />
               <folding />
             </state>
@@ -231,18 +142,17 @@
         <option value="$PROJECT_DIR$/workspace/orchestrator.js/src/com/ojs/capabilities/talkingCapability/TalkingCapability.java" />
         <option value="$PROJECT_DIR$/workspace/orchestrator.js/src/com/ojs/capabilities/apocalymbics/Apocalymbics.java" />
         <option value="$PROJECT_DIR$/workspace/orchestrator.js/src/bmge/zombiegame/RemoteMethodListener.java" />
-        <option value="$PROJECT_DIR$/workspace/orchestrator.js/src/pokergame/Player.java" />
         <option value="$PROJECT_DIR$/workspace/orchestrator.js/src/pokergame/Card.java" />
-        <option value="$PROJECT_DIR$/workspace/orchestrator.js/test/pokergame/CardTest.java" />
         <option value="$PROJECT_DIR$/workspace/orchestrator.js/src/pokergame/BestHand.java" />
         <option value="$PROJECT_DIR$/workspace/orchestrator.js/test/pokergame/BestHandTest.java" />
+        <option value="$PROJECT_DIR$/workspace/orchestrator.js/test/pokergame/CardTest.java" />
         <option value="$PROJECT_DIR$/workspace/orchestrator.js/test/pokergame/PlayerTest.java" />
+        <option value="$PROJECT_DIR$/workspace/orchestrator.js/src/pokergame/Player.java" />
         <option value="$PROJECT_DIR$/workspace/orchestrator.js/src/pokergame/Game.java" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="-1" />
     <option name="y" value="22" />
     <option name="width" value="1280" />
     <option name="height" value="715" />
@@ -273,6 +183,8 @@
       <sortByType />
     </navigator>
     <panes>
+      <pane id="AndroidView" />
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -343,8 +255,6 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="AndroidView" />
-      <pane id="Scope" />
       <pane id="PackagesPane" />
     </panes>
   </component>
@@ -719,8 +629,8 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-1" y="22" width="1280" height="715" extended-state="6" />
-    <editor active="true" />
+    <frame x="0" y="22" width="1280" height="715" extended-state="6" />
+    <editor active="false" />
     <layout>
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -740,7 +650,7 @@
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24555735" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24555735" sideWeight="0.49751243" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32888147" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Memory Monitor" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="15" side_tool="true" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -800,14 +710,6 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/workspace/orchestrator.js/src/pokergame/Game.java</url>
-          <line>123</line>
-          <properties />
-          <option name="timeStamp" value="9" />
-        </line-breakpoint>
-      </breakpoints>
       <option name="time" value="10" />
     </breakpoint-manager>
   </component>
@@ -967,13 +869,13 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/workspace/orchestrator.js/res/layout/activity_orchestrator_js.xml">
-      <provider editor-type-id="android-designer">
-        <state />
-      </provider>
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-23.88889" vertical-offset="0" max-vertical-offset="1035">
           <caret line="43" column="38" selection-start-line="43" selection-start-column="38" selection-end-line="43" selection-end-column="38" />
         </state>
+      </provider>
+      <provider editor-type-id="android-designer">
+        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/workspace/orchestrator.js/bin/AndroidManifest.xml">
@@ -991,13 +893,13 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/workspace/orchestrator.js/res/layout/webview.xml">
-      <provider editor-type-id="android-designer">
-        <state />
-      </provider>
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.21551724" vertical-offset="0" max-vertical-offset="348">
           <caret line="5" column="71" selection-start-line="5" selection-start-column="71" selection-end-line="5" selection-end-column="71" />
         </state>
+      </provider>
+      <provider editor-type-id="android-designer">
+        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/workspace/orchestrator.js/gen/com/ojs/R.java">
@@ -1022,13 +924,13 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/workspace/orchestrator.js/res/layout/guessing_capability_layout.xml">
-      <provider editor-type-id="android-designer">
-        <state />
-      </provider>
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.33431953" vertical-offset="247" max-vertical-offset="585">
           <caret line="24" column="35" selection-start-line="24" selection-start-column="35" selection-end-line="24" selection-end-column="35" />
         </state>
+      </provider>
+      <provider editor-type-id="android-designer">
+        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/workspace/orchestrator.js/src/bmge/zombiegame/MainMenuScreen.java">
@@ -1106,9 +1008,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.33274958" vertical-offset="65" max-vertical-offset="1395">
           <caret line="32" column="35" selection-start-line="32" selection-start-column="35" selection-end-line="32" selection-end-column="35" />
-          <folding>
-            <element signature="e#1116#1117#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1116,7 +1015,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.33274958" vertical-offset="2780" max-vertical-offset="4710">
           <caret line="209" column="29" selection-start-line="209" selection-start-column="29" selection-end-line="209" selection-end-column="29" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1131,119 +1029,21 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.083102494" vertical-offset="0" max-vertical-offset="690">
           <caret line="2" column="0" selection-start-line="2" selection-start-column="0" selection-end-line="2" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/workspace/orchestrator.js/test/pokergame/BestHandTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="7260" max-vertical-offset="7635">
-          <caret line="497" column="37" selection-start-line="497" selection-start-column="37" selection-end-line="497" selection-end-column="37" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#318#324#0" expanded="true" />
-            <element signature="e#377#383#0" expanded="true" />
-            <element signature="e#903#909#0" expanded="true" />
-            <element signature="e#962#968#0" expanded="true" />
-            <element signature="e#1486#1492#0" expanded="true" />
-            <element signature="e#1545#1551#0" expanded="true" />
-            <element signature="e#2074#2080#0" expanded="true" />
-            <element signature="e#2133#2139#0" expanded="true" />
-            <element signature="e#2665#2671#0" expanded="true" />
-            <element signature="e#2724#2730#0" expanded="true" />
-            <element signature="e#3246#3252#0" expanded="true" />
-            <element signature="e#3305#3311#0" expanded="true" />
-            <element signature="e#3829#3835#0" expanded="true" />
-            <element signature="e#3888#3894#0" expanded="true" />
-            <element signature="e#4418#4424#0" expanded="true" />
-            <element signature="e#4477#4483#0" expanded="true" />
-            <element signature="e#5013#5019#0" expanded="true" />
-            <element signature="e#5072#5078#0" expanded="true" />
-            <element signature="e#5618#5624#0" expanded="true" />
-            <element signature="e#5677#5683#0" expanded="true" />
-            <element signature="e#6224#6230#0" expanded="true" />
-            <element signature="e#6283#6289#0" expanded="true" />
-            <element signature="e#6834#6840#0" expanded="true" />
-            <element signature="e#6889#6895#0" expanded="true" />
-            <element signature="e#6948#6954#0" expanded="true" />
-            <element signature="e#7620#7626#0" expanded="true" />
-            <element signature="e#7675#7681#0" expanded="true" />
-            <element signature="e#7734#7740#0" expanded="true" />
-            <element signature="e#8400#8406#0" expanded="true" />
-            <element signature="e#8455#8461#0" expanded="true" />
-            <element signature="e#8514#8520#0" expanded="true" />
-            <element signature="e#9186#9192#0" expanded="true" />
-            <element signature="e#9241#9247#0" expanded="true" />
-            <element signature="e#9300#9306#0" expanded="true" />
-            <element signature="e#9969#9975#0" expanded="true" />
-            <element signature="e#10024#10030#0" expanded="true" />
-            <element signature="e#10083#10089#0" expanded="true" />
-            <element signature="e#10765#10771#0" expanded="true" />
-            <element signature="e#10820#10826#0" expanded="true" />
-            <element signature="e#10879#10885#0" expanded="true" />
-            <element signature="e#11555#11561#0" expanded="true" />
-            <element signature="e#11610#11616#0" expanded="true" />
-            <element signature="e#11669#11675#0" expanded="true" />
-            <element signature="e#12355#12361#0" expanded="true" />
-            <element signature="e#12410#12416#0" expanded="true" />
-            <element signature="e#12469#12475#0" expanded="true" />
-            <element signature="e#13139#13145#0" expanded="true" />
-            <element signature="e#13194#13200#0" expanded="true" />
-            <element signature="e#13253#13259#0" expanded="true" />
-            <element signature="e#13926#13932#0" expanded="true" />
-            <element signature="e#13981#13987#0" expanded="true" />
-            <element signature="e#14040#14046#0" expanded="true" />
-            <element signature="e#14703#14709#0" expanded="true" />
-            <element signature="e#14758#14764#0" expanded="true" />
-            <element signature="e#14817#14823#0" expanded="true" />
-            <element signature="e#15488#15494#0" expanded="true" />
-            <element signature="e#15543#15549#0" expanded="true" />
-            <element signature="e#15602#15608#0" expanded="true" />
-            <element signature="e#16267#16273#0" expanded="true" />
-            <element signature="e#16322#16328#0" expanded="true" />
-            <element signature="e#16381#16387#0" expanded="true" />
-            <element signature="e#17059#17065#0" expanded="true" />
-            <element signature="e#17114#17120#0" expanded="true" />
-            <element signature="e#17173#17179#0" expanded="true" />
-            <element signature="e#17842#17848#0" expanded="true" />
-            <element signature="e#17897#17903#0" expanded="true" />
-            <element signature="e#17956#17962#0" expanded="true" />
-            <element signature="e#18639#18645#0" expanded="true" />
-            <element signature="e#18694#18700#0" expanded="true" />
-            <element signature="e#18753#18759#0" expanded="true" />
-            <element signature="e#19426#19432#0" expanded="true" />
-            <element signature="e#19481#19487#0" expanded="true" />
-            <element signature="e#19540#19546#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/workspace/orchestrator.js/test/pokergame/CardTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="225" max-vertical-offset="990">
-          <caret line="32" column="45" selection-start-line="32" selection-start-column="45" selection-end-line="32" selection-end-column="45" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
+        <state vertical-scroll-proportion="-0.077057794" vertical-offset="404" max-vertical-offset="975">
+          <caret line="25" column="37" selection-start-line="25" selection-start-column="37" selection-end-line="25" selection-end-column="37" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/workspace/orchestrator.js/test/pokergame/PlayerTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="101" max-vertical-offset="525">
-          <caret line="20" column="41" selection-start-line="20" selection-start-column="41" selection-end-line="20" selection-end-column="41" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/workspace/orchestrator.js/src/pokergame/Card.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="286" max-vertical-offset="660">
-          <caret line="24" column="5" selection-start-line="24" selection-start-column="5" selection-end-line="24" selection-end-column="5" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="510">
+          <caret line="22" column="61" selection-start-line="22" selection-start-column="61" selection-end-line="22" selection-end-column="61" />
           <folding />
         </state>
       </provider>
@@ -1256,18 +1056,34 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/workspace/orchestrator.js/test/pokergame/BestHandTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="6524" max-vertical-offset="7575">
+          <caret line="497" column="37" selection-start-line="497" selection-start-column="37" selection-end-line="497" selection-end-column="37" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/workspace/orchestrator.js/src/pokergame/Card.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="74" max-vertical-offset="660">
+          <caret line="24" column="5" selection-start-line="24" selection-start-column="5" selection-end-line="24" selection-end-column="5" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/workspace/orchestrator.js/src/pokergame/Player.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="563" max-vertical-offset="1650">
-          <caret line="64" column="13" selection-start-line="64" selection-start-column="13" selection-end-line="64" selection-end-column="13" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="1005" max-vertical-offset="1650">
+          <caret line="103" column="40" selection-start-line="103" selection-start-column="40" selection-end-line="103" selection-end-column="40" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/workspace/orchestrator.js/src/pokergame/Game.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="1.1657754" vertical-offset="1949" max-vertical-offset="3330">
-          <caret line="164" column="24" selection-start-line="164" selection-start-column="24" selection-end-line="164" selection-end-column="24" />
+        <state vertical-scroll-proportion="0.43103448" vertical-offset="510" max-vertical-offset="3495">
+          <caret line="49" column="35" selection-start-line="49" selection-start-column="35" selection-end-line="49" selection-end-column="35" />
           <folding />
         </state>
       </provider>

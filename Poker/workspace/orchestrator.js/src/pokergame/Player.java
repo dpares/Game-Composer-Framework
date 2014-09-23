@@ -9,7 +9,7 @@ import java.util.ArrayList;
  * Created by fare on 11/09/14.
  */
 public class Player {
-    public enum State {DEFAULT, DEALER, SMALL_BLIND, BIG_BLIND, NOT_PLAYING}
+    public enum State {DEFAULT, DEALER, SMALL_BLIND, BIG_BLIND, ALL_IN, FOLDED}
 
     private int funds;
     private int currentBet;
@@ -69,7 +69,7 @@ public class Player {
         if (amount >= this.funds) {
             this.currentBet += this.funds;
             this.funds = 0;
-            this.currentState = State.NOT_PLAYING;
+            this.currentState = State.ALL_IN;
         } else {
             this.currentBet += amount;
             this.funds -= amount;
@@ -104,7 +104,7 @@ public class Player {
                         this.newBet(biggestBet - currentBet + 100);
                         betDiff = 100;
                     } else if (line.equalsIgnoreCase("f")) {
-                        this.currentState = State.NOT_PLAYING;
+                        this.currentState = State.FOLDED;
                         betDiff = -1;
                     }
                 } catch (Exception e) {

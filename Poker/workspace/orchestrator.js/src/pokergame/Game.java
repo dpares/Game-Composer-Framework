@@ -31,32 +31,40 @@ public class Game {
 
     private static int nextPlayer(int index) {
         int res = index;
+        Player p;
         do {
             res++;
             if (res == players.size())
                 res = 0;
+
+            p = players.get(res);
         }
-        while (!players.get(res).isActive() || players.get(res).getState() == Player.State.NOT_PLAYING);
+        while (!p.isActive() || p.getState() == Player.State.FOLDED ||
+                p.getState() == Player.State.ALL_IN);
         return res;
     }
 
     private static boolean bettingConsensus(int biggestBet) {
         boolean res = true;
         int i = 0;
-        while (i < players.size() && res) {
-            Player p = players.get(i);
-            if (!p.isActive() || p.getState() == Player.State.NOT_PLAYING || p.getBet() == biggestBet)
-                i++;
-            else
-                res = false;
+        if(countActivePlayers(false) > 1) {
+            while (i < players.size() && res) {
+                Player p = players.get(i);
+                if (!p.isActive() || p.getState() == Player.State.FOLDED
+                        || p.getState() == Player.State.ALL_IN || p.getBet() == biggestBet)
+                    i++;
+                else
+                    res = false;
+            }
         }
         return res;
     }
 
-    private static int countActivePlayers() {
+    private static int countActivePlayers(boolean countFolded) {
         int res = 0;
         for (Player p : players) {
-            if (p.isActive() || p.getState() != Player.State.NOT_PLAYING)
+            if (p.isActive() && (countFolded || (p.getState() != Player.State.FOLDED &&
+            p.getState() != Player.State.ALL_IN)))
                 res++;
         }
         return res;
@@ -77,7 +85,7 @@ public class Game {
         dealer = rnd.nextInt(players.size());
         players.get(dealer).setState(Player.State.DEALER);
 
-        while (countActivePlayers() > 1) {
+        while (countActivePlayers(true) > 1) {
 
             // STEP 3: Showing initial state to players
             showCurrentState();
@@ -117,22 +125,23 @@ public class Game {
             currentPlayerIndex = nextPlayer(dealer); /*** MUST BE CHANGED ***/
             biggestBet = INITIAL_SMALL_BLIND * 2;
             do {
-                int numPlayers = countActivePlayers();
-                for (int i = 0; i < numPlayers; i++) {
-                    Player currentPlayer = players.get(currentPlayerIndex);
-                    if(currentPlayer.getFunds()==0)
-                        ;
-                    // STEP 8: Announce the start of the betting turn
-                    System.out.println(currentPlayer.getName() + "'S TURN");
+                int numPlayers = countActivePlayers(false);
+                if(numPlayers > 1) {
+                    for (int i = 0; i < numPlayers; i++) {
+                        Player currentPlayer = players.get(currentPlayerIndex);
 
-                    // STEP 9: Call/Check/Raise/Fold
-                    int betDiff = currentPlayer.chooseAction(biggestBet);
-                    if (betDiff > 0)
-                        biggestBet += betDiff;
+                        // STEP 8: Announce the start of the betting turn
+                        System.out.println(currentPlayer.getName() + "'S TURN");
 
-                    // STEP 10: Show current state and move index to next player
-                    showCurrentState();
-                    currentPlayerIndex = nextPlayer(currentPlayerIndex);
+                        // STEP 9: Call/Check/Raise/Fold
+                        int betDiff = currentPlayer.chooseAction(biggestBet);
+                        if (betDiff > 0)
+                            biggestBet += betDiff;
+
+                        // STEP 10: Show current state and move index to next player
+                        showCurrentState();
+                        currentPlayerIndex = nextPlayer(currentPlayerIndex);
+                    }
                 }
             } while (!bettingConsensus(biggestBet));
 
@@ -144,25 +153,27 @@ public class Game {
 
             for(int round=0;round<3;round++) {
                 do {
-                    int numPlayers = countActivePlayers();
-                    for (int i = 0; i < numPlayers; i++) {
-                        Player currentPlayer = players.get(currentPlayerIndex);
-                        // STEP 12: Announce the start of the betting turn
-                        System.out.println(currentPlayer.getName() + "'S TURN");
+                    int numPlayers = countActivePlayers(false);
+                    if(numPlayers > 1) {
+                        for (int i = 0; i < numPlayers; i++) {
+                            Player currentPlayer = players.get(currentPlayerIndex);
+                            // STEP 12: Announce the start of the betting turn
+                            System.out.println(currentPlayer.getName() + "'S TURN");
 
-                        // STEP 13: Call/Check/Raise/Fold
-                        int betDiff = currentPlayer.chooseAction(biggestBet);
-                        if (betDiff > 0)
-                            biggestBet += betDiff;
+                            // STEP 13: Call/Check/Raise/Fold
+                            int betDiff = currentPlayer.chooseAction(biggestBet);
+                            if (betDiff > 0)
+                                biggestBet += betDiff;
 
-                        // STEP 14: Show current state and move index to next player
-                        showCurrentState();
-                        currentPlayerIndex = nextPlayer(currentPlayerIndex);
+                            // STEP 14: Show current state and move index to next player
+                            showCurrentState();
+                            currentPlayerIndex = nextPlayer(currentPlayerIndex);
+                        }
                     }
                 } while (!bettingConsensus(biggestBet));
 
                 // STEP 15: New Community Card
-                if(round<3) {
+                if(round<2) {
                     deck.discard();
                     communityCards.add(deck.draw());
                     showCurrentState();
@@ -174,7 +185,8 @@ public class Game {
             int pot = 0;
             for (Player p : players)
                 if (p.isActive()) {
-                    hands.add(new BestHand(p.getHoleCards(), communityCards, p));
+                    if(p.getState() != Player.State.FOLDED)
+                        hands.add(new BestHand(p.getHoleCards(), communityCards, p));
                     pot += p.getBet();
                 }
 
@@ -197,18 +209,17 @@ public class Game {
                 }
             }
 
-            if (countActivePlayers() > 1) {
-                // STEP 18. Rotating the dealer chip
-                players.get(dealer).setState(Player.State.DEFAULT);
-                dealer = nextPlayer(dealer);
-                players.get(dealer).setState(Player.State.DEALER);
-
-                // STEP 19. Cleaning up before a new hand starts
+            if (countActivePlayers(true) > 1) {
+                // STEP 18. Cleaning up before a new hand starts
                 deck.newHand();
                 communityCards = new ArrayList<Card>();
                 for (Player p : players)
                     if (p.isActive())
                         p.newHand();
+
+                // STEP 19. Rotating the dealer chip
+                dealer = nextPlayer(dealer);
+                players.get(dealer).setState(Player.State.DEALER);
             }
         }
         // STEP 20. Endgame

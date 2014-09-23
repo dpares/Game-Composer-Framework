@@ -20,7 +20,7 @@ public class PlayerTest {
         Assert.assertEquals(p.getFunds(), 200);
         Assert.assertEquals(p.getBet(), 800);
         p.newBet(300);
-        Assert.assertEquals(p.getState(), Player.State.NOT_PLAYING);
+        Assert.assertEquals(p.getState(), Player.State.ALL_IN);
         Assert.assertEquals(p.getFunds(), 0);
         Assert.assertEquals(p.getBet(), 1000);
     }

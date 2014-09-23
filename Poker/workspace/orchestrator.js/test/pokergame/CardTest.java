@@ -16,14 +16,14 @@ public class CardTest {
     }
 
     @Test
-    public void testCompareAceToTwo() {
+    public void testCompareAceToThree() {
         Card c1 = new Card(0, 0);
         Card c2 = new Card(2, 2);
         Assert.assertEquals(c1.compareTo(c2), 1);
     }
 
     @Test
-    public void testCompareFiveToSeven() {
+    public void testCompareSixToEight() {
         Card c1 = new Card(0, 5);
         Card c2 = new Card(0, 7);
         Assert.assertEquals(c1.compareTo(c2), -1);
