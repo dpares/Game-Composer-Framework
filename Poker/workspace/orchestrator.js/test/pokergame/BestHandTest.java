@@ -6,6 +6,10 @@ import org.junit.Assert;
 import java.util.ArrayList;
 import java.util.List;
 
+import pfc.pokergame.BestHand;
+import pfc.pokergame.Card;
+import pfc.pokergame.Player;
+
 /**
  * Created by fare on 21/09/14.
  */

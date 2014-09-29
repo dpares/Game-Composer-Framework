@@ -466,7 +466,7 @@ public class OrchestratorJsActivity extends Activity {
 			Object[] classAndInstance = capabilityObjects.get(capabilityName);
 			if(classAndInstance == null) {
 				p("interface " + capabilityName + " was not enabled!");
-				throw(new Exception("interface " + capabilityName + " was not enabled."));
+				throw(new Exception("interface " + capabilityName + " was not enabled.\n"));
 			}
 
 			Class<?> clazz = (Class<?>)classAndInstance[0];

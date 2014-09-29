@@ -3,6 +3,8 @@ package pokergame;
 import org.junit.Test;
 import org.junit.Assert;
 
+import pfc.pokergame.Card;
+
 /**
  * Created by fare on 18/09/14.
  */

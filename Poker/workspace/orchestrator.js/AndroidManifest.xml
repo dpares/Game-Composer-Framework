@@ -94,7 +94,13 @@
             android:label="SampleGame"
             android:screenOrientation="landscape" >
         </activity>
-        
+
+        <activity
+            android:name="pfc.engine.PokerActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation"
+            android:label="PokerActivity"
+            android:screenOrientation="landscape" >
+        </activity>
         
         <!-- DEVELOPER DEFINED ACTIVITIES - END -->
         
