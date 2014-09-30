@@ -14,28 +14,28 @@ module.exports = {
     // the body
     body: function (devices) {
         var p = console.log;
-        var misc = require('./misc.js');
-        var Constant = {uninitialized: -1, error:  -2};  
-      	var Game = require('./pokerGame/pokerGame.js');
+        var misc = require('./misc.js'); 
+      	var config = require('./FrameworkConfig.js');
 
-        function Player() { this.number     = Constant.uninitialized;
-                            this.device     = null;
-                          	this.state      = null};
+        var Game = config.gameController;
+
+        function Player() { 
+            this.device = null;
+            this.state  = null;
+        };
       
-        /// game initialization
-      
-        var gameController = new Game();
-      	
+        /// GAME INITIALIZATION	
         var players = [];
         for(i in devices) {
             p(devices[i].identity);
             var player = new Player();
             player.device = devices[i];
             player.number = parseInt(i);
-            player.device.frameworkCapability.initGame();
-
+            var initialState = player.device.frameworkCapability.initGame(config.initData);
+            player.state = initialState
             players.push(player);
         }
+        var gameController = new Game(players);
       
       /*
 

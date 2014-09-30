@@ -1,8 +1,14 @@
 package pfc.pokergame;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+
+import pfc.engine.PokerException;
 
 /**
  * Created by fare on 11/09/14.
@@ -39,6 +45,23 @@ public class Player {
 
     public State getState() {
         return this.currentState;
+    }
+
+    public JSONObject getJSON(){
+        JSONObject res = new JSONObject();
+        try {
+            res.put("funds", this.funds);
+            res.put("current_bet", this.currentBet);
+            res.put("status", this.currentState.ordinal());
+            JSONArray cards = new JSONArray();
+            for(Card c : this.holeCards)
+                cards.put(c.getJSON());
+            res.put("hole_cards", cards);
+            return res;
+        } catch (JSONException e){
+            throw new PokerException("Error parsing Player into JSON", e);
+        }
+
     }
 
     public void setState(State value) {

@@ -1,5 +1,10 @@
 package pfc.pokergame;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import pfc.engine.PokerException;
+
 /**
  * Created by fare on 09/09/14.
  */
@@ -26,6 +31,17 @@ public class Card implements Comparable<Card>{
 
     public int getSuit() {
         return this.suit;
+    }
+
+    public JSONObject getJSON(){
+        try{
+            JSONObject res = new JSONObject();
+            res.put("suit",this.suit);
+            res.put("rank",this.rank);
+            return res;
+        } catch(JSONException e){
+            throw new PokerException("Error parsing Card into JSON", e);
+        }
     }
 
     public String toString() {

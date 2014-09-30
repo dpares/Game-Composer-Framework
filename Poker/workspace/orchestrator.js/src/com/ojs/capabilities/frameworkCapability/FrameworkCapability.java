@@ -1,24 +1,27 @@
 package com.ojs.capabilities.frameworkCapability;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
-import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
-import java.util.ArrayList;
-
-import bmge.framework.Game;
-import bmge.framework.Screen;
+import pfc.engine.PokerException;
 import pfc.engine.PokerActivity;
-
+import pfc.pokergame.Player;
 /**
  * Created by fare on 29/09/14.
  */
 public class FrameworkCapability {
 
+    public interface IPokerActivityCallback{
+        void update(Player p);
+    }
+
     private static final String TAG = FrameworkCapability.class.getSimpleName();
+    private Player player;
+    private PokerActivity activity;
     /*************************************************************************
      * 	SDP stuff                                                            *
      *************************************************************************/
@@ -31,18 +34,22 @@ public class FrameworkCapability {
     /**
      * First method to be called from orchestrator.js
      */
-    static Game game;
-    public void initGame() {
-        Log.d(TAG, "initGame");
-        if(game != null) {
-            Log.d(TAG, "game was NOT null -> finish()");
-            ((Activity) game).finish();
-            Log.d(TAG, "finish() called!");
-        }
-        game = null;
+    public JSONObject initGame(JSONObject initData) {
         Intent i = new Intent(FrameworkCapability.ctx, PokerActivity.class);
         i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        ctx.startActivity(i);
+        JSONObject res;
+        try {
+            int initialFunds = initData.getInt("initial_funds");
+            player = new Player(initialFunds);
+            ctx.startActivity(i);
+            return player.getJSON();
+        } catch (JSONException e){
+            throw new PokerException("Error parsing initData JSON",e);
+        }
+    }
 
+    public void setStatus(Integer state){
+        player.setState(Player.State.values()[state]);
+        PokerActivity.getInstance().update(player);
     }
 }

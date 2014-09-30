@@ -1,3 +1,4 @@
 module.exports = {
-  initGame: function () {},
+  initGame: function (initData) {},
+  setStatus: function (state) {},
 };

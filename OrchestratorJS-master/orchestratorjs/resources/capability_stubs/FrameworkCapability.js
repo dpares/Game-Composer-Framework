@@ -1,7 +1,11 @@
 module.exports = {
 
-    initGame: function() {
-        var methodArguments = ['FrameworkCapability', 'initGame', []];
+    initGame: function(initData) {
+        var methodArguments = ['FrameworkCapability', 'initGame', [initData]];
+        return this.device.invoke(methodArguments);
+    },
+    setStatus: function(state) {
+        var methodArguments = ['FrameworkCapability', 'setStatus', [state]];
         return this.device.invoke(methodArguments);
     },
 };
