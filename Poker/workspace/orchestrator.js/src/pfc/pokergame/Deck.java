@@ -13,7 +13,6 @@ public class Deck {
     public Deck() {
         deck = new ArrayList<Card>();
         rnd = new Random();
-        Card aux;
 
         this.newHand();
     }

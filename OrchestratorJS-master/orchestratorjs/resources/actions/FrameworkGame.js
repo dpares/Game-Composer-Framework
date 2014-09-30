@@ -15,29 +15,26 @@ module.exports = {
     body: function (devices) {
         var p = console.log;
         var misc = require('./misc.js');
-
-
-        var Constant = {uninitialized: -1, error:  -2};
-        var Game     = {gameSkullThrow: 0};        
+        var Constant = {uninitialized: -1, error:  -2};  
+      	var Game = require('./pokerGame/pokerGame.js');
 
         function Player() { this.number     = Constant.uninitialized;
-                            this.country    = Constant.uninitialized; 
-                            this.device     = null; 
-                            this.admin      = false; 
-                            this.throwAngle = Constant.uninitialized; };
-
-
+                            this.device     = null;
+                          	this.state      = null};
+      
         /// game initialization
-
+      
+        var gameController = new Game();
+      	
         var players = [];
         for(i in devices) {
             p(devices[i].identity);
             var player = new Player();
             player.device = devices[i];
             player.number = parseInt(i);
-            players.push(player);
-
             player.device.frameworkCapability.initGame();
+
+            players.push(player);
         }
       
       /*
