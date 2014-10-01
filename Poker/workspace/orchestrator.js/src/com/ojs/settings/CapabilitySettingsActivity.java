@@ -73,7 +73,6 @@ public class CapabilitySettingsActivity extends PreferenceActivity {
 	protected static Set<String> CAPSBILITIES = null;
 	private static Set<String> enabledCapabilities = new HashSet<String>();
 
-    @Override
     protected boolean isValidFragment (String fragmentName) {
 
         if(CapabilitySettingsActivity.class.getName().equals(fragmentName)){

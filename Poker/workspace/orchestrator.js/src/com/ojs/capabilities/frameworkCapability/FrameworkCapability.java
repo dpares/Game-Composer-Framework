@@ -2,9 +2,9 @@ package com.ojs.capabilities.frameworkCapability;
 
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 
 import org.json.JSONException;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import pfc.engine.PokerException;
@@ -51,5 +51,15 @@ public class FrameworkCapability {
     public void setStatus(Integer state){
         player.setState(Player.State.values()[state]);
         PokerActivity.getInstance().update(player);
+    }
+
+    public void showCurrentState(JSONArray players, JSONObject commonData){
+        PokerActivity.getInstance().update(players, commonData);
+    }
+
+    public JSONObject playStep(Integer phase, Integer step){
+        JSONObject res = new JSONObject();
+
+        return res;
     }
 }

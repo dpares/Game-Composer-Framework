@@ -1,4 +1,26 @@
-	
+function countActivePlayers(players){
+    var res = 0;
+    for(p in players)
+        if(p.active)
+            res++;
+
+    return res;
+}
+
+function showCurrentState(players,commonData){
+    var playersState = playersStatesArray(players)
+    for(i in players){
+        players[i].device.frameworkCapability.showCurrentState(playersState,commonData);
+    }
+}
+
+function playersStatesArray(players){
+    var res = [];
+    for(i in players)
+        res.push(players[i].state);
+    return res;
+}	
+
 module.exports = {
 
     exceptionHandler: function(action, device, exception_value) {
@@ -22,6 +44,7 @@ module.exports = {
         function Player() { 
             this.device = null;
             this.state  = null;
+            this.active = true;
         };
       
         /// GAME INITIALIZATION	
@@ -32,12 +55,33 @@ module.exports = {
             player.device = devices[i];
             player.number = parseInt(i);
             var initialState = player.device.frameworkCapability.initGame(config.initData);
-            player.state = initialState
+            player.state = initialState;
             players.push(player);
         }
         var gameController = new Game(players);
-      
-      /*
+        showCurrentState(players,gameController.commonData);
+
+        /*
+        /// MAIN LOOP
+        while(countActivePlayers(players) > 1){
+            var currentPhase = 0;
+            var currentStep = 0;
+            var currentPlayer = 0;
+
+            while(currentPhase < config.phases){
+                gameController.phaseSetUp(currentPhase,players);
+                while(!gameController.phaseEnd(currentPhase,players)){
+                    var player = players[currentPlayer];
+                    do{
+                        var newState = player.device.frameworkCapability.playStep(currentPhase,currentStep);
+                        player.state = newState;
+                        player.active = Game.isActive(player);
+
+                    }
+                }
+            }
+
+        }
 
         for(i in players) {
             var player = players[i];

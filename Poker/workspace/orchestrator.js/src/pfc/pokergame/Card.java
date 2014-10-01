@@ -22,6 +22,15 @@ public class Card implements Comparable<Card>{
         this.rank = rank;
     }
 
+    public Card(JSONObject card){
+        try {
+            this.suit = card.getInt("suit");
+            this.rank = card.getInt("rank");
+        }catch(JSONException e){
+            throw new PokerException("Error parsing JSON into Card", e);
+        }
+    }
+
     public int getRank() {
         int res = this.rank + 1; // ranks[0] = "A"
         if(res == 1)

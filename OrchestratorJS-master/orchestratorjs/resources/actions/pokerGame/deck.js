@@ -30,11 +30,11 @@ Deck.prototype.newHand = function(){
 }
 
 Deck.prototype.draw = function(){
-    return deck.shift();
+    return this.deck.shift();
 }
 
 Deck.prototype.discard = function(){
-    deck.shift();
+    this.deck.shift();
 }
 
 module.exports = Deck;
