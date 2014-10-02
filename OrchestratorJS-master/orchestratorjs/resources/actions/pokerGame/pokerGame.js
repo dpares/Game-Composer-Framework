@@ -11,7 +11,7 @@ var playerStatus = {
 
 function Game(players){
     var deck = new Deck();
-    this.commonData = {communityCards: [], biggestBet: 0};
+    this.commonData = {communityCards: [], biggestBet: 0, currentPot: 0};
     
     this.commonData.communityCards.push(deck.draw());
     this.commonData.communityCards.push(deck.draw());
@@ -19,6 +19,7 @@ function Game(players){
     this.commonData.communityCards.push(deck.draw());
     this.commonData.communityCards.push(deck.draw());
     players[0].device.frameworkCapability.setStatus(playerStatus.DEALER);
+
 }
 
 module.exports = Game;

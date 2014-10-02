@@ -2,9 +2,12 @@ package pfc.engine;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.text.Layout;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.ojs.R;
@@ -29,6 +32,8 @@ public class PokerActivity extends Activity {
 
     private TextView statusLabel;
     private List<TextView> communityCardImages;
+    private List<LinearLayout> playerLayouts;
+    private LinearLayout holeCardsLayout;
 
     private Player player;
     private List<Card> communityCards;
@@ -47,11 +52,15 @@ public class PokerActivity extends Activity {
 
         statusLabel = (TextView)findViewById(R.id.dealerLabel);
         communityCardImages = new ArrayList<TextView>();
-        communityCardImages.add((TextView)findViewById(R.id.commonCard1));
-        communityCardImages.add((TextView)findViewById(R.id.commonCard2));
-        communityCardImages.add((TextView)findViewById(R.id.commonCard3));
-        communityCardImages.add((TextView)findViewById(R.id.commonCard4));
-        communityCardImages.add((TextView)findViewById(R.id.commonCard5));
+        communityCardImages.add((TextView)findViewById(R.id.communityCard1));
+        communityCardImages.add((TextView)findViewById(R.id.communityCard2));
+        communityCardImages.add((TextView)findViewById(R.id.communityCard3));
+        communityCardImages.add((TextView)findViewById(R.id.communityCard4));
+        communityCardImages.add((TextView)findViewById(R.id.communityCard5));
+        playerLayouts = new ArrayList<LinearLayout>();
+        playerLayouts.add((LinearLayout)findViewById(R.id.player1Layout));
+        playerLayouts.add((LinearLayout)findViewById(R.id.player2Layout));
+        holeCardsLayout = (LinearLayout)findViewById(R.id.holeCardsLayout);
         instance = this;
     }
 
@@ -59,27 +68,41 @@ public class PokerActivity extends Activity {
         return PokerActivity.instance;
     }
 
-    public void update(Player p){
-        if(player == null)
-            player = p;
-        statusLabel.setText(p.getState().toString());
-    }
-
     public void update(JSONArray players, JSONObject commonData){
         communityCards = new ArrayList<Card>();
         try {
             biggestBet = commonData.getInt("biggestBet");
+
+            /* Community cards treatment */
             JSONArray cards = commonData.getJSONArray("communityCards");
             for (int i = 0; i < cards.length(); i++)
                 communityCards.add(new Card(cards.getJSONObject(i)));
             int i = 0;
             while(i < communityCards.size()){
-                if(communityCardImages.get(i).getVisibility() == View.GONE){
+                if(communityCardImages.get(i).getVisibility() == View.INVISIBLE){
                     communityCardImages.get(i).setVisibility(View.VISIBLE);
                     communityCardImages.get(i).setText(communityCards.get(i).toString());
                 }
                 i++;
 
+            }
+
+            /* Player treatment */
+            for(int j = 0;j<players.length();j++){
+                Player p = new Player(players.getJSONObject(j));
+                LinearLayout layout = playerLayouts.get(j);
+                layout.setVisibility(View.VISIBLE);
+                View v = layout.getChildAt(1);
+                ((TextView)((ViewGroup)v).getChildAt(0)).setText("Funds: " + p.getFunds());
+                ((TextView)((ViewGroup)v).getChildAt(1)).setText("Current Bet: " + p.getBet());
+                ((TextView)((ViewGroup)v).getChildAt(2)).setText("Status: " + p.getState().toString());
+
+                if(j==0 && p.getHoleCards().size() > 0){
+                    holeCardsLayout.setVisibility(View.VISIBLE);
+                    for(int k = 0;k<p.getHoleCards().size();k++)
+                        ((TextView)((ViewGroup)holeCardsLayout).getChildAt(k)).
+                                setText(p.getHoleCards().get(k).toString());
+                }
             }
         } catch (JSONException e){
             throw new PokerException("Error updating PokerActivity", e);

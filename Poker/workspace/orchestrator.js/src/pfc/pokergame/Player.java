@@ -35,6 +35,20 @@ public class Player {
         id++;
     }
 
+    public Player(JSONObject p){
+        try{
+            this.funds = p.getInt("funds");
+            this.currentBet = p.getInt("current_bet");
+            this.currentState = State.values()[p.getInt("status")];
+            this.holeCards = new ArrayList<Card>();
+            JSONArray aux = p.getJSONArray("hole_cards");
+            for(int i=0;i<aux.length();i++)
+                this.holeCards.add(new Card(aux.getJSONObject(i)));
+        } catch (JSONException e){
+            throw new PokerException("Error parsing JSON into Player", e);
+        }
+    }
+
     public boolean isActive() {
         return this.active;
     }

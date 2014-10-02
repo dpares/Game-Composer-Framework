@@ -1,23 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<FrameLayout
+<RelativeLayout
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:background="@drawable/pokertable">
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/imageView"
-        android:layout_gravity="center" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:id="@+id/dealerLabel"
-        android:layout_gravity="center" />
+        android:layout_gravity="center"
+        android:layout_centerInParent="true" />
 
     <Button
         style="?android:attr/buttonStyleSmall"
@@ -28,71 +23,213 @@
         android:layout_gravity="center_horizontal|bottom"
         android:enabled="false"
         android:background="#ffff0f5a"
-        android:onClick="call" />
+        android:onClick="call"
+        android:layout_alignParentBottom="false"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:visibility="invisible" />
 
-    <TextView
-        android:layout_width="75px"
-        android:layout_height="150px"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="A♥"
-        android:id="@+id/commonCard1"
-        android:layout_gravity="left|center_vertical"
-        android:background="#ffffffff"
-        android:textAlignment="center"
-        android:layout_marginLeft="200px"
-        android:layout_marginBottom="50px"
-        android:enabled="false"
-        android:visibility="gone" />
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_centerInParent="true"
+        android:id="@+id/communityCardsLayout">
 
-    <TextView
-        android:layout_width="75px"
-        android:layout_height="150px"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="A♥"
-        android:id="@+id/commonCard2"
-        android:layout_gravity="left|center_vertical"
-        android:background="#ffffffff"
-        android:textAlignment="center"
-        android:layout_marginLeft="375px"
-        android:layout_marginBottom="50px"
-        android:visibility="gone" />
+        <TextView
+            android:layout_width="75px"
+            android:layout_height="150px"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="A♥"
+            android:id="@+id/communityCard1"
+            android:layout_gravity="left|center_vertical"
+            android:background="#ffffffff"
+            android:textAlignment="center"
+            android:layout_marginLeft="200px"
+            android:layout_marginBottom="50px"
+            android:enabled="false"
+            android:visibility="invisible"
+            android:layout_centerInParent="true" />
 
-    <TextView
-        android:layout_width="75px"
-        android:layout_height="150px"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="A♥"
-        android:id="@+id/commonCard3"
-        android:layout_gravity="left|center_vertical"
-        android:background="#ffffffff"
-        android:textAlignment="center"
-        android:layout_marginLeft="550px"
-        android:layout_marginBottom="50px"
-        android:visibility="gone" />
+        <TextView
+            android:layout_width="75px"
+            android:layout_height="150px"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="A♥"
+            android:id="@+id/communityCard2"
+            android:layout_gravity="left|center_vertical"
+            android:background="#ffffffff"
+            android:textAlignment="center"
+            android:layout_marginLeft="100px"
+            android:layout_marginBottom="50px"
+            android:visibility="invisible" />
 
-    <TextView
-        android:layout_width="75px"
-        android:layout_height="150px"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="A♥"
-        android:id="@+id/commonCard4"
-        android:layout_gravity="left|center_vertical"
-        android:background="#ffffffff"
-        android:textAlignment="center"
-        android:layout_marginLeft="730px"
-        android:layout_marginBottom="50px"
-        android:visibility="gone" />
+        <TextView
+            android:layout_width="75px"
+            android:layout_height="150px"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="A♥"
+            android:id="@+id/communityCard3"
+            android:layout_gravity="left|center_vertical"
+            android:background="#ffffffff"
+            android:textAlignment="center"
+            android:layout_marginLeft="100px"
+            android:layout_marginBottom="50px"
+            android:visibility="invisible" />
 
-    <TextView
-        android:layout_width="75px"
-        android:layout_height="150px"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="A♥"
-        android:id="@+id/commonCard5"
-        android:layout_gravity="left|center_vertical"
-        android:background="#ffffffff"
-        android:textAlignment="center"
-        android:layout_marginLeft="900px"
-        android:layout_marginBottom="50px"
-        android:visibility="gone" />
-</FrameLayout>
+        <TextView
+            android:layout_width="75px"
+            android:layout_height="150px"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="A♥"
+            android:id="@+id/communityCard4"
+            android:layout_gravity="left|center_vertical"
+            android:background="#ffffffff"
+            android:textAlignment="center"
+            android:layout_marginLeft="100px"
+            android:layout_marginBottom="50px"
+            android:visibility="invisible" />
+
+        <TextView
+            android:layout_width="75px"
+            android:layout_height="150px"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="A♥"
+            android:id="@+id/communityCard5"
+            android:layout_gravity="left|center_vertical"
+            android:background="#ffffffff"
+            android:textAlignment="center"
+            android:layout_marginLeft="100px"
+            android:layout_marginBottom="50px"
+            android:visibility="invisible" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:background="#000000"
+        android:visibility="gone"
+        android:focusableInTouchMode="false"
+        android:id="@+id/holeCardsLayout">
+
+        <TextView
+            android:layout_width="160px"
+            android:layout_height="250px"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="A♥"
+            android:id="@+id/holeCard1"
+            android:layout_gravity="left|center_vertical"
+            android:background="#ffffffff"
+            android:textAlignment="center"
+            android:enabled="false"
+            android:layout_centerInParent="true" />
+
+        <TextView
+            android:layout_width="160px"
+            android:layout_height="250px"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="A♥"
+            android:id="@+id/holeCard2"
+            android:layout_gravity="left|center_vertical"
+            android:background="#ffffffff"
+            android:textAlignment="center"
+            android:layout_marginLeft="50px" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/player1Layout"
+        android:layout_alignParentLeft="false"
+        android:layout_alignParentBottom="true"
+        android:background="#ff40ff5c"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="30dp"
+        android:visibility="invisible"
+        android:padding="5dp">
+
+        <ImageView
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:id="@+id/player1_avatar"
+            android:src="@drawable/defaultavatar" />
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:id="@+id/player1_playerData">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Funds: 1000"
+                android:id="@+id/player1_funds" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Current Bet: 0"
+                android:id="@+id/player1_currentBet" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Status: DEFAULT"
+                android:id="@+id/player1_status" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/player2Layout"
+        android:background="#ff40ff5c"
+        android:layout_centerHorizontal="true"
+        android:visibility="invisible"
+        android:padding="5dp">
+
+        <ImageView
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:id="@+id/player2_avatar"
+            android:src="@drawable/defaultavatar" />
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:id="@+id/player2_playerData" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Funds: 1000"
+                android:id="@+id/player2_funds" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Current Bet: 0"
+                android:id="@+id/player2_currentBet" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Status: DEFAULT"
+                android:id="@+id/player2_status" />
+        </LinearLayout>
+    </LinearLayout>
+
+</RelativeLayout>

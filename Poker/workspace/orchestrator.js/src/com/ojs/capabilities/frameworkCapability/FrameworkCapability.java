@@ -50,7 +50,6 @@ public class FrameworkCapability {
 
     public void setStatus(Integer state){
         player.setState(Player.State.values()[state]);
-        PokerActivity.getInstance().update(player);
     }
 
     public void showCurrentState(JSONArray players, JSONObject commonData){
