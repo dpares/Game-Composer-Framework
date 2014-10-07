@@ -42,6 +42,7 @@ public class PokerActivity extends Activity {
     private List<Card> communityCards;
     private int biggestBet;
     private int currentBet;
+    private int numPlayers;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +72,7 @@ public class PokerActivity extends Activity {
         instance = this;
         this.currentBet = 100;
         this.biggestBet = 200;
+        this.numPlayers = -1;
         try {
             JSONObject initData = new JSONObject(this.getIntent().getStringExtra("init_data"));
             int initialFunds = initData.getInt("initial_funds");
@@ -120,6 +122,8 @@ public class PokerActivity extends Activity {
             }
 
             /* Player treatment */
+            if (this.numPlayers == -1)
+                this.numPlayers = players.length();
             for(int j = 0;j<players.length();j++){
                 Player p = new Player(players.getJSONObject(j));
                 LinearLayout layout = playerLayouts.get(j);
@@ -166,17 +170,33 @@ public class PokerActivity extends Activity {
 
     public void newBet(View v){
         player.raise(this.currentBet,this.biggestBet);
+        if(this.biggestBet < player.getBet())
+            this.biggestBet+= player.getBet() - this.biggestBet;
         this.finishTurn();
     }
 
     public void startStep(int phase, int step){
-        buttonLayout.setVisibility(View.VISIBLE);
+        if(phase == 0){
+            if(player.getState() == Player.State.SMALL_BLIND ||
+                    this.numPlayers == 2 && player.getState() == Player.State.DEALER)
+                player.call(100);
+            else if(player.getState() == Player.State.BIG_BLIND)
+                player.call(200);
+            finishTurn();
+        } else if(phase == 5){
+            // Devolver mejor mano
+            finishTurn();
+        } else {
+            this.currentBet = this.biggestBet - player.getBet();
+            if(this.currentBet < 100)
+                this.currentBet = 100;
+            betLabel.setText(new Integer(this.currentBet).toString());
+            buttonLayout.setVisibility(View.VISIBLE);
+        }
     }
 
     private void finishTurn(){
         buttonLayout.setVisibility(View.INVISIBLE);
-        this.currentBet = 100;
-        betLabel.setText(new Integer(this.currentBet).toString());
         FrameworkCapability.endOfTurn();
     }
 

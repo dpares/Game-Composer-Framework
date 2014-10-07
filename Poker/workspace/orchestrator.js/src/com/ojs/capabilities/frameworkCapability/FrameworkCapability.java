@@ -47,10 +47,6 @@ public class FrameworkCapability {
         ctx.startActivity(i);
     }
 
-    public void setStatus(Integer status){
-        PokerActivity.getInstance().getPlayer().setState(Player.State.values()[status]);
-    }
-
     public void setPlayerState(JSONObject state){
         PokerActivity.getInstance().setPlayerState(state);
     }

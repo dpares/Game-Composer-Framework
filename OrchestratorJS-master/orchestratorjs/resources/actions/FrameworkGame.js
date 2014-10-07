@@ -12,6 +12,16 @@ function playersStatesArray(players){
     return res;
 }	
 
+function countActivePlayers(players){
+    var res = 0;
+    for(var i = 0; i < players.length; i++){
+        if(players[i].active)
+            res++;
+    }
+
+    return res;
+}
+
 module.exports = {
 
     exceptionHandler: function(action, device, exception_value) {
@@ -57,14 +67,13 @@ module.exports = {
         showCurrentState(players,gameController.commonData);
 
         /// MAIN LOOP
-        p("ACTIVE PLAYERS: " + gameController.countActivePlayers(players));
-        while(gameController.countActivePlayers(players) > 1){
+        while(countActivePlayers(players) > 1){
             var currentPlayer = 0;
             for(var currentPhase = 0; currentPhase < config.phases; currentPhase++){
                 gameController.phaseSetUp(currentPhase,players);
                 showCurrentState(players,gameController.commonData);
                 do{
-                    var numPlayers = gameController.countActivePlayers(players);
+                    var numPlayers = gameController.countAvailablePlayers(players);
                     if(numPlayers > 1){
                         for(var i = 0; i < numPlayers; i++){
                             var player = players[currentPlayer];

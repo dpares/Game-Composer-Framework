@@ -4,10 +4,6 @@ module.exports = {
         var methodArguments = ['FrameworkCapability', 'initGame', [initData]];
         return this.device.invoke(methodArguments);
     },
-    setStatus: function(status) {
-        var methodArguments = ['FrameworkCapability', 'setStatus', [status]];
-        return this.device.invoke(methodArguments);
-    },
     setPlayerState: function(state) {
         var methodArguments = ['FrameworkCapability', 'setPlayerState', [state]];
         return this.device.invoke(methodArguments);
