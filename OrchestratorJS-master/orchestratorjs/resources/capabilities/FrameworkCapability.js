@@ -1,6 +1,9 @@
 module.exports = {
   initGame: function (initData) {},
-  setStatus: function (state) {},
+  setStatus: function (status) {},
+  setPlayerState: function (state) {},
+  getPlayerState: function () {},
   showCurrentState: function (players, commonData) {},
-  playStep: function (currentPhase, currentStep) {},
+  startStep: function (currentPhase, currentStep) {},
+  getStepResult: function (currentPhase, currentStep) {},
 };

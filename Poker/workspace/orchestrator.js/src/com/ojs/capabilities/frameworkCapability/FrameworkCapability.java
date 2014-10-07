@@ -15,13 +15,7 @@ import pfc.pokergame.Player;
  */
 public class FrameworkCapability {
 
-    public interface IPokerActivityCallback{
-        void update(Player p);
-    }
-
     private static final String TAG = FrameworkCapability.class.getSimpleName();
-    private Player player;
-    private PokerActivity activity;
     /*************************************************************************
      * 	SDP stuff                                                            *
      *************************************************************************/
@@ -31,34 +25,69 @@ public class FrameworkCapability {
     }
     /*************************************************************************/
 
-    /**
-     * First method to be called from orchestrator.js
-     */
-    public JSONObject initGame(JSONObject initData) {
-        Intent i = new Intent(FrameworkCapability.ctx, PokerActivity.class);
-        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        JSONObject res;
-        try {
-            int initialFunds = initData.getInt("initial_funds");
-            player = new Player(initialFunds);
-            ctx.startActivity(i);
-            return player.getJSON();
-        } catch (JSONException e){
-            throw new PokerException("Error parsing initData JSON",e);
+    private static boolean playerDataAvailable;
+
+    private static JSONObject nullJSON(){
+        try{
+            return new JSONObject().put("null",true);
+        }catch(JSONException e){
+            throw new PokerException("Error parsing null JSON",e);
         }
     }
 
-    public void setStatus(Integer state){
-        player.setState(Player.State.values()[state]);
+    /**
+     * First method to be called from orchestrator.js
+     */
+    public void initGame(JSONObject initData) {
+        playerDataAvailable = false;
+
+        Intent i = new Intent(FrameworkCapability.ctx, PokerActivity.class);
+        i.putExtra("init_data",initData.toString());
+        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        ctx.startActivity(i);
+    }
+
+    public void setStatus(Integer status){
+        PokerActivity.getInstance().getPlayer().setState(Player.State.values()[status]);
+    }
+
+    public void setPlayerState(JSONObject state){
+        PokerActivity.getInstance().setPlayerState(state);
+    }
+
+    public JSONObject getPlayerState(){
+        if(PokerActivity.getInstance() == null)
+            return FrameworkCapability.nullJSON();
+        else
+            return PokerActivity.getInstance().getPlayer().getJSON();
     }
 
     public void showCurrentState(JSONArray players, JSONObject commonData){
         PokerActivity.getInstance().update(players, commonData);
     }
 
-    public JSONObject playStep(Integer phase, Integer step){
-        JSONObject res = new JSONObject();
+    public void startStep(Integer phase, Integer step){
+        PokerActivity.getInstance().startStep(phase,step);
+    }
 
-        return res;
+    public JSONObject getStepResult(Integer phase, Integer step){
+        if(!playerDataAvailable)
+            return FrameworkCapability.nullJSON();
+        else{
+            playerDataAvailable = false;
+            JSONObject res = new JSONObject();
+            try{
+                res.put("common_data",PokerActivity.getInstance().getCommonDataJSON());
+                res.put("player_data",PokerActivity.getInstance().getPlayer().getJSON());
+                playerDataAvailable = false;
+                return res;
+            } catch(JSONException e){
+                throw new PokerException("Error sending turn result",e);
+            }
+        }
+    }
+
+    public static void endOfTurn(){
+        playerDataAvailable = true;
     }
 }

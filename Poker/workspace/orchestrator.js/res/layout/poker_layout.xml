@@ -12,29 +12,16 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:id="@+id/dealerLabel"
         android:layout_gravity="center"
-        android:layout_centerInParent="true" />
-
-    <Button
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="CALL"
-        android:id="@+id/callButton"
-        android:layout_gravity="center_horizontal|bottom"
-        android:enabled="false"
-        android:background="#ffff0f5a"
-        android:onClick="call"
-        android:layout_alignParentBottom="false"
-        android:layout_centerVertical="true"
-        android:layout_alignParentRight="true"
-        android:visibility="invisible" />
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
 
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_centerInParent="true"
-        android:id="@+id/communityCardsLayout">
+        android:id="@+id/communityCardsLayout"
+        android:visibility="visible">
 
         <TextView
             android:layout_width="75px"
@@ -108,12 +95,13 @@
         android:orientation="horizontal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
+        android:layout_alignParentRight="false"
         android:layout_alignParentBottom="true"
         android:background="#000000"
-        android:visibility="gone"
+        android:visibility="invisible"
         android:focusableInTouchMode="false"
-        android:id="@+id/holeCardsLayout">
+        android:id="@+id/holeCardsLayout"
+        android:layout_alignParentLeft="true">
 
         <TextView
             android:layout_width="160px"
@@ -184,6 +172,7 @@
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="Status: DEFAULT"
                 android:id="@+id/player1_status" />
+
         </LinearLayout>
     </LinearLayout>
 
@@ -229,7 +218,119 @@
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="Status: DEFAULT"
                 android:id="@+id/player2_status" />
+
         </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/buttonLayout"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="5dp"
+        android:background="#ffff756e"
+        android:visibility="invisible">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:layout_marginRight="5dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="100"
+                android:id="@+id/currentBet"
+                android:textAlignment="center"
+                android:background="#ffffffff"
+                android:textSize="40dp"
+                android:clickable="true" />
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp">
+
+                <Button
+                    style="?android:attr/buttonStyleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp"
+                    android:text="+"
+                    android:id="@+id/plusButton"
+                    android:onClick="increaseBet"
+                    android:background="#ffffff"
+                    android:textSize="20sp"
+                    android:clickable="true"
+                    android:enabled="true" />
+
+                <Button
+                    style="?android:attr/buttonStyleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp"
+                    android:text="-"
+                    android:id="@+id/minusButton"
+                    android:onClick="decreaseBet"
+                    android:background="#ffffffff"
+                    android:layout_marginTop="8dp"
+                    android:clickable="true"
+                    android:enabled="true" />
+            </LinearLayout>
+
+            <Button
+                style="?android:attr/buttonStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="BET"
+                android:id="@+id/betButton"
+                android:enabled="true"
+                android:background="#ffff0f5a"
+                android:onClick="newBet"
+                android:clickable="true" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
+
+            <Button
+                style="?android:attr/buttonStyleSmall"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:text="CALL"
+                android:id="@+id/callButton"
+                android:layout_gravity="center_horizontal|bottom"
+                android:enabled="true"
+                android:background="#ffff0f5a"
+                android:onClick="call"
+                android:layout_alignParentBottom="false"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:clickable="true" />
+
+            <Button
+                style="?android:attr/buttonStyleSmall"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:text="FOLD"
+                android:id="@+id/foldButton"
+                android:layout_gravity="center_horizontal|bottom"
+                android:enabled="true"
+                android:background="#ffff0f5a"
+                android:onClick="fold"
+                android:layout_alignParentBottom="false"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginLeft="15dp"
+                android:clickable="true" />
+        </LinearLayout>
+
     </LinearLayout>
 
 </RelativeLayout>

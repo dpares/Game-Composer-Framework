@@ -121,6 +121,19 @@ public class Player {
                 this.holeCards + "\nBet: " + this.currentBet;
     }
 
+    public void call(int biggestBet){
+        if (this.currentBet < biggestBet)
+            this.newBet(biggestBet - currentBet);
+    }
+
+    public void raise(int raiseAmount, int biggestBet){
+        this.newBet(biggestBet - currentBet + raiseAmount);
+    }
+
+    public void fold(){
+        this.currentState = State.FOLDED;
+    }
+
     public int chooseAction(int biggestBet) {
         /*** MUST BE CHANGED ***/
         int betDiff = 0;
@@ -133,11 +146,10 @@ public class Player {
                 System.out.print("> ");
                 try {
                     String line = br.readLine();
-                    if (line.equalsIgnoreCase("c")) {
-                        if (this.currentBet < biggestBet)
-                            this.newBet(biggestBet - currentBet);
-                    } else if (line.equalsIgnoreCase("r")) { /*** MUST BE CHANGED ***/
-                        this.newBet(biggestBet - currentBet + 100);
+                    if (line.equalsIgnoreCase("c"))
+                        this.call(biggestBet);
+                    else if (line.equalsIgnoreCase("r")) { /*** MUST BE CHANGED ***/
+                        this.raise(100,biggestBet);
                         betDiff = 100;
                     } else if (line.equalsIgnoreCase("f")) {
                         this.currentState = State.FOLDED;
