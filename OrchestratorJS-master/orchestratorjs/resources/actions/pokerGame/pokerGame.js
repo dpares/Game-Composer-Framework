@@ -1,4 +1,5 @@
 var Deck = require('./Deck.js');
+var BestHand = require('./BestHand.js');
 
 var playerStatus = {
     DEFAULT : 0,
@@ -9,9 +10,20 @@ var playerStatus = {
     FOLDED : 5
 };
 
+function compareBestHands(a,b) {
+    var res = a.type - b.type; //comparing types
+    var i = 0;
+    while (res == 0 && i < this.highValues.length) {
+        res = a.highValues[i] - b.highValues[i];
+        i++;
+    }
+    return res;
+}
+
 function Game(players){
     this.deck = new Deck();
     this.commonData = {community_cards: [], biggest_bet: 200, current_pot: 0};
+    this.bestHands = [];
    
     players[0].state.status = playerStatus.DEALER;
     players[0].device.frameworkCapability.setPlayerState(players[0].state);
@@ -86,6 +98,32 @@ Game.prototype.phaseEnd = function(currentPhase,players){
 
 Game.prototype.updateCommonData = function(commonData){
     this.commonData.biggest_bet = commonData.biggest_bet;
+}
+
+Game.prototype.computeResults = function(players){
+    for(p in players){
+        var holeCards = JSON.parse(JSON.stringify(players[p].state.hole_cards));
+        if(players[p].active && players[p].state.status != playerStatus.FOLDED){
+            var hand = new BestHand(holeCards,this.commonData.community_cards,p);
+            players[p].state.best_hand = hand;
+            this.bestHands.push(hand);
+        }
+    }
+    console.log(this.bestHands);
+}
+
+Game.prototype.declareWinners = function(players){
+    var res = [];
+    this.bestHands.sort(compareBestHands);
+    this.BestHands.reverse();
+    var i = 0;
+    res.push(this.bestHands[i].owner);
+    while(i+1 < this.bestHands.length && compareBestHands(this.bestHands[i],this.bestHands[i+1]==0)){
+        i++;
+        res.push(this,bestHands[i].owner);
+    }
+
+    return res;
 }
 
 module.exports = Game;

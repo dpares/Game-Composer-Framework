@@ -22,6 +22,11 @@ function countActivePlayers(players){
     return res;
 }
 
+function showResults(players,gameController){
+    showCurrentState(players,gameController.commonData);
+    console.log(gameController.declareWinners(players));
+}
+
 module.exports = {
 
     exceptionHandler: function(action, device, exception_value) {
@@ -93,7 +98,8 @@ module.exports = {
                     }
                 }while (!gameController.phaseEnd(currentPhase,players));
             }
-            // REPLAY GOES HERE
+            gameController.computeResults(players);
+            showResults(players,gameController);
         }
     },
 

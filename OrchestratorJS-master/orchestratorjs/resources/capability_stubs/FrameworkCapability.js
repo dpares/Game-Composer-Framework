@@ -24,4 +24,8 @@ module.exports = {
         var methodArguments = ['FrameworkCapability', 'getStepResult', [currentPhase,currentStep]];
         return this.device.invoke(methodArguments);
     },
+    showResults: function(winners,players,commonData) {
+        var methodArguments = ['FrameworkCapability', 'showResults', [winners,players,commonData]];
+        return this.device.invoke(methodArguments);
+    },
 };

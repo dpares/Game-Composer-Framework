@@ -83,6 +83,10 @@ public class FrameworkCapability {
         }
     }
 
+    public void showResults(int[] winners, JSONArray players, JSONObject commonData){
+        PokerActivity.getInstance().showResults(winners,players,commonData);
+    }
+
     public static void endOfTurn(){
         playerDataAvailable = true;
     }

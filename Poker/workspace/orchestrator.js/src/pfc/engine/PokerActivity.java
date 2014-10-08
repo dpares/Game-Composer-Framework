@@ -21,6 +21,7 @@ import org.w3c.dom.Text;
 import java.util.ArrayList;
 import java.util.List;
 
+import pfc.pokergame.BestHand;
 import pfc.pokergame.Card;
 import pfc.pokergame.Player;
 
@@ -132,6 +133,19 @@ public class PokerActivity extends Activity {
                 ((TextView)((ViewGroup)v).getChildAt(0)).setText("Funds: " + p.getFunds());
                 ((TextView)((ViewGroup)v).getChildAt(1)).setText("Current Bet: " + p.getBet());
                 ((TextView)((ViewGroup)v).getChildAt(2)).setText("Status: " + p.getState().toString());
+
+                if(players.getJSONObject(j).has("best_hand")){
+                    JSONObject bestHand = players.getJSONObject(j).getJSONObject("best_hand");
+                    v = layout.getChildAt(2);
+                    v.setVisibility(View.VISIBLE);
+                    ((TextView)((ViewGroup)v).getChildAt(0)).setText(
+                            BestHand.Type.values()[bestHand.getInt("type")].toString());
+                    v = ((ViewGroup)v).getChildAt(1);
+                    JSONArray holeCards = players.getJSONObject(j).getJSONArray("hole_cards");
+                    for(int k=0;k<holeCards.length();k++)
+                        ((TextView)((ViewGroup)v).getChildAt(k)).setText(
+                                 new Card(holeCards.getJSONObject(k)).toString());
+                }
             }
             if(this.player.getHoleCards().size() > 0){
                 holeCardsLayout.setVisibility(View.VISIBLE);
@@ -198,6 +212,10 @@ public class PokerActivity extends Activity {
     private void finishTurn(){
         buttonLayout.setVisibility(View.INVISIBLE);
         FrameworkCapability.endOfTurn();
+    }
+
+    public void showResults(int[] winners, JSONArray players, JSONObject commonData){
+        // TODO
     }
 
 }
