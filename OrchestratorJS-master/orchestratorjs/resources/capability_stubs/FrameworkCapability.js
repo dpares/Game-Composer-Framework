@@ -28,4 +28,8 @@ module.exports = {
         var methodArguments = ['FrameworkCapability', 'showResults', [winners,players,commonData]];
         return this.device.invoke(methodArguments);
     },
+    newRound: function() {
+        var methodArguments = ['FrameworkCapability', 'newRound', []];
+        return this.device.invoke(methodArguments);
+    },
 };

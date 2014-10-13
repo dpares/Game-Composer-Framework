@@ -23,16 +23,13 @@ public class Player {
     private boolean active;
     private State currentState;
 
-    private static int id = 0;
-
-    public Player(int initialFunds) {
+    public Player(int initialFunds, int name) {
         this.funds = initialFunds;
         this.currentBet = 0;
         this.holeCards = new ArrayList<Card>();
         this.currentState = State.DEFAULT;
         this.active = true;
-        name = new Integer(id).toString();
-        id++;
+        this.name = new Integer(name).toString();
     }
 
     public Player(JSONObject p){
@@ -40,6 +37,7 @@ public class Player {
             this.funds = p.getInt("funds");
             this.currentBet = p.getInt("current_bet");
             this.currentState = State.values()[p.getInt("status")];
+            this.name = new Integer(p.getInt("name")).toString();
             this.holeCards = new ArrayList<Card>();
             JSONArray aux = p.getJSONArray("hole_cards");
             for(int i=0;i<aux.length();i++)
@@ -71,6 +69,7 @@ public class Player {
             for(Card c : this.holeCards)
                 cards.put(c.getJSON());
             res.put("hole_cards", cards);
+            res.put("name", this.name);
             return res;
         } catch (JSONException e){
             throw new PokerException("Error parsing Player into JSON", e);

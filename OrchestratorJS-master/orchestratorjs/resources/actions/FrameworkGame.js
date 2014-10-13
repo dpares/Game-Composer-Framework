@@ -22,9 +22,18 @@ function countActivePlayers(players){
     return res;
 }
 
-function showResults(players,gameController){
+function showResults(players,gameController,misc){
     showCurrentState(players,gameController.commonData);
-    console.log(gameController.declareWinners(players));
+    var winners = gameController.declareWinners(players);
+    var json = {data: winners};
+    for(i in players){
+        var playerState = players[i].device.frameworkCapability.showResults(
+            json,playersStatesArray(players),gameController.commonData);
+        players[i].state = playerState;
+        if(!gameController.isActive(players[i].state))
+            players[i].active = false;
+    }
+    showCurrentState(players,gameController.commonData);
 }
 
 module.exports = {
@@ -60,6 +69,7 @@ module.exports = {
             var player = new Player();
             player.device = devices[i];
             player.number = parseInt(i);
+            config.initData.name = i; // Will be changed once profiles are implemented
             player.device.frameworkCapability.initGame(config.initData);
             player.state = player.device.frameworkCapability.getPlayerState();
             while(player.state.null){
@@ -73,13 +83,13 @@ module.exports = {
 
         /// MAIN LOOP
         while(countActivePlayers(players) > 1){
-            var currentPlayer = 0;
+            var currentPlayer = gameController.nextPlayer(-1,players);
             for(var currentPhase = 0; currentPhase < config.phases; currentPhase++){
                 gameController.phaseSetUp(currentPhase,players);
                 showCurrentState(players,gameController.commonData);
                 do{
                     var numPlayers = gameController.countAvailablePlayers(players);
-                    if(numPlayers > 1){
+                    if(numPlayers == 1 && !gameController.phaseEnd(currentPhase,players) || numPlayers > 1){
                         for(var i = 0; i < numPlayers; i++){
                             var player = players[currentPlayer];
                             for( var currentStep = 0; currentStep < config.steps[currentPhase]; currentStep++){
@@ -99,7 +109,15 @@ module.exports = {
                 }while (!gameController.phaseEnd(currentPhase,players));
             }
             gameController.computeResults(players);
-            showResults(players,gameController);
+            showResults(players,gameController,misc);
+            misc.sleep(4);
+            console.log(players);
+            if(countActivePlayers(players) > 1){
+                for(i in players)
+                    players[i].state = players[i].device.frameworkCapability.newRound();
+                gameController.newRound(players);
+            }
+            // Insert proper closure
         }
     },
 

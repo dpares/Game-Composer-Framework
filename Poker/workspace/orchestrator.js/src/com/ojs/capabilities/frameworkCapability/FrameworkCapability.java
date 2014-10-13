@@ -2,6 +2,7 @@ package com.ojs.capabilities.frameworkCapability;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 
 import org.json.JSONException;
 import org.json.JSONArray;
@@ -75,7 +76,6 @@ public class FrameworkCapability {
             try{
                 res.put("common_data",PokerActivity.getInstance().getCommonDataJSON());
                 res.put("player_data",PokerActivity.getInstance().getPlayer().getJSON());
-                playerDataAvailable = false;
                 return res;
             } catch(JSONException e){
                 throw new PokerException("Error sending turn result",e);
@@ -83,8 +83,14 @@ public class FrameworkCapability {
         }
     }
 
-    public void showResults(int[] winners, JSONArray players, JSONObject commonData){
-        PokerActivity.getInstance().showResults(winners,players,commonData);
+    public JSONObject showResults(JSONObject winners, JSONArray players, JSONObject commonData){
+        PokerActivity.getInstance().showResults(winners, players, commonData);
+        return PokerActivity.getInstance().getPlayer().getJSON();
+    }
+
+    public JSONObject newRound(){
+        PokerActivity.getInstance().newRound();
+        return this.getPlayerState();
     }
 
     public static void endOfTurn(){

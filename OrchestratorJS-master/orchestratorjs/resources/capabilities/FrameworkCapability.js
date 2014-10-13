@@ -6,4 +6,5 @@ module.exports = {
   startStep: function (currentPhase, currentStep) {},
   getStepResult: function (currentPhase, currentStep) {},
   showResults: function (winners, players, commonData) {},
+  newRound: function() {},
 };

@@ -15,7 +15,7 @@ import pfc.pokergame.Player;
  */
 public class BestHandTest {
 
-    private Player p = new Player(1000);
+    private Player p = new Player(1000,0);
 
     @Test
     public void testHighCard(){

@@ -13,20 +13,28 @@ var playerStatus = {
 function compareBestHands(a,b) {
     var res = a.type - b.type; //comparing types
     var i = 0;
-    while (res == 0 && i < this.highValues.length) {
+    while (res == 0 && i < a.highValues.length) {
         res = a.highValues[i] - b.highValues[i];
         i++;
     }
     return res;
 }
 
-function Game(players){
+Game.prototype.newRound = function(players){
     this.deck = new Deck();
     this.commonData = {community_cards: [], biggest_bet: 200, current_pot: 0};
     this.bestHands = [];
-   
-    players[0].state.status = playerStatus.DEALER;
-    players[0].device.frameworkCapability.setPlayerState(players[0].state);
+    this.dealer = this.nextPlayer(this.dealer,players);
+    players[this.dealer].state.status = playerStatus.DEALER;
+    players[this.dealer].device.frameworkCapability.setPlayerState(players[this.dealer].state);
+}
+
+function Game(players){
+    this.dealer = -1;
+    for(i in players)
+        players[i].state.name = i;
+
+    this.newRound(players);
 
 }
 
@@ -56,12 +64,12 @@ Game.prototype.nextPlayer = function(index,players){
 
 Game.prototype.phaseSetUp = function(currentPhase,players){
     if(currentPhase == 0){
-        var smallBlindPlayer = -1, bigBlindPlayer;
+        var smallBlindPlayer = -1, bigBlindPlayer;   
         if(players.length > 2){
-            smallBlindPlayer = this.nextPlayer(0,players);
+            smallBlindPlayer = this.nextPlayer(this.dealer,players);
             bigBlindPlayer = this.nextPlayer(smallBlindPlayer,players);
         } else{
-            bigBlindPlayer = this.nextPlayer(0,players);
+            bigBlindPlayer = this.nextPlayer(this.dealer,players);
         }
         for(i in players){
             var player = players[i].state;
@@ -98,6 +106,7 @@ Game.prototype.phaseEnd = function(currentPhase,players){
 
 Game.prototype.updateCommonData = function(commonData){
     this.commonData.biggest_bet = commonData.biggest_bet;
+    this.commonData.current_pot = commonData.current_pot;
 }
 
 Game.prototype.computeResults = function(players){
@@ -109,21 +118,27 @@ Game.prototype.computeResults = function(players){
             this.bestHands.push(hand);
         }
     }
-    console.log(this.bestHands);
 }
 
 Game.prototype.declareWinners = function(players){
     var res = [];
-    this.bestHands.sort(compareBestHands);
-    this.BestHands.reverse();
-    var i = 0;
-    res.push(this.bestHands[i].owner);
-    while(i+1 < this.bestHands.length && compareBestHands(this.bestHands[i],this.bestHands[i+1]==0)){
-        i++;
-        res.push(this,bestHands[i].owner);
+    if(this.bestHands.length > 0){
+        this.bestHands.sort(compareBestHands);
+        this.bestHands.reverse();
+        var i = 0;
+        res.push(this.bestHands[i].owner);
+        while(i+1 < this.bestHands.length && compareBestHands(this.bestHands[i],this.bestHands[i+1])==0){
+            i++;
+            res.push(this.bestHands[i].owner);
+        }
     }
 
     return res;
+}
+
+Game.prototype.isActive = function(player){
+    console.log("EEE: "+ JSON.stringify(player) + player.funds > 0);
+    return player.funds > 0;
 }
 
 module.exports = Game;

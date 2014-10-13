@@ -41,7 +41,7 @@ function compareCards(a,b){
 function compareBestHands(a,b) {
     var res = a.type - b.type; //comparing types
     var i = 0;
-    while (res == 0 && i < a.highValues.lenght) { // Every BestHand's highValues has the same length.
+    while (res == 0 && i < a.highValues.length) { // Every BestHand's highValues has the same length.
         res = a.highValues[i] - b.highValues[i];
         i++;
     }

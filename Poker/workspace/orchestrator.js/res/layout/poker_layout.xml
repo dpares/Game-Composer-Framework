@@ -10,10 +10,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:id="@+id/dealerLabel"
+        android:id="@+id/winnersLabel"
         android:layout_gravity="center"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_marginTop="170dp"
+        android:layout_centerHorizontal="true"
+        android:typeface="monospace"
+        android:text="Player 1 wins"
+        android:textColor="#fffffc42"
+        android:textStyle="bold"
+        android:textSize="30dp"
+        android:visibility="invisible" />
 
     <LinearLayout
         android:orientation="horizontal"
@@ -234,7 +240,7 @@
         android:id="@+id/player2Layout"
         android:background="#ff40ff5c"
         android:layout_centerHorizontal="true"
-        android:visibility="visible"
+        android:visibility="invisible"
         android:padding="5dp">
 
         <ImageView
