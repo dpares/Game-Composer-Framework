@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -30,7 +31,7 @@ public class PokerActivity extends Activity {
     public static PokerActivity instance;
 
     private TextView winnersLabel;
-    private List<TextView> communityCardImages;
+    private List<ImageView> communityCardImages;
     private List<LinearLayout> playerLayouts;
     private LinearLayout holeCardsLayout;
     private TextView betLabel;
@@ -59,12 +60,12 @@ public class PokerActivity extends Activity {
         setContentView(R.layout.poker_layout);
 
         winnersLabel = (TextView) findViewById(R.id.winnersLabel);
-        communityCardImages = new ArrayList<TextView>();
-        communityCardImages.add((TextView) findViewById(R.id.communityCard1));
-        communityCardImages.add((TextView) findViewById(R.id.communityCard2));
-        communityCardImages.add((TextView) findViewById(R.id.communityCard3));
-        communityCardImages.add((TextView) findViewById(R.id.communityCard4));
-        communityCardImages.add((TextView) findViewById(R.id.communityCard5));
+        communityCardImages = new ArrayList<ImageView>();
+        communityCardImages.add((ImageView) findViewById(R.id.communityCard1));
+        communityCardImages.add((ImageView) findViewById(R.id.communityCard2));
+        communityCardImages.add((ImageView) findViewById(R.id.communityCard3));
+        communityCardImages.add((ImageView) findViewById(R.id.communityCard4));
+        communityCardImages.add((ImageView) findViewById(R.id.communityCard5));
         playerLayouts = new ArrayList<LinearLayout>();
         playerLayouts.add((LinearLayout) findViewById(R.id.player1Layout));
         playerLayouts.add((LinearLayout) findViewById(R.id.player2Layout));
@@ -118,7 +119,7 @@ public class PokerActivity extends Activity {
             while (i < communityCards.size()) {
                 if (communityCardImages.get(i).getVisibility() == View.INVISIBLE) {
                     communityCardImages.get(i).setVisibility(View.VISIBLE);
-                    communityCardImages.get(i).setText(communityCards.get(i).toString());
+                    communityCardImages.get(i).setImageDrawable(communityCards.get(i).getDrawable());
                 }
                 i++;
 
@@ -152,8 +153,8 @@ public class PokerActivity extends Activity {
             if (this.player.getHoleCards().size() > 0) {
                 holeCardsLayout.setVisibility(View.VISIBLE);
                 for (int k = 0; k < this.player.getHoleCards().size(); k++)
-                    ((TextView) ((ViewGroup) holeCardsLayout).getChildAt(k)).
-                            setText(this.player.getHoleCards().get(k).toString());
+                    ((ImageView) ((ViewGroup) holeCardsLayout).getChildAt(k)).
+                            setImageDrawable(this.player.getHoleCards().get(k).getDrawable());
             }
         } catch (JSONException e) {
             throw new PokerException("Error updating PokerActivity", e);
@@ -248,8 +249,8 @@ public class PokerActivity extends Activity {
     public void newRound(){
         this.player.newHand();
         winnersLabel.setVisibility(View.INVISIBLE);
-        for(TextView tv : communityCardImages)
-            tv.setVisibility(View.INVISIBLE);
+        for(ImageView iv : communityCardImages)
+            iv.setVisibility(View.INVISIBLE);
         for(LinearLayout ll : playerLayouts) {
             ll.setVisibility(View.INVISIBLE);
             ll.getChildAt(2).setVisibility(View.GONE);

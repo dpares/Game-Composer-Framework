@@ -24,8 +24,11 @@ public class FrameworkCapability {
     public void initCapability( Context applicationContext ) {
         FrameworkCapability.ctx = applicationContext;
     }
-    /*************************************************************************/
 
+    public static Context getContext(){
+        return FrameworkCapability.ctx;
+    }
+    /*************************************************************************/
     private static boolean playerDataAvailable;
 
     private static JSONObject nullJSON(){

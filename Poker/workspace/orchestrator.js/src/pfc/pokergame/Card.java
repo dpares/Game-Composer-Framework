@@ -1,5 +1,10 @@
 package pfc.pokergame;
 
+import android.content.Context;
+import android.graphics.drawable.Drawable;
+
+import com.ojs.capabilities.frameworkCapability.FrameworkCapability;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -14,7 +19,7 @@ public class Card implements Comparable<Card>{
     public static final int HIGHEST_VALUE = 14;
 
     private int rank, suit;
-    private static String[] suits = {"♥", "♦", "♠", "♣"};
+    private static String[] suits = {"h", "d", "s", "c"}; //{"♥", "♦", "♠", "♣"}
     private static String[] ranks = {"A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"};
 
     public Card(int suit, int rank) {
@@ -51,6 +56,15 @@ public class Card implements Comparable<Card>{
         } catch(JSONException e){
             throw new PokerException("Error parsing Card into JSON", e);
         }
+    }
+
+    public Drawable getDrawable(){
+        Context ctx = FrameworkCapability.getContext();
+        String drawableName = suits[this.suit] +
+                (this.getRank() < 10 ? "0"+this.getRank():this.getRank());
+        int resourceId = ctx.getResources().
+                getIdentifier(drawableName ,"drawable",ctx.getPackageName());
+        return ctx.getResources().getDrawable(resourceId);
     }
 
     public String toString() {
