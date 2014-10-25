@@ -1,6 +1,7 @@
 package pfc.engine;
 
 import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import bmge.framework.Image;
 import pfc.pokergame.BestHand;
 import pfc.pokergame.Card;
 import pfc.pokergame.Player;
@@ -29,12 +31,13 @@ import pfc.pokergame.Player;
 public class PokerActivity extends Activity {
 
     public static PokerActivity instance;
+    private static final int MAX_PLAYERS = 2; // Should be 4
 
     private TextView winnersLabel;
     private List<ImageView> communityCardImages;
-    private List<LinearLayout> playerLayouts;
-    private LinearLayout holeCardsLayout;
+    private List<List<View>> playerLayouts;
     private TextView betLabel;
+    private TextView potLabel;
     private LinearLayout buttonLayout;
 
     private Player player;
@@ -42,6 +45,7 @@ public class PokerActivity extends Activity {
     private int biggestBet;
     private int currentBet;
     private int numPlayers;
+    private int playerIndex;
     private int currentPot;
 
     public static PokerActivity getInstance() {
@@ -66,12 +70,27 @@ public class PokerActivity extends Activity {
         communityCardImages.add((ImageView) findViewById(R.id.communityCard3));
         communityCardImages.add((ImageView) findViewById(R.id.communityCard4));
         communityCardImages.add((ImageView) findViewById(R.id.communityCard5));
-        playerLayouts = new ArrayList<LinearLayout>();
-        playerLayouts.add((LinearLayout) findViewById(R.id.player1Layout));
-        playerLayouts.add((LinearLayout) findViewById(R.id.player2Layout));
-        holeCardsLayout = (LinearLayout) findViewById(R.id.holeCardsLayout);
+        playerLayouts = new ArrayList<List<View>>();
+        Context ctx = FrameworkCapability.getContext();
+        for(int i=1;i<=MAX_PLAYERS;i++){
+           List<View> playerElements = new ArrayList<View>();
+           playerElements.add(findViewById(ctx.getResources().
+                   getIdentifier("player" + i + "Layout", "id", ctx.getPackageName())));
+           playerElements.add(findViewById(ctx.getResources().
+                   getIdentifier("player" + i + "_name", "id", ctx.getPackageName())));
+           playerElements.add(findViewById(ctx.getResources().
+                   getIdentifier("player" + i + "_avatar", "id", ctx.getPackageName())));
+           playerElements.add(findViewById(ctx.getResources().
+                   getIdentifier("player" + i + "_funds", "id", ctx.getPackageName())));
+           playerElements.add(findViewById(ctx.getResources().
+                   getIdentifier("player" + i + "_holeCardsLayout", "id", ctx.getPackageName())));
+           playerElements.add(findViewById(ctx.getResources().
+                   getIdentifier("player" + i + "_handType", "id", ctx.getPackageName())));
+            playerLayouts.add(playerElements);
+        }
         buttonLayout = (LinearLayout) findViewById(R.id.buttonLayout);
         betLabel = (TextView) findViewById(R.id.currentBet);
+        potLabel = (TextView) findViewById(R.id.potLabel);
 
         instance = this;
         this.currentBet = 100;
@@ -111,6 +130,9 @@ public class PokerActivity extends Activity {
             this.biggestBet = commonData.getInt("biggest_bet");
             this.currentPot = commonData.getInt("current_pot");
 
+            /* Updating the pot */
+            this.potLabel.setText(new Integer(this.currentPot).toString());
+
             /* Community cards treatment */
             JSONArray cards = commonData.getJSONArray("community_cards");
             for (int i = 0; i < cards.length(); i++)
@@ -126,36 +148,39 @@ public class PokerActivity extends Activity {
             }
 
             /* Player treatment */
-            if (this.numPlayers == -1)
-                this.numPlayers = players.length();
             for (int j = 0; j < players.length(); j++) {
                 Player p = new Player(players.getJSONObject(j));
-                LinearLayout layout = playerLayouts.get(j);
-                layout.setVisibility(View.VISIBLE);
-                View v = layout.getChildAt(1);
-                ((TextView) ((ViewGroup) v).getChildAt(0)).setText("Funds: " + p.getFunds());
-                ((TextView) ((ViewGroup) v).getChildAt(1)).setText("Current Bet: " + p.getBet());
-                ((TextView) ((ViewGroup) v).getChildAt(2)).setText("Status: " + p.getState().toString());
-
+                if(this.numPlayers == -1 && p.getName().equals(this.player.getName()))
+                    this.playerIndex = j; // Locate current player in JSON
+                // Change name and avatar once profiles are implemented
+                if(p.getState() == Player.State.FOLDED) {
+                    LinearLayout layout = (LinearLayout)playerLayouts.get(j).get(0);
+                    layout.setAlpha(0.5f);
+                } else {
+                    TextView funds = (TextView)playerLayouts.get(j).get(3);
+                    funds.setText(new Integer(p.getFunds()).toString());
+                }
                 if (players.getJSONObject(j).has("best_hand")) {
                     JSONObject bestHand = players.getJSONObject(j).getJSONObject("best_hand");
-                    v = layout.getChildAt(2);
-                    v.setVisibility(View.VISIBLE);
-                    ((TextView) ((ViewGroup) v).getChildAt(0)).setText(
+                    View v = playerLayouts.get(j).get(4);
+                    ((TextView) playerLayouts.get(j).get(5)).setText(
                             BestHand.Type.values()[bestHand.getInt("type")].toString());
-                    v = ((ViewGroup) v).getChildAt(1);
                     JSONArray holeCards = players.getJSONObject(j).getJSONArray("hole_cards");
                     for (int k = 0; k < holeCards.length(); k++)
-                        ((TextView) ((ViewGroup) v).getChildAt(k)).setText(
-                                new Card(holeCards.getJSONObject(k)).toString());
+                        ((ImageView) ((ViewGroup) v).getChildAt(k)).setImageDrawable(
+                                new Card(holeCards.getJSONObject(k)).getDrawable());
+                    ((View)v.getParent()).setVisibility(View.VISIBLE);
+                } else if(this.playerIndex == j && this.player.getHoleCards().size() > 0){
+                    View holeCardsLayout = playerLayouts.get(j).get(4);
+                    holeCardsLayout.setVisibility(View.VISIBLE);
+                    for (int k = 0; k < this.player.getHoleCards().size(); k++)
+                        ((ImageView) ((LinearLayout)holeCardsLayout).getChildAt(k)).
+                                setImageDrawable(this.player.getHoleCards().get(k).getDrawable());
+
                 }
             }
-            if (this.player.getHoleCards().size() > 0) {
-                holeCardsLayout.setVisibility(View.VISIBLE);
-                for (int k = 0; k < this.player.getHoleCards().size(); k++)
-                    ((ImageView) ((ViewGroup) holeCardsLayout).getChildAt(k)).
-                            setImageDrawable(this.player.getHoleCards().get(k).getDrawable());
-            }
+            if (this.numPlayers == -1)
+                this.numPlayers = players.length();
         } catch (JSONException e) {
             throw new PokerException("Error updating PokerActivity", e);
         }
@@ -251,11 +276,10 @@ public class PokerActivity extends Activity {
         winnersLabel.setVisibility(View.INVISIBLE);
         for(ImageView iv : communityCardImages)
             iv.setVisibility(View.INVISIBLE);
-        for(LinearLayout ll : playerLayouts) {
-            ll.setVisibility(View.INVISIBLE);
-            ll.getChildAt(2).setVisibility(View.GONE);
+        for(List<View> pl : playerLayouts) {
+            pl.get(0).setAlpha(1);
+            ((View) pl.get(4).getParent()).setVisibility(View.INVISIBLE);
         }
-        holeCardsLayout.setVisibility(View.INVISIBLE);
     }
 
 }
