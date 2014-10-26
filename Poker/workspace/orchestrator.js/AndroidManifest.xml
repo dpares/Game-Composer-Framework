@@ -101,7 +101,14 @@
             android:label="PokerActivity"
             android:screenOrientation="landscape" >
         </activity>
-        
+
+        <activity
+            android:name="com.ojs.capabilities.frameworkCapability.settings.FrameworkSettingsActivity"
+            android:configChanges="orientation"
+            android:label="Settings"
+            android:screenOrientation="portrait">
+        </activity>
+
         <!-- DEVELOPER DEFINED ACTIVITIES - END -->
         
 

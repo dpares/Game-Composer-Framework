@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory
+        android:title="User profile"
+        android:key="pref_framework_profile">
+        <EditTextPreference
+            android:key="pref_player_name"
+            android:title="Username"
+            android:summary="12 characters max"
+            android:defaultValue="12"
+            android:maxLength="12">
+        </EditTextPreference>
+        <com.ojs.capabilities.frameworkCapability.settings.AvatarDialogPreference
+            android:key="pref_player_avatar"
+            android:defaultValue="avatar20"
+            android:title="Avatar"
+            android:summary="Choose an avatar">
+        </com.ojs.capabilities.frameworkCapability.settings.AvatarDialogPreference>
+    </PreferenceCategory>
+</PreferenceScreen>

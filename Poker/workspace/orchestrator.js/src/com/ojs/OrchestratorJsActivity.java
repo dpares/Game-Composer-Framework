@@ -17,10 +17,10 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 
 import org.json.JSONObject;
 
+import com.ojs.capabilities.frameworkCapability.settings.FrameworkSettingsActivity;
 import com.ojs.helpers.SettingHelpers;
 import com.ojs.libraries.SocketIOClient;
 import com.ojs.settings.GeneralSettingsActivity;
@@ -84,6 +84,7 @@ public class OrchestratorJsActivity extends Activity {
 	//private CheckBox useSocialAsHostCH;
 	private Button connectBtn;
 	private Button disconnectBtn;
+    private Button testBtn;
 
 
 
@@ -222,6 +223,15 @@ public class OrchestratorJsActivity extends Activity {
 				}
 			}
 		});
+
+        testBtn = (Button) findViewById(R.id.testBtn);
+        testBtn.setOnClickListener(new OnClickListener(){
+            public void onClick(View v){
+                Intent i = new Intent(getBaseContext(), FrameworkSettingsActivity.class);
+                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(i);
+            }
+        });
 		
 
 		// color for buttons :-)
