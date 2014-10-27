@@ -2,7 +2,9 @@ package pfc.engine;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -13,6 +15,7 @@ import android.widget.TextView;
 
 import com.ojs.R;
 import com.ojs.capabilities.frameworkCapability.FrameworkCapability;
+import com.ojs.helpers.SettingHelpers;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -99,9 +102,11 @@ public class PokerActivity extends Activity {
         this.numPlayers = -1;
         try {
             JSONObject initData = new JSONObject(this.getIntent().getStringExtra("init_data"));
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(ctx);
             int initialFunds = initData.getInt("initial_funds");
-            int name = initData.getInt("name");
-            this.player = new Player(initialFunds, name);
+            String name = prefs.getString("pref_player_name","Player");
+            String avatar = SettingHelpers.getStringValue("pref_player_avatar", ctx);
+            this.player = new Player(initialFunds, name, avatar);
         } catch (JSONException e) {
             throw new PokerException("Error parsing initial data", e);
         }
@@ -150,6 +155,8 @@ public class PokerActivity extends Activity {
             /* Player treatment */
             for (int j = 0; j < players.length(); j++) {
                 Player p = new Player(players.getJSONObject(j));
+                ((TextView) playerLayouts.get(j).get(1)).setText(p.getName());
+                ((ImageView) playerLayouts.get(j).get(2)).setImageDrawable(p.getAvatarDrawable());
                 if(this.numPlayers == -1 && p.getName().equals(this.player.getName()))
                     this.playerIndex = j; // Locate current player in JSON
                 // Change name and avatar once profiles are implemented
@@ -169,13 +176,14 @@ public class PokerActivity extends Activity {
                     for (int k = 0; k < holeCards.length(); k++)
                         ((ImageView) ((ViewGroup) v).getChildAt(k)).setImageDrawable(
                                 new Card(holeCards.getJSONObject(k)).getDrawable());
-                    ((View)v.getParent()).setVisibility(View.VISIBLE);
+                    playerLayouts.get(j).get(5).setVisibility(View.VISIBLE);
+                    v.setVisibility(View.VISIBLE);
                 } else if(this.playerIndex == j && this.player.getHoleCards().size() > 0){
                     View holeCardsLayout = playerLayouts.get(j).get(4);
-                    holeCardsLayout.setVisibility(View.VISIBLE);
                     for (int k = 0; k < this.player.getHoleCards().size(); k++)
                         ((ImageView) ((LinearLayout)holeCardsLayout).getChildAt(k)).
                                 setImageDrawable(this.player.getHoleCards().get(k).getDrawable());
+                    holeCardsLayout.setVisibility(View.VISIBLE);
 
                 }
             }
@@ -278,7 +286,8 @@ public class PokerActivity extends Activity {
             iv.setVisibility(View.INVISIBLE);
         for(List<View> pl : playerLayouts) {
             pl.get(0).setAlpha(1);
-            ((View) pl.get(4).getParent()).setVisibility(View.INVISIBLE);
+            pl.get(4).setVisibility(View.INVISIBLE);
+            pl.get(5).setVisibility(View.INVISIBLE);
         }
     }
 

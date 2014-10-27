@@ -69,7 +69,6 @@ module.exports = {
             var player = new Player();
             player.device = devices[i];
             player.number = parseInt(i);
-            config.initData.name = i; // Will be changed once profiles are implemented
             player.device.frameworkCapability.initGame(config.initData);
             player.state = player.device.frameworkCapability.getPlayerState();
             while(player.state.null){

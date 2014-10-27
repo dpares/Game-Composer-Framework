@@ -343,7 +343,6 @@
             android:orientation="vertical"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="invisible"
             android:id="@+id/player1_bestHandLayout"
             android:layout_gravity="center_horizontal">
 
@@ -353,7 +352,7 @@
                 android:layout_height="0dp"
                 android:layout_alignParentRight="false"
                 android:layout_alignParentBottom="true"
-                android:visibility="visible"
+                android:visibility="invisible"
                 android:focusableInTouchMode="false"
                 android:id="@+id/player1_holeCardsLayout"
                 android:layout_alignParentLeft="true"
@@ -390,7 +389,7 @@
                 android:textStyle="bold"
                 android:textSize="20dp"
                 android:layout_weight="0.33"
-                android:visibility="visible" />
+                android:visibility="invisible" />
 
         </LinearLayout>
     </LinearLayout>
@@ -470,7 +469,6 @@
             android:orientation="vertical"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="invisible"
             android:id="@+id/player2_bestHandLayout"
             android:layout_gravity="center_horizontal" >
 
@@ -480,7 +478,7 @@
                 android:layout_height="0dp"
                 android:layout_alignParentRight="false"
                 android:layout_alignParentBottom="true"
-                android:visibility="visible"
+                android:visibility="invisible"
                 android:focusableInTouchMode="false"
                 android:id="@+id/player2_holeCardsLayout"
                 android:layout_alignParentLeft="true"
@@ -516,7 +514,7 @@
                 android:textStyle="bold"
                 android:textSize="20dp"
                 android:layout_weight="0.33"
-                android:visibility="visible" />
+                android:visibility="invisible" />
         </LinearLayout>
     </LinearLayout>
 

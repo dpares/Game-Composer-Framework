@@ -7,9 +7,9 @@
         <EditTextPreference
             android:key="pref_player_name"
             android:title="Username"
-            android:summary="12 characters max"
-            android:defaultValue="12"
-            android:maxLength="12">
+            android:summary="8 characters max"
+            android:defaultValue="Player"
+            android:maxLength="8">
         </EditTextPreference>
         <com.ojs.capabilities.frameworkCapability.settings.AvatarDialogPreference
             android:key="pref_player_avatar"

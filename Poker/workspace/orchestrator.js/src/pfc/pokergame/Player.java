@@ -1,5 +1,10 @@
 package pfc.pokergame;
 
+import android.content.Context;
+import android.graphics.drawable.Drawable;
+
+import com.ojs.capabilities.frameworkCapability.FrameworkCapability;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -19,17 +24,19 @@ public class Player {
     private int funds;
     private int currentBet;
     private String name;
+    private String avatar;
     private ArrayList<Card> holeCards;
     private boolean active;
     private State currentState;
 
-    public Player(int initialFunds, int name) {
+    public Player(int initialFunds, String name, String avatar) {
         this.funds = initialFunds;
         this.currentBet = 0;
         this.holeCards = new ArrayList<Card>();
         this.currentState = State.DEFAULT;
         this.active = true;
-        this.name = new Integer(name).toString();
+        this.name = name;
+        this.avatar = avatar;
     }
 
     public Player(JSONObject p){
@@ -37,7 +44,8 @@ public class Player {
             this.funds = p.getInt("funds");
             this.currentBet = p.getInt("current_bet");
             this.currentState = State.values()[p.getInt("status")];
-            this.name = new Integer(p.getInt("name")).toString();
+            this.name = p.getString("name");
+            this.avatar = p.getString("avatar");
             this.holeCards = new ArrayList<Card>();
             JSONArray aux = p.getJSONArray("hole_cards");
             for(int i=0;i<aux.length();i++)
@@ -70,6 +78,7 @@ public class Player {
                 cards.put(c.getJSON());
             res.put("hole_cards", cards);
             res.put("name", this.name);
+            res.put("avatar", this.avatar);
             return res;
         } catch (JSONException e){
             throw new PokerException("Error parsing Player into JSON", e);
@@ -166,6 +175,13 @@ public class Player {
 
     public String getName() {
         return this.name;
+    }
+
+    public Drawable getAvatarDrawable(){
+        Context ctx = FrameworkCapability.getContext();
+        int resourceId = ctx.getResources().
+                getIdentifier(this.avatar ,"drawable",ctx.getPackageName());
+        return ctx.getResources().getDrawable(resourceId);
     }
 
     public ArrayList<Card> getHoleCards() {

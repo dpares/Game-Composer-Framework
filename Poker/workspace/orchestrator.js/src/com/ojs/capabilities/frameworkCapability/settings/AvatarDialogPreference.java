@@ -15,6 +15,7 @@ import android.widget.GridView;
 import android.widget.ImageView;
 
 import com.ojs.R;
+import com.ojs.helpers.SettingHelpers;
 
 /**
  * Created by fare on 26/10/14.
@@ -64,7 +65,6 @@ public class AvatarDialogPreference extends DialogPreference {
 
     public AvatarDialogPreference(Context context, AttributeSet attrs){
         super(context,attrs);
-        setPersistent(false);
         ctx = context;
         setDialogLayoutResource(R.layout.framework_avatar_layout);
     }

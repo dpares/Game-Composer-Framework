@@ -31,8 +31,6 @@ Game.prototype.newRound = function(players){
 
 function Game(players){
     this.dealer = -1;
-    for(i in players)
-        players[i].state.name = i;
 
     this.newRound(players);
 
