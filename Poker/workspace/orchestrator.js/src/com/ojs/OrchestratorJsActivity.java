@@ -93,7 +93,7 @@ public class OrchestratorJsActivity extends Activity {
 	private String ipAdress = null;
 	private URI u = null;
 
-	public SocketIOClient client = null;
+	public static SocketIOClient client = null;
 
 
 	@Override
@@ -449,7 +449,7 @@ public class OrchestratorJsActivity extends Activity {
 		}
 	}
 	
-	private void sendException(String reason) {
+	public void sendException(String reason) {
 		try {
 			p("sending exception to orchestrator");
 			JSONArray responseArguments = new JSONArray();
@@ -462,6 +462,19 @@ public class OrchestratorJsActivity extends Activity {
 			ee.printStackTrace();
 		}
 	}
+
+    public void sendEvent(String value){
+        try {
+            p("sending event to orchestrator");
+            JSONArray responseArguments = new JSONArray();
+            responseArguments.put(currentActionId);
+            responseArguments.put(deviceId);
+            responseArguments.put(value);
+            client.emit("ojs_event", responseArguments);
+        } catch(Exception ee) {
+            ee.printStackTrace();
+        }
+    }
 
 	@SuppressLint("NewApi") 
 	private Class<?>[] addElement(Class<?>[] org, Class<?> added) {

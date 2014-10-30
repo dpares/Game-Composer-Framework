@@ -1,3 +1,18 @@
+var p = console.log;
+var misc = require('./misc.js'); 
+var config = require('./FrameworkConfig.js');
+
+var Game = config.gameController;
+
+var players = [];
+var gameController;
+
+function Player() { 
+    this.device = null;
+    this.state  = null;
+    this.active = true;
+};
+
 function showCurrentState(players,commonData){
     var playersState = playersStatesArray(players)
     for(i in players){
@@ -40,30 +55,31 @@ module.exports = {
 
     exceptionHandler: function(action, device, exception_value) {
         console.log('error on client-side: '+ device.identity+', '+exception_value);
-        action.finishAction();
+        /*if(gameController == undefined)
+            action.finishAction();
+        else{
+            console.log("HUEHUEHUE");
+            players = gameController.exceptionHandler(players, device, exception_value);
+            showCurrentState(players, device, gameController.commonData);
+        }*/
+    },
+
+    serverSideExceptionHandler : function(exception_value){
+        console.log('error on server-side: '+ device.identity+', '+exception_value);
+        // Cerrar el juego
     },
 
     eventHandler: function(action, device, event_value) {
         console.log('event from client: '+device.identity+', '+event_value);
+        players = gameController.exceptionHandler(players, device, event_value);
+        showCurrentState(players, gameController.commonData);
     },
     
     
     // the body
     body: function (devices) {
-        var p = console.log;
-        var misc = require('./misc.js'); 
-      	var config = require('./FrameworkConfig.js');
-
-        var Game = config.gameController;
-
-        function Player() { 
-            this.device = null;
-            this.state  = null;
-            this.active = true;
-        };
       
         /// GAME INITIALIZATION	
-        var players = [];
         for(i in devices) {
             p(devices[i].identity);
             var player = new Player();
@@ -77,7 +93,7 @@ module.exports = {
             }
             players.push(player);
         }
-        var gameController = new Game(players);
+        gameController = new Game(players);
         showCurrentState(players,gameController.commonData);
 
         /// MAIN LOOP

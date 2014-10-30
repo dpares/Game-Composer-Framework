@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
+import com.ojs.OrchestratorJsActivity;
+
 import org.json.JSONException;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -98,5 +100,9 @@ public class FrameworkCapability {
 
     public static void endOfTurn(){
         playerDataAvailable = true;
+    }
+
+    public static void leaveGame(){
+        OrchestratorJsActivity.singleton.sendEvent("disconnect");
     }
 }

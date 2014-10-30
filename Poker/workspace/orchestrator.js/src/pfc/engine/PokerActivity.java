@@ -1,7 +1,9 @@
 package pfc.engine;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -13,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.ojs.OrchestratorJsActivity;
 import com.ojs.R;
 import com.ojs.capabilities.frameworkCapability.FrameworkCapability;
 import com.ojs.helpers.SettingHelpers;
@@ -50,6 +53,8 @@ public class PokerActivity extends Activity {
     private int numPlayers;
     private int playerIndex;
     private int currentPot;
+
+    private boolean pausedActivity = false;
 
     public static PokerActivity getInstance() {
         return PokerActivity.instance;
@@ -288,6 +293,42 @@ public class PokerActivity extends Activity {
             pl.get(0).setAlpha(1);
             pl.get(4).setVisibility(View.INVISIBLE);
             pl.get(5).setVisibility(View.INVISIBLE);
+        }
+    }
+
+    private void closeActivity(){
+        super.onBackPressed();
+    }
+
+    public void onBackPressed() {
+        new AlertDialog.Builder(this).setIcon(android.R.drawable.ic_dialog_alert)
+            .setTitle("Leaving game").setMessage("Are you sure you want to leave the current game?")
+            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    FrameworkCapability.leaveGame();
+                    PokerActivity.getInstance().closeActivity();
+                }
+            }).setNegativeButton("No", null).show();
+    }
+
+    public void onPause(){
+        super.onPause();
+        FrameworkCapability.leaveGame();
+        this.pausedActivity = true;
+    }
+
+    public void onResume(){
+        super.onResume();
+        if(pausedActivity) {
+            new AlertDialog.Builder(this).setIcon(android.R.drawable.ic_dialog_alert)
+                    .setTitle("Alert").setMessage("You have lost connection to the server")
+                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            PokerActivity.getInstance().closeActivity();
+                        }
+                    }).show();
         }
     }
 

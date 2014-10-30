@@ -139,4 +139,27 @@ Game.prototype.isActive = function(player){
     return player.funds > 0;
 }
 
+function remove(array,index){
+    var res = [];
+    for(i in array)
+        if(i!=index)
+            res.push(array[i]);
+
+    return res;
+}
+
+Game.prototype.exceptionHandler = function(players, device, exception_value){
+    var playerFound = false;
+    var i = 0;
+    while(!playerFound && i<players.length){
+        if(players[i].device.identity == device.identity)
+            playerFound = true;
+        else
+            i++;
+    }
+    var errorPlayer = players[i].state;
+    this.commonData.current_pot += errorPlayer.funds;
+    return remove(players,i);
+}
+
 module.exports = Game;

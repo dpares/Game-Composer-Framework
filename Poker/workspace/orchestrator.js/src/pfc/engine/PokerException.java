@@ -5,7 +5,7 @@ package pfc.engine;
  */
 public class PokerException extends RuntimeException {
     public PokerException(){
-
+        super();
     }
 
     public PokerException(String msg, Throwable cause){
