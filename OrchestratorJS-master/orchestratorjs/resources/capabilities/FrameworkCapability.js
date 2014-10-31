@@ -7,4 +7,8 @@ module.exports = {
   getStepResult: function (currentPhase, currentStep) {},
   showResults: function (winners, players, commonData) {},
   newRound: function() {},
+  announceWinner: function (players, winner) {},
+  askForRematch: function() {},
+  exitGame: function() {},
+  resetGame: function() {},
 };

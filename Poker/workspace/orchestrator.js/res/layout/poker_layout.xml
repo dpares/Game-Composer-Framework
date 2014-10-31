@@ -275,7 +275,8 @@
         android:layout_alignParentBottom="false"
         android:id="@+id/player1Layout"
         android:layout_alignParentLeft="true"
-        android:layout_centerVertical="true">
+        android:layout_centerVertical="true"
+        android:visibility="invisible">
 
         <LinearLayout
             android:orientation="vertical"
@@ -402,7 +403,8 @@
         android:id="@+id/player2Layout"
         android:layout_alignParentLeft="false"
         android:layout_alignParentRight="true"
-        android:layout_centerVertical="true">
+        android:layout_centerVertical="true"
+        android:visibility="invisible">
 
         <LinearLayout
             android:orientation="vertical"

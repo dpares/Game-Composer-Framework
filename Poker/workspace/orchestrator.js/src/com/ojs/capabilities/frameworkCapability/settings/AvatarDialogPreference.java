@@ -63,14 +63,14 @@ public class AvatarDialogPreference extends DialogPreference {
 
     private static final String DEFAULT_VALUE = "avatar20";
 
-    public AvatarDialogPreference(Context context, AttributeSet attrs){
-        super(context,attrs);
+    public AvatarDialogPreference(Context context, AttributeSet attrs) {
+        super(context, attrs);
         ctx = context;
         setDialogLayoutResource(R.layout.framework_avatar_layout);
     }
 
-    private static void updateSelectedAvatar(){
-        int resourceId = ctx.getResources().getIdentifier(avatarName,"drawable",ctx.getPackageName());
+    private static void updateSelectedAvatar() {
+        int resourceId = ctx.getResources().getIdentifier(avatarName, "drawable", ctx.getPackageName());
         currentAvatar.setImageDrawable(ctx.getResources().getDrawable(resourceId));
     }
 
@@ -86,7 +86,7 @@ public class AvatarDialogPreference extends DialogPreference {
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                avatarName = "avatar"+(position+1);
+                avatarName = "avatar" + (position + 1);
                 updateSelectedAvatar();
             }
         });
@@ -114,7 +114,7 @@ public class AvatarDialogPreference extends DialogPreference {
 
     @Override
     protected void onDialogClosed(boolean positiveResult) {
-        if(positiveResult){
+        if (positiveResult) {
             persistString(avatarName);
         }
     }

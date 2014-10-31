@@ -32,4 +32,20 @@ module.exports = {
         var methodArguments = ['FrameworkCapability', 'newRound', []];
         return this.device.invoke(methodArguments);
     },
+    announceWinner: function(players,winner) {
+        var methodArguments = ['FrameworkCapability', 'announceWinner', [players,winner]];
+        return this.device.invoke(methodArguments);
+    },
+    askForRematch: function() {
+        var methodArguments = ['FrameworkCapability', 'askForRematch', []];
+        return this.device.invoke(methodArguments);
+    },
+    exitGame: function() {
+        var methodArguments = ['FrameworkCapability', 'exitGame', []];
+        return this.device.invoke(methodArguments);
+    },
+    resetGame: function() {
+        var methodArguments = ['FrameworkCapability', 'resetGame', []];
+        return this.device.invoke(methodArguments);
+    },
 };

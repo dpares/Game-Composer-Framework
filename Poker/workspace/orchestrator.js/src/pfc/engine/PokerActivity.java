@@ -14,6 +14,7 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ojs.OrchestratorJsActivity;
 import com.ojs.R;
@@ -23,6 +24,7 @@ import com.ojs.helpers.SettingHelpers;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -80,20 +82,20 @@ public class PokerActivity extends Activity {
         communityCardImages.add((ImageView) findViewById(R.id.communityCard5));
         playerLayouts = new ArrayList<List<View>>();
         Context ctx = FrameworkCapability.getContext();
-        for(int i=1;i<=MAX_PLAYERS;i++){
-           List<View> playerElements = new ArrayList<View>();
-           playerElements.add(findViewById(ctx.getResources().
-                   getIdentifier("player" + i + "Layout", "id", ctx.getPackageName())));
-           playerElements.add(findViewById(ctx.getResources().
-                   getIdentifier("player" + i + "_name", "id", ctx.getPackageName())));
-           playerElements.add(findViewById(ctx.getResources().
-                   getIdentifier("player" + i + "_avatar", "id", ctx.getPackageName())));
-           playerElements.add(findViewById(ctx.getResources().
-                   getIdentifier("player" + i + "_funds", "id", ctx.getPackageName())));
-           playerElements.add(findViewById(ctx.getResources().
-                   getIdentifier("player" + i + "_holeCardsLayout", "id", ctx.getPackageName())));
-           playerElements.add(findViewById(ctx.getResources().
-                   getIdentifier("player" + i + "_handType", "id", ctx.getPackageName())));
+        for (int i = 1; i <= MAX_PLAYERS; i++) {
+            List<View> playerElements = new ArrayList<View>();
+            playerElements.add(findViewById(ctx.getResources().
+                    getIdentifier("player" + i + "Layout", "id", ctx.getPackageName())));
+            playerElements.add(findViewById(ctx.getResources().
+                    getIdentifier("player" + i + "_name", "id", ctx.getPackageName())));
+            playerElements.add(findViewById(ctx.getResources().
+                    getIdentifier("player" + i + "_avatar", "id", ctx.getPackageName())));
+            playerElements.add(findViewById(ctx.getResources().
+                    getIdentifier("player" + i + "_funds", "id", ctx.getPackageName())));
+            playerElements.add(findViewById(ctx.getResources().
+                    getIdentifier("player" + i + "_holeCardsLayout", "id", ctx.getPackageName())));
+            playerElements.add(findViewById(ctx.getResources().
+                    getIdentifier("player" + i + "_handType", "id", ctx.getPackageName())));
             playerLayouts.add(playerElements);
         }
         buttonLayout = (LinearLayout) findViewById(R.id.buttonLayout);
@@ -109,7 +111,7 @@ public class PokerActivity extends Activity {
             JSONObject initData = new JSONObject(this.getIntent().getStringExtra("init_data"));
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(ctx);
             int initialFunds = initData.getInt("initial_funds");
-            String name = prefs.getString("pref_player_name","Player");
+            String name = prefs.getString("pref_player_name", "Player");
             String avatar = SettingHelpers.getStringValue("pref_player_avatar", ctx);
             this.player = new Player(initialFunds, name, avatar);
         } catch (JSONException e) {
@@ -158,18 +160,25 @@ public class PokerActivity extends Activity {
             }
 
             /* Player treatment */
+            if(this.numPlayers != -1 && this.numPlayers != players.length()){ // A player left the game
+                playerLayouts.get(this.numPlayers-1).get(0).setVisibility(View.INVISIBLE);
+                this.numPlayers = -1;
+                Toast.makeText(this,"A player has left the game",Toast.LENGTH_SHORT).show();
+            }
             for (int j = 0; j < players.length(); j++) {
                 Player p = new Player(players.getJSONObject(j));
+                if(numPlayers == -1)
+                    playerLayouts.get(j).get(0).setVisibility(View.VISIBLE);
                 ((TextView) playerLayouts.get(j).get(1)).setText(p.getName());
                 ((ImageView) playerLayouts.get(j).get(2)).setImageDrawable(p.getAvatarDrawable());
-                if(this.numPlayers == -1 && p.getName().equals(this.player.getName()))
+                if (this.numPlayers == -1 && p.getName().equals(this.player.getName()))
                     this.playerIndex = j; // Locate current player in JSON
                 // Change name and avatar once profiles are implemented
-                if(p.getState() == Player.State.FOLDED) {
-                    LinearLayout layout = (LinearLayout)playerLayouts.get(j).get(0);
+                if (p.getState() == Player.State.FOLDED) {
+                    LinearLayout layout = (LinearLayout) playerLayouts.get(j).get(0);
                     layout.setAlpha(0.5f);
                 } else {
-                    TextView funds = (TextView)playerLayouts.get(j).get(3);
+                    TextView funds = (TextView) playerLayouts.get(j).get(3);
                     funds.setText(new Integer(p.getFunds()).toString());
                 }
                 if (players.getJSONObject(j).has("best_hand")) {
@@ -183,10 +192,10 @@ public class PokerActivity extends Activity {
                                 new Card(holeCards.getJSONObject(k)).getDrawable());
                     playerLayouts.get(j).get(5).setVisibility(View.VISIBLE);
                     v.setVisibility(View.VISIBLE);
-                } else if(this.playerIndex == j && this.player.getHoleCards().size() > 0){
+                } else if (this.playerIndex == j && this.player.getHoleCards().size() > 0) {
                     View holeCardsLayout = playerLayouts.get(j).get(4);
                     for (int k = 0; k < this.player.getHoleCards().size(); k++)
-                        ((ImageView) ((LinearLayout)holeCardsLayout).getChildAt(k)).
+                        ((ImageView) ((LinearLayout) holeCardsLayout).getChildAt(k)).
                                 setImageDrawable(this.player.getHoleCards().get(k).getDrawable());
                     holeCardsLayout.setVisibility(View.VISIBLE);
 
@@ -238,8 +247,7 @@ public class PokerActivity extends Activity {
                     this.numPlayers == 2 && player.getState() == Player.State.DEALER) {
                 player.call(100);
                 this.currentPot += 100;
-            }
-            else if (player.getState() == Player.State.BIG_BLIND) {
+            } else if (player.getState() == Player.State.BIG_BLIND) {
                 player.call(200);
                 this.currentPot += 200;
             }
@@ -263,8 +271,8 @@ public class PokerActivity extends Activity {
             boolean isWinner = false;
             JSONArray winnerNames = winners.getJSONArray("data");
             String winnersAnnouncement;
-            if(winnerNames.length() == 0)
-               winnersAnnouncement = "No winners";
+            if (winnerNames.length() == 0)
+                winnersAnnouncement = "No winners";
             else {
                 winnersAnnouncement = winnerNames.length() > 1 ? "Players " : "Player ";
                 for (int i = 0; i < winnerNames.length(); i++) {
@@ -284,43 +292,78 @@ public class PokerActivity extends Activity {
         }
     }
 
-    public void newRound(){
+    public void newRound() {
         this.player.newHand();
+        this.numPlayers = -1;
         winnersLabel.setVisibility(View.INVISIBLE);
-        for(ImageView iv : communityCardImages)
+        for (ImageView iv : communityCardImages)
             iv.setVisibility(View.INVISIBLE);
-        for(List<View> pl : playerLayouts) {
+        for (List<View> pl : playerLayouts) {
             pl.get(0).setAlpha(1);
+            pl.get(0).setVisibility(View.INVISIBLE);
             pl.get(4).setVisibility(View.INVISIBLE);
             pl.get(5).setVisibility(View.INVISIBLE);
         }
     }
 
-    private void closeActivity(){
+    public void announceWinner(JSONArray players, Integer winner) {
+        if (winner == playerIndex)
+            winnersLabel.setText("You win!");
+        else {
+            try {
+                String winnerName = players.getJSONObject(winner).getString("name");
+                winnersLabel.setText(winnerName + " " + "wins");
+            } catch (JSONException e) {
+                throw new PokerException("Error when parsing players list on announceWinner", e);
+            }
+        }
+    }
+
+    public void askForRematch() {
+        new AlertDialog.Builder(this).setIcon(android.R.drawable.ic_dialog_alert)
+                .setTitle("Rematch?").setMessage("Do you want a rematch?")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        FrameworkCapability.rematchAnswer(true);
+                    }
+                }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                FrameworkCapability.rematchAnswer(false);
+            }
+        }).show();
+    }
+
+    public void resetGame() {
+        closeActivity();
+    }
+
+    public void closeActivity() {
         super.onBackPressed();
     }
 
     public void onBackPressed() {
         new AlertDialog.Builder(this).setIcon(android.R.drawable.ic_dialog_alert)
-            .setTitle("Leaving game").setMessage("Are you sure you want to leave the current game?")
-            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    FrameworkCapability.leaveGame();
-                    PokerActivity.getInstance().closeActivity();
-                }
-            }).setNegativeButton("No", null).show();
+                .setTitle("Leaving game").setMessage("Are you sure you want to leave the current game?")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        FrameworkCapability.leaveGame();
+                        PokerActivity.getInstance().closeActivity();
+                    }
+                }).setNegativeButton("No", null).show();
     }
 
-    public void onPause(){
+    public void onPause() {
         super.onPause();
         FrameworkCapability.leaveGame();
         this.pausedActivity = true;
     }
 
-    public void onResume(){
+    public void onResume() {
         super.onResume();
-        if(pausedActivity) {
+        if (pausedActivity) {
             new AlertDialog.Builder(this).setIcon(android.R.drawable.ic_dialog_alert)
                     .setTitle("Alert").setMessage("You have lost connection to the server")
                     .setPositiveButton("OK", new DialogInterface.OnClickListener() {

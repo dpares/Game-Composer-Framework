@@ -39,8 +39,8 @@ public class Player {
         this.avatar = avatar;
     }
 
-    public Player(JSONObject p){
-        try{
+    public Player(JSONObject p) {
+        try {
             this.funds = p.getInt("funds");
             this.currentBet = p.getInt("current_bet");
             this.currentState = State.values()[p.getInt("status")];
@@ -48,9 +48,9 @@ public class Player {
             this.avatar = p.getString("avatar");
             this.holeCards = new ArrayList<Card>();
             JSONArray aux = p.getJSONArray("hole_cards");
-            for(int i=0;i<aux.length();i++)
+            for (int i = 0; i < aux.length(); i++)
                 this.holeCards.add(new Card(aux.getJSONObject(i)));
-        } catch (JSONException e){
+        } catch (JSONException e) {
             throw new PokerException("Error parsing JSON into Player", e);
         }
     }
@@ -67,20 +67,20 @@ public class Player {
         return this.currentState;
     }
 
-    public JSONObject getJSON(){
+    public JSONObject getJSON() {
         JSONObject res = new JSONObject();
         try {
             res.put("funds", this.funds);
             res.put("current_bet", this.currentBet);
             res.put("status", this.currentState.ordinal());
             JSONArray cards = new JSONArray();
-            for(Card c : this.holeCards)
+            for (Card c : this.holeCards)
                 cards.put(c.getJSON());
             res.put("hole_cards", cards);
             res.put("name", this.name);
             res.put("avatar", this.avatar);
             return res;
-        } catch (JSONException e){
+        } catch (JSONException e) {
             throw new PokerException("Error parsing Player into JSON", e);
         }
 
@@ -129,16 +129,16 @@ public class Player {
                 this.holeCards + "\nBet: " + this.currentBet;
     }
 
-    public void call(int biggestBet){
+    public void call(int biggestBet) {
         if (this.currentBet < biggestBet)
             this.newBet(biggestBet - currentBet);
     }
 
-    public void raise(int raiseAmount, int biggestBet){
+    public void raise(int raiseAmount, int biggestBet) {
         this.newBet(biggestBet - currentBet + raiseAmount);
     }
 
-    public void fold(){
+    public void fold() {
         this.currentState = State.FOLDED;
     }
 
@@ -157,7 +157,7 @@ public class Player {
                     if (line.equalsIgnoreCase("c"))
                         this.call(biggestBet);
                     else if (line.equalsIgnoreCase("r")) { /*** MUST BE CHANGED ***/
-                        this.raise(100,biggestBet);
+                        this.raise(100, biggestBet);
                         betDiff = 100;
                     } else if (line.equalsIgnoreCase("f")) {
                         this.currentState = State.FOLDED;
@@ -177,10 +177,10 @@ public class Player {
         return this.name;
     }
 
-    public Drawable getAvatarDrawable(){
+    public Drawable getAvatarDrawable() {
         Context ctx = FrameworkCapability.getContext();
         int resourceId = ctx.getResources().
-                getIdentifier(this.avatar ,"drawable",ctx.getPackageName());
+                getIdentifier(this.avatar, "drawable", ctx.getPackageName());
         return ctx.getResources().getDrawable(resourceId);
     }
 

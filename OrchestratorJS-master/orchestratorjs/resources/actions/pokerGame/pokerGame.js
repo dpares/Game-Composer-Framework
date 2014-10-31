@@ -111,7 +111,7 @@ Game.prototype.computeResults = function(players){
     for(p in players){
         var holeCards = JSON.parse(JSON.stringify(players[p].state.hole_cards));
         if(players[p].active && players[p].state.status != playerStatus.FOLDED){
-            var hand = new BestHand(holeCards,this.commonData.community_cards,p);
+            var hand = new BestHand(holeCards,this.commonData.community_cards,players[p].state.name);
             players[p].state.best_hand = hand;
             this.bestHands.push(hand);
         }
@@ -135,7 +135,6 @@ Game.prototype.declareWinners = function(players){
 }
 
 Game.prototype.isActive = function(player){
-    console.log("EEE: "+ JSON.stringify(player) + player.funds > 0);
     return player.funds > 0;
 }
 
@@ -157,8 +156,7 @@ Game.prototype.exceptionHandler = function(players, device, exception_value){
         else
             i++;
     }
-    var errorPlayer = players[i].state;
-    this.commonData.current_pot += errorPlayer.funds;
+    this.commonData.current_pot += players[i].state.funds;
     return remove(players,i);
 }
 

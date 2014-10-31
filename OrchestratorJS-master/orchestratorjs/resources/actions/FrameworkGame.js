@@ -5,7 +5,8 @@ var config = require('./FrameworkConfig.js');
 var Game = config.gameController;
 
 var players = [];
-var gameController;
+var gameController, currentPlayer, numPlayers, currentPhase, currentStep;
+var handlingDisconnection = false;
 
 function Player() { 
     this.device = null;
@@ -13,21 +14,21 @@ function Player() {
     this.active = true;
 };
 
-function showCurrentState(players,commonData){
-    var playersState = playersStatesArray(players)
-    for(i in players){
-        players[i].device.frameworkCapability.showCurrentState(playersState,commonData);
-    }
-}
-
-function playersStatesArray(players){
+function playersStatesArray(){
     var res = [];
     for(i in players)
         res.push(players[i].state);
     return res;
-}	
+}   
 
-function countActivePlayers(players){
+function showCurrentState(){
+    var playersState = playersStatesArray()
+    for(i in players){
+        players[i].device.frameworkCapability.showCurrentState(playersState,gameController.commonData);
+    }
+}
+
+function countActivePlayers(){
     var res = 0;
     for(var i = 0; i < players.length; i++){
         if(players[i].active)
@@ -37,103 +38,139 @@ function countActivePlayers(players){
     return res;
 }
 
-function showResults(players,gameController,misc){
-    showCurrentState(players,gameController.commonData);
+function showResults(){
+    showCurrentState();
     var winners = gameController.declareWinners(players);
     var json = {data: winners};
     for(i in players){
-        var playerState = players[i].device.frameworkCapability.showResults(
-            json,playersStatesArray(players),gameController.commonData);
+        var playerState = players[i].device.frameworkCapability.showResults(json,playersStatesArray(),gameController.commonData);
         players[i].state = playerState;
         if(!gameController.isActive(players[i].state))
             players[i].active = false;
     }
-    showCurrentState(players,gameController.commonData);
+    showCurrentState();
+}
+
+function remove(array,index){
+    var res = [];
+    for(i in array)
+        if(i!=index)
+            res.push(array[i]);
+
+    return res;
+}
+
+function handleDisconnection(device, event_value){
+    if(players[currentPlayer].device.identity == device.identity){
+        handlingDisconnection = true;
+        currentStep = config.phases[currentPhase];
+    }
+    players = gameController.exceptionHandler(players, device, event_value);
+    numPlayers--;
 }
 
 module.exports = {
 
     exceptionHandler: function(action, device, exception_value) {
         console.log('error on client-side: '+ device.identity+', '+exception_value);
-        /*if(gameController == undefined)
-            action.finishAction();
-        else{
-            console.log("HUEHUEHUE");
-            players = gameController.exceptionHandler(players, device, exception_value);
-            showCurrentState(players, device, gameController.commonData);
-        }*/
-    },
-
-    serverSideExceptionHandler : function(exception_value){
-        console.log('error on server-side: '+ device.identity+', '+exception_value);
-        // Cerrar el juego
+        action.finishAction();
     },
 
     eventHandler: function(action, device, event_value) {
         console.log('event from client: '+device.identity+', '+event_value);
-        players = gameController.exceptionHandler(players, device, event_value);
-        showCurrentState(players, gameController.commonData);
+        if(event_value == "disconnect")
+            handleDisconnection(device, event_value);
     },
     
     
     // the body
     body: function (devices) {
-      
-        /// GAME INITIALIZATION	
-        for(i in devices) {
-            p(devices[i].identity);
-            var player = new Player();
-            player.device = devices[i];
-            player.number = parseInt(i);
-            player.device.frameworkCapability.initGame(config.initData);
-            player.state = player.device.frameworkCapability.getPlayerState();
-            while(player.state.null){
-                player.state = player.device.frameworkCapability.getPlayerState();
-                misc.sleep(1);
-            }
-            players.push(player);
-        }
-        gameController = new Game(players);
-        showCurrentState(players,gameController.commonData);
 
-        /// MAIN LOOP
-        while(countActivePlayers(players) > 1){
-            var currentPlayer = gameController.nextPlayer(-1,players);
-            for(var currentPhase = 0; currentPhase < config.phases; currentPhase++){
-                gameController.phaseSetUp(currentPhase,players);
-                showCurrentState(players,gameController.commonData);
-                do{
-                    var numPlayers = gameController.countAvailablePlayers(players);
-                    if(numPlayers == 1 && !gameController.phaseEnd(currentPhase,players) || numPlayers > 1){
-                        for(var i = 0; i < numPlayers; i++){
-                            var player = players[currentPlayer];
-                            for( var currentStep = 0; currentStep < config.steps[currentPhase]; currentStep++){
-                                player.device.frameworkCapability.startStep(currentPhase,currentStep);
-                                var stepResult = player.device.frameworkCapability.getStepResult(currentPhase,currentStep);
-                                while(stepResult.null){
-                                    stepResult = player.device.frameworkCapability.getStepResult(currentPhase,currentStep);
-                                    misc.sleep(1);
+        do{      
+            /// GAME INITIALIZATION	
+            players = [];
+            for(i in devices) {
+                p(devices[i].identity);
+                var player = new Player();
+                player.device = devices[i];
+                player.device.frameworkCapability.initGame(config.initData);
+                player.state = player.device.frameworkCapability.getPlayerState();
+                while(player.state.null){
+                    misc.sleep(1);
+                    player.state = player.device.frameworkCapability.getPlayerState();
+                }
+                players.push(player);
+            }
+            gameController = new Game(players);
+            showCurrentState();
+
+            /// MAIN GAME LOOP
+            while(countActivePlayers() > 1){
+                currentPlayer = gameController.nextPlayer(-1,players);
+                currentPhase = 0;
+                while(currentPhase < config.phases){
+                    gameController.phaseSetUp(currentPhase,players);
+                    showCurrentState();
+                    do{
+                        numPlayers = gameController.countAvailablePlayers(players);
+                        if(numPlayers == 1 && !gameController.phaseEnd(currentPhase,players) || numPlayers > 1){
+                            for(var i = 0; i < numPlayers; i++){
+                                var player = players[currentPlayer];
+                                currentStep = 0;
+                                while(currentStep < config.steps[currentPhase]){
+                                    player.device.frameworkCapability.startStep(currentPhase,currentStep);
+                                    var stepResult = player.device.frameworkCapability.getStepResult(currentPhase,currentStep);
+                                    while(stepResult.null && !handlingDisconnection){
+                                        misc.sleep(1);
+                                        if(!handlingDisconnection)
+                                            stepResult = player.device.frameworkCapability.getStepResult(currentPhase,currentStep);
+                                    }
+                                    if(handlingDisconnection)
+                                        handlingDisconnection = false;
+                                     else{
+                                        player.state = stepResult.player_data;
+                                        gameController.updateCommonData(stepResult.common_data);
+                                        currentStep++;
+                                    }
+                                    showCurrentState();
                                 }
-                                player.state = stepResult.player_data;
-                                gameController.updateCommonData(stepResult.common_data);
-                                showCurrentState(players,gameController.commonData);
+                                currentPlayer = gameController.nextPlayer(currentPlayer,players);
                             }
-                            currentPlayer = gameController.nextPlayer(currentPlayer,players);
                         }
-                    }
-                }while (!gameController.phaseEnd(currentPhase,players));
+                    }while (!gameController.phaseEnd(currentPhase,players));
+                    currentPhase++;
+                }
+                gameController.computeResults(players);
+                showResults();
+                misc.sleep(4);
+                if(countActivePlayers() > 1){
+                    for(i in players)
+                        players[i].state = players[i].device.frameworkCapability.newRound();
+                    gameController.newRound(players);
+                }
             }
-            gameController.computeResults(players);
-            showResults(players,gameController,misc);
-            misc.sleep(4);
-            console.log(players);
-            if(countActivePlayers(players) > 1){
+            // ENDGAME
+            var winner = gameController.nextPlayer(currentPlayer,players); // Last active player
+            for(i in players)
+                players[i].device.frameworkCapability.announceWinner(playersStatesArray(),winner);
+            for(i in players){
+                var wantsRematch = players[i].device.frameworkCapability.askForRematch();
+                while(wantsRematch.null){
+                    misc.sleep(1)
+                    wantsRematch = players[i].device.frameworkCapability.askForRematch();
+                }
+                if(wantsRematch.value)
+                    players[i].active = true;
+                else{
+                    players[i].active = false;
+                    players[i].device.frameworkCapability.exitGame();
+                    players = remove(players,i);
+                }
+            } 
+            if(countActivePlayers() > 1)
                 for(i in players)
-                    players[i].state = players[i].device.frameworkCapability.newRound();
-                gameController.newRound(players);
-            }
-            // Insert proper closure
-        }
+                    players[i].device.frameworkCapability.resetGame();
+        } while (countActivePlayers() > 1);
     },
 
 };
