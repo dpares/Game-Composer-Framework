@@ -69,7 +69,7 @@ public class PokerActivity extends Activity {
         // Creating a full screen activity
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+                WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         setContentView(R.layout.poker_layout);
 
@@ -103,19 +103,11 @@ public class PokerActivity extends Activity {
         potLabel = (TextView) findViewById(R.id.potLabel);
 
         instance = this;
-        this.currentBet = 100;
-        this.biggestBet = 200;
-        this.currentPot = 0;
-        this.numPlayers = -1;
         try {
             JSONObject initData = new JSONObject(this.getIntent().getStringExtra("init_data"));
-            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(ctx);
-            int initialFunds = initData.getInt("initial_funds");
-            String name = prefs.getString("pref_player_name", "Player");
-            String avatar = SettingHelpers.getStringValue("pref_player_avatar", ctx);
-            this.player = new Player(initialFunds, name, avatar);
-        } catch (JSONException e) {
-            throw new PokerException("Error parsing initial data", e);
+            this.newGame(initData);
+        } catch (JSONException e){
+            throw new PokerException("Error parsing initData on onCreate", e);
         }
     }
 
@@ -288,7 +280,7 @@ public class PokerActivity extends Activity {
             if (isWinner)
                 this.player.addFunds(commonData.getInt("current_pot") / winnerNames.length());
         } catch (JSONException e) {
-            throw new PokerException("Errror parsing commonData in showResults", e);
+            throw new PokerException("Error parsing commonData in showResults", e);
         }
     }
 
@@ -335,8 +327,21 @@ public class PokerActivity extends Activity {
         }).show();
     }
 
-    public void resetGame() {
-        closeActivity();
+    public void newGame(JSONObject initData) {
+        this.currentBet = 100;
+        this.biggestBet = 200;
+        this.currentPot = 0;
+        this.numPlayers = -1;
+        try {
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+            int initialFunds = initData.getInt("initial_funds");
+            String name = prefs.getString("pref_player_name", "Player");
+            String avatar = SettingHelpers.getStringValue("pref_player_avatar", this);
+            this.player = new Player(initialFunds, name, avatar);
+            this.newRound();
+        } catch (JSONException e) {
+            throw new PokerException("Error parsing initData on newGame", e);
+        }
     }
 
     public void closeActivity() {

@@ -153,23 +153,25 @@ module.exports = {
             var winner = gameController.nextPlayer(currentPlayer,players); // Last active player
             for(i in players)
                 players[i].device.frameworkCapability.announceWinner(playersStatesArray(),winner);
-            for(i in players){
-                var wantsRematch = players[i].device.frameworkCapability.askForRematch();
-                while(wantsRematch.null){
-                    misc.sleep(1)
-                    wantsRematch = players[i].device.frameworkCapability.askForRematch();
+            if(countActivePlayers() > 1){
+                for(i in players){
+                    var wantsRematch = players[i].device.frameworkCapability.askForRematch();
+                    while(wantsRematch.null){
+                        misc.sleep(1)
+                        wantsRematch = players[i].device.frameworkCapability.askForRematch();
+                    }
+                    if(wantsRematch.value)
+                        players[i].active = true;
+                    else{
+                        players[i].active = false;
+                        players[i].device.frameworkCapability.exitGame();
+                        players = remove(players,i);
+                    }
                 }
-                if(wantsRematch.value)
-                    players[i].active = true;
-                else{
-                    players[i].active = false;
-                    players[i].device.frameworkCapability.exitGame();
-                    players = remove(players,i);
-                }
+            } else {
+                // Avisar de que se va a cerrar la sesión ya que es el único jugador
             } 
-            if(countActivePlayers() > 1)
-                for(i in players)
-                    players[i].device.frameworkCapability.resetGame();
+
         } while (countActivePlayers() > 1);
     },
 

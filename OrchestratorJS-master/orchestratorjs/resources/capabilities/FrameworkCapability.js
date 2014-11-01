@@ -10,5 +10,4 @@ module.exports = {
   announceWinner: function (players, winner) {},
   askForRematch: function() {},
   exitGame: function() {},
-  resetGame: function() {},
 };

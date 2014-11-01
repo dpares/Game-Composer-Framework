@@ -44,8 +44,4 @@ module.exports = {
         var methodArguments = ['FrameworkCapability', 'exitGame', []];
         return this.device.invoke(methodArguments);
     },
-    resetGame: function() {
-        var methodArguments = ['FrameworkCapability', 'resetGame', []];
-        return this.device.invoke(methodArguments);
-    },
 };

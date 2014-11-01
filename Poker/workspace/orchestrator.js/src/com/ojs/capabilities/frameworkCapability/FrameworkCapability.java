@@ -60,10 +60,13 @@ public class FrameworkCapability {
         wantsRematch = false;
         gameLeft = false;
 
-        Intent i = new Intent(FrameworkCapability.ctx, PokerActivity.class);
-        i.putExtra("init_data", initData.toString());
-        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        ctx.startActivity(i);
+        if (PokerActivity.getInstance() == null) {
+            Intent i = new Intent(FrameworkCapability.ctx, PokerActivity.class);
+            i.putExtra("init_data", initData.toString());
+            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            ctx.startActivity(i);
+        } else
+            PokerActivity.getInstance().newGame(initData);
     }
 
     public void setPlayerState(JSONObject state) {
@@ -136,10 +139,6 @@ public class FrameworkCapability {
     public void exitGame() {
         FrameworkCapability.leaveGame();
         PokerActivity.getInstance().closeActivity();
-    }
-
-    public void resetGame() {
-        PokerActivity.getInstance().resetGame();
     }
 
     public static void endOfTurn() {
