@@ -75,8 +75,8 @@ public class Game {
         communityCards = new ArrayList<Card>();
 
         // STEP 1: Adding funds
-        players.add(new Player(INITIAL_FUNDS,"0",""));
-        players.add(new Player(INITIAL_FUNDS,"1",""));
+        players.add(new Player(INITIAL_FUNDS,"0","",false));
+        players.add(new Player(INITIAL_FUNDS,"1","",false));
 
         // STEP 2: Selecting the first dealer
         Random rnd = new Random();

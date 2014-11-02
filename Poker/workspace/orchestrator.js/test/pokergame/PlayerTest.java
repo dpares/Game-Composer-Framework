@@ -12,7 +12,7 @@ public class PlayerTest {
 
     @Test
     public void testNewBet() {
-        Player p = new Player(1000,"0","");
+        Player p = new Player(1000,"0","",false);
         p.newBet(300);
         Assert.assertEquals(p.getState(), Player.State.DEFAULT);
         Assert.assertEquals(p.getFunds(), 700);

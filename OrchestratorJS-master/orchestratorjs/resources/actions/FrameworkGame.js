@@ -17,15 +17,15 @@ function Player() {
 function playersStatesArray(){
     var res = [];
     for(i in players)
-        res.push(players[i].state);
+        if(players[i].active)
+            res.push(players[i].state);
     return res;
 }   
 
 function showCurrentState(){
     var playersState = playersStatesArray()
-    for(i in players){
+    for(i in players)
         players[i].device.frameworkCapability.showCurrentState(playersState,gameController.commonData);
-    }
 }
 
 function countActivePlayers(){
@@ -73,6 +73,8 @@ module.exports = {
 
     exceptionHandler: function(action, device, exception_value) {
         console.log('error on client-side: '+ device.identity+', '+exception_value);
+        for(i in players)
+            players[i].device.frameworkCapability.exitGame("An error ocurred");
         action.finishAction();
     },
 
@@ -94,15 +96,22 @@ module.exports = {
                 var player = new Player();
                 player.device = devices[i];
                 player.device.frameworkCapability.initGame(config.initData);
-                player.state = player.device.frameworkCapability.getPlayerState();
-                while(player.state.null){
+                var initState = player.device.frameworkCapability.getPlayerInitialState();
+                while(initState.null){
                     misc.sleep(1);
-                    player.state = player.device.frameworkCapability.getPlayerState();
+                    initState = player.device.frameworkCapability.getPlayerInitialState();
                 }
+                player.state = initState.state;
+                player.active = initState.active;
                 players.push(player);
             }
+            console.log("PLAYERS:" + JSON.stringify(playersStatesArray()));
             gameController = new Game(players);
-            showCurrentState();
+            if(countActivePlayers() > 1)
+                showCurrentState();
+            else
+                for(i in players)
+                    players[i].device.frameworkCapability.exitGame("Not enough players");
 
             /// MAIN GAME LOOP
             while(countActivePlayers() > 1){
@@ -164,7 +173,7 @@ module.exports = {
                         players[i].active = true;
                     else{
                         players[i].active = false;
-                        players[i].device.frameworkCapability.exitGame();
+                        players[i].device.frameworkCapability.exitGame("You have left the game");
                         players = remove(players,i);
                     }
                 }

@@ -1,7 +1,7 @@
 module.exports = {
   initGame: function (initData) {},
   setPlayerState: function (state) {},
-  getPlayerState: function () {},
+  getPlayerInitialState: function () {},
   showCurrentState: function (players, commonData) {},
   startStep: function (currentPhase, currentStep) {},
   getStepResult: function (currentPhase, currentStep) {},
@@ -9,5 +9,5 @@ module.exports = {
   newRound: function() {},
   announceWinner: function (players, winner) {},
   askForRematch: function() {},
-  exitGame: function() {},
+  exitGame: function(reason) {},
 };

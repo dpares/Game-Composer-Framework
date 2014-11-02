@@ -17,5 +17,11 @@
             android:title="Avatar"
             android:summary="Choose an avatar">
         </com.ojs.capabilities.frameworkCapability.settings.AvatarDialogPreference>
+        <SwitchPreference
+            android:key="pref_player_spectate"
+            android:defaultValue="false"
+            android:title="Spectate"
+            android:summary="Start every game as an spectator">
+        </SwitchPreference>
     </PreferenceCategory>
 </PreferenceScreen>

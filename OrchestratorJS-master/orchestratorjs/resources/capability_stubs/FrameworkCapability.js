@@ -8,8 +8,8 @@ module.exports = {
         var methodArguments = ['FrameworkCapability', 'setPlayerState', [state]];
         return this.device.invoke(methodArguments);
     },
-    getPlayerState: function() {
-        var methodArguments = ['FrameworkCapability', 'getPlayerState', []];
+    getPlayerInitialState: function() {
+        var methodArguments = ['FrameworkCapability', 'getPlayerInitialState', []];
         return this.device.invoke(methodArguments);
     },
     showCurrentState: function(players,commonData) {
@@ -40,8 +40,8 @@ module.exports = {
         var methodArguments = ['FrameworkCapability', 'askForRematch', []];
         return this.device.invoke(methodArguments);
     },
-    exitGame: function() {
-        var methodArguments = ['FrameworkCapability', 'exitGame', []];
+    exitGame: function(reason) {
+        var methodArguments = ['FrameworkCapability', 'exitGame', [reason]];
         return this.device.invoke(methodArguments);
     },
 };

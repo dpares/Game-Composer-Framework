@@ -29,12 +29,12 @@ public class Player {
     private boolean active;
     private State currentState;
 
-    public Player(int initialFunds, String name, String avatar) {
-        this.funds = initialFunds;
+    public Player(int initialFunds, String name, String avatar, boolean spectate) {
+        this.active = !spectate;
+        this.funds = this.active ? initialFunds : 0;
         this.currentBet = 0;
         this.holeCards = new ArrayList<Card>();
         this.currentState = State.DEFAULT;
-        this.active = true;
         this.name = name;
         this.avatar = avatar;
     }
@@ -106,7 +106,6 @@ public class Player {
         this.holeCards = new ArrayList<Card>();
         this.currentBet = 0;
         this.currentState = State.DEFAULT;
-        this.active = true;
     }
 
     public void newBet(int amount) {

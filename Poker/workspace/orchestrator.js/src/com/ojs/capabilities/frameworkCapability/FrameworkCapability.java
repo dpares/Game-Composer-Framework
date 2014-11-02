@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.ojs.OrchestratorJsActivity;
 
@@ -73,11 +74,18 @@ public class FrameworkCapability {
         PokerActivity.getInstance().setPlayerState(state);
     }
 
-    public JSONObject getPlayerState() {
+    public JSONObject getPlayerInitialState() {
         if (PokerActivity.getInstance() == null)
             return FrameworkCapability.nullJSON();
         else
-            return PokerActivity.getInstance().getPlayer().getJSON();
+            try{
+                JSONObject res = new JSONObject();
+                res.put("state",PokerActivity.getInstance().getPlayer().getJSON());
+                res.put("active",PokerActivity.getInstance().getPlayer().isActive());
+                return res;
+            }catch (JSONException e){
+                throw new PokerException("Error when creating initial state JSON",e);
+            }
     }
 
     public void showCurrentState(JSONArray players, JSONObject commonData) {
@@ -109,9 +117,8 @@ public class FrameworkCapability {
         return PokerActivity.getInstance().getPlayer().getJSON();
     }
 
-    public JSONObject newRound() {
+    public void newRound() {
         PokerActivity.getInstance().newRound();
-        return this.getPlayerState();
     }
 
     public void announceWinner(JSONArray players, Integer winner) {
@@ -136,9 +143,9 @@ public class FrameworkCapability {
             }
     }
 
-    public void exitGame() {
+    public void exitGame(String reason) {
         FrameworkCapability.leaveGame();
-        PokerActivity.getInstance().closeActivity();
+        PokerActivity.getInstance().closeActivity(reason);
     }
 
     public static void endOfTurn() {

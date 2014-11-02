@@ -337,14 +337,17 @@ public class PokerActivity extends Activity {
             int initialFunds = initData.getInt("initial_funds");
             String name = prefs.getString("pref_player_name", "Player");
             String avatar = SettingHelpers.getStringValue("pref_player_avatar", this);
-            this.player = new Player(initialFunds, name, avatar);
+            boolean spectate = prefs.getBoolean("pref_player_spectate", false);
+            this.player = new Player(initialFunds, name, avatar, spectate);
             this.newRound();
         } catch (JSONException e) {
             throw new PokerException("Error parsing initData on newGame", e);
         }
     }
 
-    public void closeActivity() {
+    public void closeActivity(String reason) {
+        Toast.makeText(this,reason,Toast.LENGTH_LONG).show();
+        PokerActivity.instance = null;
         super.onBackPressed();
     }
 
@@ -355,7 +358,7 @@ public class PokerActivity extends Activity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         FrameworkCapability.leaveGame();
-                        PokerActivity.getInstance().closeActivity();
+                        PokerActivity.getInstance().closeActivity("You have left the game");
                     }
                 }).setNegativeButton("No", null).show();
     }
@@ -374,7 +377,7 @@ public class PokerActivity extends Activity {
                     .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            PokerActivity.getInstance().closeActivity();
+                            PokerActivity.getInstance().closeActivity("You have left the game");
                         }
                     }).show();
         }
