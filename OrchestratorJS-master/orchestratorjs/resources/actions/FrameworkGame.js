@@ -5,8 +5,9 @@ var config = require('./FrameworkConfig.js');
 var Game = config.gameController;
 
 var players = [];
+var j;
 var gameController, currentPlayer, numPlayers, currentPhase, currentStep;
-var handlingDisconnection = false;
+var handlingDisconnection;
 
 function Player() { 
     this.device = null;
@@ -24,8 +25,15 @@ function playersStatesArray(){
 
 function showCurrentState(){
     var playersState = playersStatesArray()
-    for(i in players)
-        players[i].device.frameworkCapability.showCurrentState(playersState,gameController.commonData);
+    j = 0;
+    while(j < players.length){
+        if(!handlingDisconnection){
+            console.log("TURNO DE : "+ players[j].device.identity);
+            players[j].device.frameworkCapability.showCurrentState(playersState,gameController.commonData);
+            j++;
+        } else
+            handlingDisconnection = true;
+    }
 }
 
 function countActivePlayers(){
@@ -42,11 +50,16 @@ function showResults(){
     showCurrentState();
     var winners = gameController.declareWinners(players);
     var json = {data: winners};
-    for(i in players){
-        var playerState = players[i].device.frameworkCapability.showResults(json,playersStatesArray(),gameController.commonData);
-        players[i].state = playerState;
-        if(!gameController.isActive(players[i].state))
-            players[i].active = false;
+    j = 0;
+    while(j < players.length){
+        if(!handlingDisconnection){
+            var playerState = players[j].device.frameworkCapability.showResults(json,playersStatesArray(),gameController.commonData);
+            players[j].state = playerState;
+            if(!gameController.isActive(players[j].state))
+                players[j].active = false;
+            j++;
+        } else
+            handlingDisconnection = true;
     }
     showCurrentState();
 }
@@ -61,21 +74,32 @@ function remove(array,index){
 }
 
 function handleDisconnection(device, event_value){
-    if(players[currentPlayer].device.identity == device.identity){
+    if(currentPlayer != -1){
+        if (players[currentPlayer].device.identity == device.identity){
+            handlingDisconnection = true;
+            currentStep = config.phases[currentPhase];
+        }
+        players = gameController.exceptionHandler(players, device, event_value);
+        numPlayers--;
+    } else if(typeof players[j] === 'undefined'){
         handlingDisconnection = true;
-        currentStep = config.phases[currentPhase];
+    } else {
+        if(players[j].device.identity = device.identity)
+            handlingDisconnection = true;
+        players = gameController.exceptionHandler(players, device, event_value);
     }
-    players = gameController.exceptionHandler(players, device, event_value);
-    numPlayers--;
 }
 
 module.exports = {
 
     exceptionHandler: function(action, device, exception_value) {
         console.log('error on client-side: '+ device.identity+', '+exception_value);
-        for(i in players)
-            players[i].device.frameworkCapability.exitGame("An error ocurred");
-        action.finishAction();
+    },
+
+    serverSideExceptionHandler: function(action, exception_value) {
+        console.log('error on server-side: '+exception_value);
+        handlingDisconnection = true;
+        j++;
     },
 
     eventHandler: function(action, device, event_value) {
@@ -87,31 +111,53 @@ module.exports = {
     
     // the body
     body: function (devices) {
-
+        var currentDevices = devices;
         do{      
             /// GAME INITIALIZATION	
-            players = [];
-            for(i in devices) {
-                p(devices[i].identity);
-                var player = new Player();
-                player.device = devices[i];
-                player.device.frameworkCapability.initGame(config.initData);
-                var initState = player.device.frameworkCapability.getPlayerInitialState();
-                while(initState.null){
-                    misc.sleep(1);
-                    initState = player.device.frameworkCapability.getPlayerInitialState();
-                }
-                player.state = initState.state;
-                player.active = initState.active;
-                players.push(player);
+            j = 0;
+            handlingDisconnection = false;
+            currentPlayer = -1;
+            if(players.length > 0){
+                console.log("PLAYERS: " + players.length);
+                currentDevices = [];
+                for(i in players)
+                    currentDevices.push(players[i].device);
             }
-            console.log("PLAYERS:" + JSON.stringify(playersStatesArray()));
+            players = [];
+            while(j < currentDevices.length) {
+                p(devices[j].identity);
+                var player = new Player();
+                player.device = currentDevices[j];
+                player.device.frameworkCapability.initGame(config.initData);
+                if(!handlingDisconnection){
+                    var initState = player.device.frameworkCapability.getPlayerInitialState();
+                    while(initState.null && !handlingDisconnection){
+                        misc.sleep(1);
+                        initState = player.device.frameworkCapability.getPlayerInitialState();
+                    }
+                    if(!handlingDisconnection){
+                        player.state = initState.state;
+                        player.active = initState.active;
+                        players.push(player);
+                    } else
+                        handlingDisconnection = false;
+                } else
+                    handlingDisconnection = false;
+                j++;
+            }
             gameController = new Game(players);
             if(countActivePlayers() > 1)
                 showCurrentState();
-            else
-                for(i in players)
-                    players[i].device.frameworkCapability.exitGame("Not enough players");
+            else{
+                j = 0;
+                while(j < players.length){
+                    if(!handlingDisconnection){
+                        players[j].device.frameworkCapability.exitGame("Not enough players");
+                        j++;
+                    } else
+                        handlingDisconnection = false;
+                }
+            }
 
             /// MAIN GAME LOOP
             while(countActivePlayers() > 1){
@@ -128,7 +174,8 @@ module.exports = {
                                 currentStep = 0;
                                 while(currentStep < config.steps[currentPhase]){
                                     player.device.frameworkCapability.startStep(currentPhase,currentStep);
-                                    var stepResult = player.device.frameworkCapability.getStepResult(currentPhase,currentStep);
+                                    if(!handlingDisconnection)
+                                        var stepResult = player.device.frameworkCapability.getStepResult(currentPhase,currentStep);
                                     while(stepResult.null && !handlingDisconnection){
                                         misc.sleep(1);
                                         if(!handlingDisconnection)
@@ -149,38 +196,62 @@ module.exports = {
                     }while (!gameController.phaseEnd(currentPhase,players));
                     currentPhase++;
                 }
+                currentPlayer = -1;
                 gameController.computeResults(players);
                 showResults();
                 misc.sleep(4);
                 if(countActivePlayers() > 1){
-                    for(i in players)
-                        players[i].state = players[i].device.frameworkCapability.newRound();
+                    j = 0;
+                    while(j < players.length){
+                        if(!handlingDisconnection){
+                            players[j].state = players[j].device.frameworkCapability.newRound();
+                            j++;
+                        } else
+                            handlingDisconnection = true;
+                    }
                     gameController.newRound(players);
                 }
             }
             // ENDGAME
-            var winner = gameController.nextPlayer(currentPlayer,players); // Last active player
-            for(i in players)
-                players[i].device.frameworkCapability.announceWinner(playersStatesArray(),winner);
-            if(countActivePlayers() > 1){
-                for(i in players){
-                    var wantsRematch = players[i].device.frameworkCapability.askForRematch();
-                    while(wantsRematch.null){
-                        misc.sleep(1)
-                        wantsRematch = players[i].device.frameworkCapability.askForRematch();
-                    }
-                    if(wantsRematch.value)
-                        players[i].active = true;
-                    else{
-                        players[i].active = false;
-                        players[i].device.frameworkCapability.exitGame("You have left the game");
-                        players = remove(players,i);
-                    }
+            var winner = gameController.nextPlayer(0,players); // Last active player
+            j = 0;
+            while (j < players.length){
+                if(!handlingDisconnection){
+                    players[j].device.frameworkCapability.announceWinner(playersStatesArray(),winner);
+                    j++;
+                } else 
+                    handlingDisconnection = true;
+            }
+            j = 0;
+            while (j < players.length){
+                if(!handlingDisconnection)
+                    var wantsRematch = players[j].device.frameworkCapability.askForRematch();
+                while(wantsRematch.null && !handlingDisconnection){
+                    misc.sleep(1)
+                    if(!handlingDisconnection)
+                        wantsRematch = players[j].device.frameworkCapability.askForRematch();
                 }
-            } else {
-                // Avisar de que se va a cerrar la sesión ya que es el único jugador
-            } 
-
+                if(handlingDisconnection)
+                    handlingDisconnection = false;
+                else{
+                    if(wantsRematch.value){
+                        players[j].active = true;
+                        j++;
+                    }
+                    else
+                        players[j].device.frameworkCapability.exitGame("You have left the game");
+                }
+            }
+            if(countActivePlayers() <= 1){
+                j = 0;
+                while(j < players.length){
+                    if(!handlingDisconnection){
+                        players[j].device.frameworkCapability.exitGame("Not enough players");
+                        j++;
+                    } else
+                        handlingDisconnection = false;
+                }
+            }
         } while (countActivePlayers() > 1);
     },
 

@@ -581,14 +581,14 @@ function ActionRunnable( actionName ) {
         this.action = actionPool[ exceptionActionIdentity ];
         this.action.serverSideExceptionHandler( exception_value );
         this.action.serverSideExceptionHandlingOn = false;
-        log( 'server-side exception executed, killing the action' );
-        actionFinishHandler( this.action.id );
+        /*log( 'server-side exception executed, killing the action' );
+        actionFinishHandler( this.action.id );*/
 
 
       } catch ( eeer ) {
         log( eeer );
-        log( 'serverSideExceptionHandler destroying action instance: ' + exceptionActionIdentity );
-        actionFinishHandler( exceptionActionIdentity );
+        /*log( 'serverSideExceptionHandler destroying action instance: ' + exceptionActionIdentity );
+        actionFinishHandler( exceptionActionIdentity ); */
       }
     } );
 

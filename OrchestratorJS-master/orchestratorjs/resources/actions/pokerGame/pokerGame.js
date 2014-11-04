@@ -25,6 +25,7 @@ Game.prototype.newRound = function(players){
     this.commonData = {community_cards: [], biggest_bet: 200, current_pot: 0};
     this.bestHands = [];
     this.dealer = this.nextPlayer(this.dealer,players);
+    console.log(this.dealer);
     players[this.dealer].state.status = playerStatus.DEALER;
     players[this.dealer].device.frameworkCapability.setPlayerState(players[this.dealer].state);
 }

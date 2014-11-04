@@ -117,8 +117,9 @@ public class FrameworkCapability {
         return PokerActivity.getInstance().getPlayer().getJSON();
     }
 
-    public void newRound() {
+    public JSONObject newRound() {
         PokerActivity.getInstance().newRound();
+        return PokerActivity.getInstance().getPlayer().getJSON();
     }
 
     public void announceWinner(JSONArray players, Integer winner) {
