@@ -39,7 +39,7 @@ import pfc.pokergame.Player;
 public class PokerActivity extends Activity {
 
     public static PokerActivity instance;
-    private static final int MAX_PLAYERS = 2; // Should be 4
+    private static final int MAX_PLAYERS = 4;
 
     private TextView winnersLabel;
     private List<ImageView> communityCardImages;
@@ -68,10 +68,10 @@ public class PokerActivity extends Activity {
 
         // Creating a full screen activity
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN |
                 WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
-        setContentView(R.layout.poker_layout);
+        setContentView(R.layout.poker_layout_new);
 
         winnersLabel = (TextView) findViewById(R.id.winnersLabel);
         communityCardImages = new ArrayList<ImageView>();
@@ -96,6 +96,8 @@ public class PokerActivity extends Activity {
                     getIdentifier("player" + i + "_holeCardsLayout", "id", ctx.getPackageName())));
             playerElements.add(findViewById(ctx.getResources().
                     getIdentifier("player" + i + "_handType", "id", ctx.getPackageName())));
+            playerElements.add(findViewById(ctx.getResources().
+                    getIdentifier("player" + i + "FrameLayout", "id", ctx.getPackageName())));
             playerLayouts.add(playerElements);
         }
         buttonLayout = (LinearLayout) findViewById(R.id.buttonLayout);
@@ -153,14 +155,17 @@ public class PokerActivity extends Activity {
 
             /* Player treatment */
             if(this.numPlayers != -1 && this.numPlayers != players.length()){ // A player left the game
-                playerLayouts.get(this.numPlayers-1).get(0).setVisibility(View.INVISIBLE);
+                playerLayouts.get(this.numPlayers-1).get(0).setVisibility(View.GONE);
+                playerLayouts.get(this.numPlayers-1).get(6).setVisibility(View.GONE);
                 this.numPlayers = -1;
                 Toast.makeText(this,"A player has left the game",Toast.LENGTH_SHORT).show();
             }
             for (int j = 0; j < players.length(); j++) {
                 Player p = new Player(players.getJSONObject(j));
-                if(numPlayers == -1)
+                if(numPlayers == -1) {
                     playerLayouts.get(j).get(0).setVisibility(View.VISIBLE);
+                    playerLayouts.get(j).get(6).setVisibility(View.VISIBLE);
+                }
                 ((TextView) playerLayouts.get(j).get(1)).setText(p.getName());
                 ((ImageView) playerLayouts.get(j).get(2)).setImageDrawable(p.getAvatarDrawable());
                 if (this.numPlayers == -1 && p.getName().equals(this.player.getName()))
@@ -292,8 +297,11 @@ public class PokerActivity extends Activity {
             iv.setVisibility(View.INVISIBLE);
         for (List<View> pl : playerLayouts) {
             pl.get(0).setAlpha(1);
-            pl.get(0).setVisibility(View.INVISIBLE);
-            pl.get(4).setVisibility(View.INVISIBLE);
+            pl.get(0).setVisibility(View.GONE);
+            pl.get(6).setVisibility(View.GONE);
+            for(int i=0;i<2;i++)
+                ((ImageView) ((LinearLayout) pl.get(4)).getChildAt(i)).
+                        setImageDrawable(this.getResources().getDrawable(R.drawable.cardback));
             pl.get(5).setVisibility(View.INVISIBLE);
         }
     }

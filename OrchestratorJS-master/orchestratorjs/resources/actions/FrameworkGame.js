@@ -28,7 +28,6 @@ function showCurrentState(){
     j = 0;
     while(j < players.length){
         if(!handlingDisconnection){
-            console.log("TURNO DE : "+ players[j].device.identity);
             players[j].device.frameworkCapability.showCurrentState(playersState,gameController.commonData);
             j++;
         } else
@@ -106,6 +105,8 @@ module.exports = {
         console.log('event from client: '+device.identity+', '+event_value);
         if(event_value == "disconnect")
             handleDisconnection(device, event_value);
+        if(players.length == 0)
+            action.finishAction();
     },
     
     

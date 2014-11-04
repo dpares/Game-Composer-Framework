@@ -11,8 +11,19 @@ import java.util.List;
 public class BestHand implements Comparable<BestHand> {
 
     public enum Type {
-        HIGH_CARD, ONE_PAIR, TWO_PAIR, THREE_OF_A_KIND, STRAIGHT, FLUSH, FULL_HOUSE,
-        FOUR_OF_A_KIND, STRAIGHT_FLUSH
+        HIGH_CARD("HIGH CARD"), ONE_PAIR("PAIR"), TWO_PAIR("TWO PAIR"),
+        THREE_OF_A_KIND("THREE OF A KIND"), STRAIGHT("STRAIGHT"), FLUSH("FLUSH"),
+        FULL_HOUSE("FULL HOUSE"), FOUR_OF_A_KIND("FOUR OF A KIND"), STRAIGHT_FLUSH("STRAIGHT FLUSH");
+
+        private String name;
+
+        Type(String name){
+            this.name = name;
+        }
+
+        public String toString(){
+            return this.name;
+        }
     }
 
     private Type type;
