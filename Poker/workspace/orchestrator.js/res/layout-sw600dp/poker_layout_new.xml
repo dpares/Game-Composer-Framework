@@ -778,7 +778,7 @@
                 android:clickable="false"
                 android:layout_weight="0.34"
                 android:typeface="monospace"
-                android:gravity="center_vertical|right"
+                android:gravity="center_vertical|center_horizontal"
                 android:background="@drawable/betbackground"
                 android:textAlignment="center"
                 android:layout_gravity="center_vertical" />
@@ -821,13 +821,31 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/loadingPanel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent">
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:visibility="gone" >
 
-        <FrameLayout
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"></FrameLayout>
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:indeterminate="true"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center_horizontal" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="30dp"
+            android:text="Wait for others to finish..."
+            android:layout_alignParentEnd="false"
+            android:layout_centerHorizontal="true"
+            android:textStyle="bold"
+            android:textColor="#999999"
+            android:visibility="visible" />
     </LinearLayout>
 
 </RelativeLayout>

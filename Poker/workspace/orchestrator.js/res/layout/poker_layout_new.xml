@@ -736,7 +736,7 @@
 
             <ImageButton
                 android:layout_width="0dp"
-                android:layout_height="fill_parent"
+                android:layout_height="match_parent"
                 android:src="@drawable/minusbutton"
                 android:id="@+id/minusButton"
                 android:onClick="decreaseBet"
@@ -749,19 +749,20 @@
 
             <TextView
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
+                android:layout_height="46dp"
                 android:text="100"
                 android:id="@+id/currentBet"
                 android:textSize="30dp"
                 android:clickable="true"
                 android:layout_weight="0.34"
                 android:typeface="monospace"
-                android:gravity="center_vertical|end"
-                android:background="@drawable/betbackground" />
+                android:gravity="center_vertical|center_horizontal"
+                android:background="@drawable/betbackground"
+                android:layout_gravity="center_vertical" />
 
             <ImageButton
                 android:layout_width="0dp"
-                android:layout_height="fill_parent"
+                android:layout_height="match_parent"
                 android:src="@drawable/plusbutton"
                 android:id="@+id/plusButton"
                 android:onClick="increaseBet"
@@ -813,13 +814,30 @@
         android:visibility="invisible" />
 
     <LinearLayout
+        android:id="@+id/loadingPanel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent">
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:visibility="gone">
 
-        <FrameLayout
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"></FrameLayout>
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:indeterminate="true"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center_horizontal" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15dp"
+            android:text="Wait for others to finish..."
+            android:layout_alignParentEnd="false"
+            android:layout_centerHorizontal="true"
+            android:textStyle="bold"
+            android:textColor="#999999" />
     </LinearLayout>
 
 </RelativeLayout>

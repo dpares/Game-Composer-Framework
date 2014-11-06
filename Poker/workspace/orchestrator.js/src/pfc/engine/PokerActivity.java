@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.View;
@@ -16,7 +17,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.ojs.OrchestratorJsActivity;
 import com.ojs.R;
 import com.ojs.capabilities.frameworkCapability.FrameworkCapability;
 import com.ojs.helpers.SettingHelpers;
@@ -28,7 +28,6 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-import bmge.framework.Image;
 import pfc.pokergame.BestHand;
 import pfc.pokergame.Card;
 import pfc.pokergame.Player;
@@ -47,6 +46,7 @@ public class PokerActivity extends Activity {
     private TextView betLabel;
     private TextView potLabel;
     private LinearLayout buttonLayout;
+    private LinearLayout spinningWheel;
 
     private Player player;
     private List<Card> communityCards;
@@ -55,6 +55,8 @@ public class PokerActivity extends Activity {
     private int numPlayers;
     private int playerIndex;
     private int currentPot;
+
+    private boolean showingResults;
 
     private boolean pausedActivity = false;
 
@@ -74,6 +76,7 @@ public class PokerActivity extends Activity {
         setContentView(R.layout.poker_layout_new);
 
         winnersLabel = (TextView) findViewById(R.id.winnersLabel);
+        winnersLabel.setTypeface(Typeface.createFromAsset(getAssets(),"fonts/badaboom.TTF"));
         communityCardImages = new ArrayList<ImageView>();
         communityCardImages.add((ImageView) findViewById(R.id.communityCard1));
         communityCardImages.add((ImageView) findViewById(R.id.communityCard2));
@@ -103,8 +106,10 @@ public class PokerActivity extends Activity {
         buttonLayout = (LinearLayout) findViewById(R.id.buttonLayout);
         betLabel = (TextView) findViewById(R.id.currentBet);
         potLabel = (TextView) findViewById(R.id.potLabel);
+        spinningWheel = (LinearLayout) findViewById(R.id.loadingPanel);
 
         instance = this;
+        showingResults = false;
         try {
             JSONObject initData = new JSONObject(this.getIntent().getStringExtra("init_data"));
             this.newGame(initData);
@@ -132,6 +137,8 @@ public class PokerActivity extends Activity {
 
     public void update(JSONArray players, JSONObject commonData) {
         communityCards = new ArrayList<Card>();
+        boolean skippingTurns = true; // Turns are skipped when every player is ALL_IN or FOLDED
+        boolean showToast = false; // Message shown after a player disconnects or loses
         try {
             this.biggestBet = commonData.getInt("biggest_bet");
             this.currentPot = commonData.getInt("current_pot");
@@ -158,10 +165,15 @@ public class PokerActivity extends Activity {
                 playerLayouts.get(this.numPlayers-1).get(0).setVisibility(View.GONE);
                 playerLayouts.get(this.numPlayers-1).get(6).setVisibility(View.GONE);
                 this.numPlayers = -1;
-                Toast.makeText(this,"A player has left the game",Toast.LENGTH_SHORT).show();
+                this.playerIndex = -1;
+                showToast = true;
             }
             for (int j = 0; j < players.length(); j++) {
                 Player p = new Player(players.getJSONObject(j));
+                if(spinningWheel.getVisibility()==View.VISIBLE && skippingTurns &&
+                        p.getState() != Player.State.FOLDED && p.getState() != Player.State.ALL_IN){
+                    skippingTurns = false;
+                }
                 if(numPlayers == -1) {
                     playerLayouts.get(j).get(0).setVisibility(View.VISIBLE);
                     playerLayouts.get(j).get(6).setVisibility(View.VISIBLE);
@@ -200,6 +212,16 @@ public class PokerActivity extends Activity {
             }
             if (this.numPlayers == -1)
                 this.numPlayers = players.length();
+            if(skippingTurns)
+                spinningWheel.setVisibility(View.GONE);
+            if(showToast){
+                String toastMsg;
+                if(showingResults)
+                    toastMsg = playerIndex == -1 ? "You have lost" : "A player has lost";
+                else
+                    toastMsg = "A player has left the game";
+                Toast.makeText(this,toastMsg,Toast.LENGTH_LONG).show();
+            }
         } catch (JSONException e) {
             throw new PokerException("Error updating PokerActivity", e);
         }
@@ -255,15 +277,19 @@ public class PokerActivity extends Activity {
                 this.currentBet = 100;
             betLabel.setText(new Integer(this.currentBet).toString());
             buttonLayout.setVisibility(View.VISIBLE);
+            spinningWheel.setVisibility(View.GONE);
         }
     }
 
     private void finishTurn() {
         buttonLayout.setVisibility(View.INVISIBLE);
+        spinningWheel.setVisibility(View.VISIBLE);
         FrameworkCapability.endOfTurn();
     }
 
     public void showResults(JSONObject winners, JSONArray players, JSONObject commonData) {
+        showingResults = true;
+        spinningWheel.setVisibility(View.GONE);
         try {
             boolean isWinner = false;
             JSONArray winnerNames = winners.getJSONArray("data");
