@@ -24,23 +24,23 @@ function playersStatesArray(){
 }   
 
 function showCurrentState(){
-    var playersState = playersStatesArray()
+    var playersState = playersStatesArray();
     j = 0;
     while(j < players.length){
-        if(!handlingDisconnection){
+        if(!handlingDisconnection)
             players[j].device.frameworkCapability.showCurrentState(playersState,gameController.commonData);
+        if(!handlingDisconnection)
             j++;
-        } else
-            handlingDisconnection = true;
+        if(handlingDisconnection)
+            handlingDisconnection = false;
     }
 }
 
 function countActivePlayers(){
     var res = 0;
-    for(var i = 0; i < players.length; i++){
+    for(var i = 0; i < players.length; i++)
         if(players[i].active)
             res++;
-    }
 
     return res;
 }
@@ -51,14 +51,17 @@ function showResults(){
     var json = {data: winners};
     j = 0;
     while(j < players.length){
-        if(!handlingDisconnection){
+        if(!handlingDisconnection)
             var playerState = players[j].device.frameworkCapability.showResults(json,playersStatesArray(),gameController.commonData);
+        if(!handlingDisconnection){
             players[j].state = playerState;
             if(!gameController.isActive(players[j].state))
                 players[j].active = false;
+        }
+        if(!handlingDisconnection)
             j++;
-        } else
-            handlingDisconnection = true;
+        if(handlingDisconnection)
+            handlingDisconnection = false;
     }
     showCurrentState();
 }
@@ -74,6 +77,7 @@ function remove(array,index){
 
 function handleDisconnection(device, event_value){
     if(currentPlayer != -1){
+        console.log("PUTA A");
         if (players[currentPlayer].device.identity == device.identity){
             handlingDisconnection = true;
             currentStep = config.phases[currentPhase];
@@ -82,7 +86,10 @@ function handleDisconnection(device, event_value){
         numPlayers--;
     } else if(typeof players[j] === 'undefined'){
         handlingDisconnection = true;
-    } else {
+        console.log("PUTA B");
+    }
+    else {
+        console.log("PUTA C");
         if(players[j].device.identity = device.identity)
             handlingDisconnection = true;
         players = gameController.exceptionHandler(players, device, event_value);
@@ -97,8 +104,9 @@ module.exports = {
 
     serverSideExceptionHandler: function(action, exception_value) {
         console.log('error on server-side: '+exception_value);
-        handlingDisconnection = true;
-        j++;
+        handleDisconnection(device, event_value);
+        if(players.length == 0)
+            action.finishAction();
     },
 
     eventHandler: function(action, device, event_value) {
@@ -115,16 +123,15 @@ module.exports = {
         var currentDevices = devices;
         do{      
             /// GAME INITIALIZATION	
-            j = 0;
             handlingDisconnection = false;
             currentPlayer = -1;
+            players = [];
             if(players.length > 0){
-                console.log("PLAYERS: " + players.length);
                 currentDevices = [];
                 for(i in players)
                     currentDevices.push(players[i].device);
             }
-            players = [];
+            j = 0;
             while(j < currentDevices.length) {
                 p(devices[j].identity);
                 var player = new Player();
@@ -152,10 +159,11 @@ module.exports = {
             else{
                 j = 0;
                 while(j < players.length){
-                    if(!handlingDisconnection){
+                    if(!handlingDisconnection)
                         players[j].device.frameworkCapability.exitGame("Not enough players");
-                        j++;
-                    } else
+                    if(!handlingDisconnection)
+                         j++;
+                    if(handlingDisconnection)
                         handlingDisconnection = false;
                 }
             }
@@ -175,9 +183,10 @@ module.exports = {
                                 currentStep = 0;
                                 while(currentStep < config.steps[currentPhase]){
                                     player.device.frameworkCapability.startStep(currentPhase,currentStep);
+                                    var stepResult;
                                     if(!handlingDisconnection)
-                                        var stepResult = player.device.frameworkCapability.getStepResult(currentPhase,currentStep);
-                                    while(stepResult.null && !handlingDisconnection){
+                                        stepResult = player.device.frameworkCapability.getStepResult(currentPhase,currentStep);
+                                    while(!handlingDisconnection && stepResult.null){
                                         misc.sleep(1);
                                         if(!handlingDisconnection)
                                             stepResult = player.device.frameworkCapability.getStepResult(currentPhase,currentStep);
@@ -204,11 +213,12 @@ module.exports = {
                 if(countActivePlayers() > 1){
                     j = 0;
                     while(j < players.length){
-                        if(!handlingDisconnection){
+                        if(!handlingDisconnection)
                             players[j].state = players[j].device.frameworkCapability.newRound();
+                        if(!handlingDisconnection)
                             j++;
-                        } else
-                            handlingDisconnection = true;
+                        if(handlingDisconnection)
+                            handlingDisconnection = false;
                     }
                     gameController.newRound(players);
                 }
@@ -217,17 +227,19 @@ module.exports = {
             var winner = gameController.nextPlayer(0,players); // Last active player
             j = 0;
             while (j < players.length){
-                if(!handlingDisconnection){
+                if(!handlingDisconnection)
                     players[j].device.frameworkCapability.announceWinner(playersStatesArray(),winner);
+                if(!handlingDisconnection)
                     j++;
-                } else 
-                    handlingDisconnection = true;
+                if(handlingDisconnection)
+                    handlingDisconnection = false;
             }
             j = 0;
             while (j < players.length){
+                var wantsRematch;
                 if(!handlingDisconnection)
-                    var wantsRematch = players[j].device.frameworkCapability.askForRematch();
-                while(wantsRematch.null && !handlingDisconnection){
+                    wantsRematch = players[j].device.frameworkCapability.askForRematch();
+                while(!handlingDisconnection && wantsRematch.null){
                     misc.sleep(1)
                     if(!handlingDisconnection)
                         wantsRematch = players[j].device.frameworkCapability.askForRematch();
@@ -240,16 +252,18 @@ module.exports = {
                         j++;
                     }
                     else
-                        players[j].device.frameworkCapability.exitGame("You have left the game");
+                        if(!handlingDisconnection)
+                            players[j].device.frameworkCapability.exitGame("You have left the game");
                 }
             }
             if(countActivePlayers() <= 1){
                 j = 0;
                 while(j < players.length){
-                    if(!handlingDisconnection){
+                    if(!handlingDisconnection)
                         players[j].device.frameworkCapability.exitGame("Not enough players");
+                    if(!handleDisconnection)
                         j++;
-                    } else
+                    if(handlingDisconnection)
                         handlingDisconnection = false;
                 }
             }

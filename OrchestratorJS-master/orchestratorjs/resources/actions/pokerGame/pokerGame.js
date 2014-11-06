@@ -81,10 +81,13 @@ Game.prototype.phaseSetUp = function(currentPhase,players){
             players[i].device.frameworkCapability.setPlayerState(player);
         }    
     } else if(currentPhase == 2){
+        this.deck.discard();
         for(var i=0;i<3;i++)
             this.commonData.community_cards.push(this.deck.draw());
-    } else if(currentPhase > 2 && currentPhase < 5)
+    } else if(currentPhase > 2 && currentPhase < 5){
+        this.deck.discard();
         this.commonData.community_cards.push(this.deck.draw());
+    }
 }
 
 Game.prototype.phaseEnd = function(currentPhase,players){
