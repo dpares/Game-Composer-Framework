@@ -11,12 +11,13 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import framework.engine.FrameworkGameActivity;
 import framework.engine.FrameworkGameException;
 
 /**
  * Created by fare on 07/11/14.
  */
-public class ParchisActivity extends Activity {
+public class ParchisActivity extends FrameworkGameActivity {
 
     private static ParchisView board;
 
@@ -38,6 +39,12 @@ public class ParchisActivity extends Activity {
         this.newGame(null);
     }
 
+    @Override
+    public JSONObject getCommonDataJSON() {
+        return new JSONObject();
+    }
+
+    @Override
     public void update(JSONArray players, JSONObject commonData){
         try{
             if(numPlayers == -1)
@@ -47,8 +54,28 @@ public class ParchisActivity extends Activity {
                 board.setPlayer(p,i);
             }
         } catch (JSONException e){
-            throw new FrameworkGameException("TDS PTS",e);
+            throw new FrameworkGameException("Error parsing JSON in update",e);
         }
+    }
+
+    @Override
+    public void startStep(int phase, int step) {
+
+    }
+
+    @Override
+    public void showResults(JSONObject winners, JSONArray players, JSONObject commonData) {
+
+    }
+
+    @Override
+    public void newRound() {
+        ((ParchisPlayer)this.player).newRound();
+    }
+
+    @Override
+    public void announceWinner(JSONArray players, Integer winner) {
+
     }
 
     public void newGame(JSONObject initData){

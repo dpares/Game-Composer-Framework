@@ -15,27 +15,27 @@ import framework.engine.FrameworkPlayer;
  */
 public class ParchisPlayer extends FrameworkPlayer {
 
+    public enum ParchisState implements State {DEFAULT, FINISHED};
+
     public enum Colour {YELLOW, RED, GREEN, BLUE, UNDEFINED};
 
-    private Colour currentState; // Posiblemente sera cambiado
+    private Colour colour;
 
     private List<Pawn> pawns;
 
     public ParchisPlayer(JSONObject initData, String name, String avatar, boolean spectate) {
         this.active = !spectate;
-        this.currentState = Colour.UNDEFINED;
         this.name = name;
         this.avatar = avatar;
-        this.pawns = new ArrayList<Pawn>();
-        for(int i=0;i<4;i++)
-            pawns.add(new Pawn(Pawn.INITIAL_SQUARE));
+        this.newRound();
     }
 
     public ParchisPlayer(JSONObject p){
         try {
-            this.currentState = Colour.values()[p.getInt("status")];
+            this.currentState = ParchisState.values()[p.getInt("status")];
             this.name = p.getString("name");
             this.avatar = p.getString("avatar");
+            this.colour = Colour.values()[p.getInt("colour")];
             JSONArray aux = p.getJSONArray("pawns");
             this.pawns = new ArrayList<Pawn>();
             for (int i = 0; i < aux.length(); i++)
@@ -45,25 +45,42 @@ public class ParchisPlayer extends FrameworkPlayer {
         }
     }
 
+
+    @Override
+    public JSONObject getJSON(){
+        JSONObject res = new JSONObject();
+        try {
+            res.put("status", ((ParchisState)this.currentState).ordinal());
+            JSONArray pawns = new JSONArray();
+            for (Pawn p : this.pawns)
+                pawns.put(p.getJSON());
+            res.put("hole_cards", pawns);
+            res.put("name", this.name);
+            res.put("avatar", this.avatar);
+            return res;
+        } catch (JSONException e) {
+            throw new FrameworkGameException("Error parsing Player into JSON", e);
+        }
+    }
+
+    @Override
+    public void newRound() {
+        this.colour = Colour.UNDEFINED;
+        this.currentState = ParchisState.DEFAULT;
+        this.pawns = new ArrayList<Pawn>();
+        for(int i=0;i<4;i++)
+            pawns.add(new Pawn(Pawn.INITIAL_SQUARE));
+    }
+
     public List<Pawn> getPawns(){
         return this.pawns;
     }
 
     public Colour getColour(){
-        return this.currentState;
+        return this.colour;
     }
 
     public void setColour(Colour colour){
-        this.currentState = colour;
-    }
-
-    @Override
-    public JSONObject getJSON(){
-        return null;
-    }
-
-    @Override
-    public void newGame(JSONObject initData) {
-
+        this.colour = colour;
     }
 }

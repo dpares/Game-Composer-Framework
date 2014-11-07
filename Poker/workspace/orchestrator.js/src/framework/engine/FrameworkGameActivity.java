@@ -118,7 +118,7 @@ public abstract class FrameworkGameActivity extends Activity {
         } catch (JSONException e) {
             throw new FrameworkGameException("Error parsing initData on newGame", e);
         } catch (ClassNotFoundException e){
-            throw new FrameworkGameException("Player class3 not found",e);
+            throw new FrameworkGameException("Player class not found",e);
         } catch (NoSuchMethodException e){
             throw new FrameworkGameException("Player constructor not found",e);
         } catch (Exception e){

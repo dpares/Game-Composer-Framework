@@ -228,14 +228,6 @@ public class ParchisView extends View {
         mMeta[3][3] = new PosG(x3, y4-2);
     }
 
-    private void calcPawnJgPos() {
-            //if (lugar == PosFicha.CORREDOR) {
-                mPosPawnJg[0] = new PosG(mCorredor[0][0].x, mCorredor[0][0].y, false);
-            /*} else if (lugar == PosFicha.LLEGADA) {
-                mPosPawnJg[i] = new PosG(mLlegada[c][pos][ind].x, mLlegada[c][pos][ind].y, false);
-            }*/
-    }
-
     @Override
     public void onDraw(Canvas canvas) {
         super.onDraw(canvas);

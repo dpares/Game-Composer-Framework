@@ -195,7 +195,7 @@ public class PokerActivity extends FrameworkGameActivity {
                 Toast.makeText(this, toastMsg, Toast.LENGTH_LONG).show();
             }
         } catch (JSONException e) {
-            throw new FrameworkGameException("Error updating PokerActivity", e);
+            throw new FrameworkGameException("Error parsing JSON in update", e);
         }
     }
 
@@ -253,7 +253,7 @@ public class PokerActivity extends FrameworkGameActivity {
 
     @Override
     public void newRound() {
-        ((PokerPlayer) this.player).newHand();
+        ((PokerPlayer) this.player).newRound();
         this.numPlayers = -1;
         winnersLabel.setVisibility(View.INVISIBLE);
         for (ImageView iv : communityCardImages)

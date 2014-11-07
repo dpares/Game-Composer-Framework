@@ -21,7 +21,7 @@ public abstract class FrameworkPlayer {
 
     public abstract JSONObject getJSON();
 
-    public abstract void newGame(JSONObject initData);
+    public abstract void newRound();
 
     public boolean isActive() {
         return this.active;

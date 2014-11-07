@@ -20,7 +20,17 @@ public class Pawn {
         try{
             this.square = pawn.getInt("square");
         }catch(JSONException e){
-            throw new FrameworkGameException("Error when parsing pawn",e);
+            throw new FrameworkGameException("Error parsing JSON into Pawn", e);
+        }
+    }
+
+    public JSONObject getJSON(){
+        try{
+            JSONObject res = new JSONObject();
+            res.put("square",this.square);
+            return res;
+        } catch(JSONException e){
+            throw new FrameworkGameException("Error parsing Pawn into JSON", e);
         }
     }
 }

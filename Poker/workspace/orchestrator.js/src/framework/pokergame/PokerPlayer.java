@@ -78,16 +78,6 @@ public class PokerPlayer extends FrameworkPlayer {
 
     }
 
-    @Override
-    public void newGame(JSONObject initData){
-        this.newHand();
-        try{
-            this.funds = initData.getInt("initial_funds");
-        } catch (JSONException e){
-            throw new FrameworkGameException("Error parsing initial funds",e);
-        }
-    }
-
     public void addNewHoleCard(Card c) {
         this.holeCards.add(c);
     }
@@ -109,7 +99,7 @@ public class PokerPlayer extends FrameworkPlayer {
                 this.holeCards + "\nBet: " + this.currentBet;
     }
 
-    public void newHand() {
+    public void newRound() {
         this.holeCards = new ArrayList<Card>();
         this.currentBet = 0;
         this.currentState = PokerState.DEFAULT;
