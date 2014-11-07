@@ -137,7 +137,8 @@ public class PokerActivity extends Activity {
 
     public void update(JSONArray players, JSONObject commonData) {
         communityCards = new ArrayList<Card>();
-        boolean skippingTurns = true; // Turns are skipped when every player is ALL_IN or FOLDED
+        boolean skippingTurns = this.player.isActive(); /* Turns are skipped when every player is ALL_IN or FOLDED
+        Only taken into account if the player is active */
         boolean showToast = false; // Message shown after a player disconnects or loses
         try {
             this.biggestBet = commonData.getInt("biggest_bet");
@@ -162,8 +163,11 @@ public class PokerActivity extends Activity {
 
             /* Player treatment */
             if(this.numPlayers != -1 && this.numPlayers != players.length()){ // A player left the game
-                playerLayouts.get(this.numPlayers-1).get(0).setVisibility(View.GONE);
-                playerLayouts.get(this.numPlayers-1).get(6).setVisibility(View.GONE);
+                int numPlayersLeft = this.numPlayers - players.length();
+                for(int j = 1; j <= numPlayersLeft; j++) {
+                    playerLayouts.get(this.numPlayers - j).get(0).setVisibility(View.GONE);
+                    playerLayouts.get(this.numPlayers - j).get(6).setVisibility(View.GONE);
+                }
                 this.numPlayers = -1;
                 this.playerIndex = -1;
                 showToast = true;
@@ -183,10 +187,9 @@ public class PokerActivity extends Activity {
                 if (this.numPlayers == -1 && p.getName().equals(this.player.getName()))
                     this.playerIndex = j; // Locate current player in JSON
                 // Change name and avatar once profiles are implemented
-                if (p.getState() == Player.State.FOLDED) {
-                    LinearLayout layout = (LinearLayout) playerLayouts.get(j).get(0);
-                    layout.setAlpha(0.5f);
-                } else {
+                if (p.getState() == Player.State.FOLDED)
+                    playerLayouts.get(j).get(0).setAlpha(0.5F);
+                else {
                     TextView funds = (TextView) playerLayouts.get(j).get(3);
                     funds.setText(new Integer(p.getFunds()).toString());
                 }

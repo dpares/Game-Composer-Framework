@@ -17,9 +17,15 @@ function Player() {
 
 function playersStatesArray(){
     var res = [];
-    for(i in players)
-        if(players[i].active)
+    var i = 0;
+    while(i < players.length){
+        if(players[i].active && ! handlingDisconnection)
             res.push(players[i].state);
+        if(!handlingDisconnection)
+            i++;
+        else
+            handlingDisconnection = false;
+    }
     return res;
 }   
 
@@ -38,9 +44,15 @@ function showCurrentState(){
 
 function countActivePlayers(){
     var res = 0;
-    for(var i = 0; i < players.length; i++)
-        if(players[i].active)
+    var i = 0;
+    while(i < players.length){
+        if(players[i].active && !handlingDisconnection)
             res++;
+        if(!handlingDisconnection)
+            i++;
+        else
+            handlingDisconnection = false;
+    }
 
     return res;
 }
@@ -51,15 +63,15 @@ function showResults(){
     var json = {data: winners};
     j = 0;
     while(j < players.length){
+        var playerState;
         if(!handlingDisconnection)
-            var playerState = players[j].device.frameworkCapability.showResults(json,playersStatesArray(),gameController.commonData);
+            playerState = players[j].device.frameworkCapability.showResults(json,playersStatesArray(),gameController.commonData);
         if(!handlingDisconnection){
             players[j].state = playerState;
             if(!gameController.isActive(players[j].state))
                 players[j].active = false;
-        }
-        if(!handlingDisconnection)
             j++;
+        }
         if(handlingDisconnection)
             handlingDisconnection = false;
     }
@@ -75,46 +87,44 @@ function remove(array,index){
     return res;
 }
 
-function handleDisconnection(device, event_value){
+function handleDisconnection(action, device, event_value){
     if(currentPlayer != -1){
-        console.log("PUTA A");
         if (players[currentPlayer].device.identity == device.identity){
             handlingDisconnection = true;
             currentStep = config.phases[currentPhase];
         }
         players = gameController.exceptionHandler(players, device, event_value);
         numPlayers--;
-    } else if(typeof players[j] === 'undefined'){
+    } else if(typeof players[j] === 'undefined')
         handlingDisconnection = true;
-        console.log("PUTA B");
-    }
     else {
-        console.log("PUTA C");
-        if(players[j].device.identity = device.identity)
+        if(j < players.length && players[j].device.identity == device.identity)
             handlingDisconnection = true;
         players = gameController.exceptionHandler(players, device, event_value);
     }
+
+    if(players.length == 0)
+        action.finishAction();
 }
 
 module.exports = {
 
     exceptionHandler: function(action, device, exception_value) {
         console.log('error on client-side: '+ device.identity+', '+exception_value);
+        device.frameworkCapability.exitGame("An error ocurred");
     },
 
     serverSideExceptionHandler: function(action, exception_value) {
         console.log('error on server-side: '+exception_value);
-        handleDisconnection(device, event_value);
-        if(players.length == 0)
-            action.finishAction();
+        handleDisconnection = true;
+        if(j+1<players.length)
+            j++;
     },
 
     eventHandler: function(action, device, event_value) {
         console.log('event from client: '+device.identity+', '+event_value);
         if(event_value == "disconnect")
-            handleDisconnection(device, event_value);
-        if(players.length == 0)
-            action.finishAction();
+            handleDisconnection(action, device, event_value);       
     },
     
     
@@ -240,7 +250,7 @@ module.exports = {
                 if(!handlingDisconnection)
                     wantsRematch = players[j].device.frameworkCapability.askForRematch();
                 while(!handlingDisconnection && wantsRematch.null){
-                    misc.sleep(1)
+                    misc.sleep(1);
                     if(!handlingDisconnection)
                         wantsRematch = players[j].device.frameworkCapability.askForRematch();
                 }
@@ -250,10 +260,8 @@ module.exports = {
                     if(wantsRematch.value){
                         players[j].active = true;
                         j++;
-                    }
-                    else
-                        if(!handlingDisconnection)
-                            players[j].device.frameworkCapability.exitGame("You have left the game");
+                    } else if(!handlingDisconnection)
+                        players[j].device.frameworkCapability.exitGame("You have left the game");
                 }
             }
             if(countActivePlayers() <= 1){
