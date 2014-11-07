@@ -48,7 +48,7 @@ import android.widget.ImageView;
 
 import android.widget.Toast;
 
-import pfc.parchisgame.ParchisActivity;
+import framework.parchisgame.ParchisActivity;
 
 public class OrchestratorJsActivity extends Activity {
 

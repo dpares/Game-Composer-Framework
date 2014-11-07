@@ -1,12 +1,9 @@
 var p = console.log;
 var misc = require('./misc.js'); 
-var config = require('./FrameworkConfig.js');
 
-var Game = config.gameController;
-
-var players = [];
-var j;
-var gameController, currentPlayer, numPlayers, currentPhase, currentStep;
+var players;
+var j, currentPlayer, numPlayers, currentPhase, currentStep;
+var Game, gameController ;
 var handlingDisconnection;
 
 function Player() { 
@@ -91,7 +88,7 @@ function handleDisconnection(action, device, event_value){
     if(currentPlayer != -1){
         if (players[currentPlayer].device.identity == device.identity){
             handlingDisconnection = true;
-            currentStep = config.phases[currentPhase];
+            currentStep = Game.config.phases[currentPhase];
         }
         players = gameController.exceptionHandler(players, device, event_value);
         numPlayers--;
@@ -129,8 +126,9 @@ module.exports = {
     
     
     // the body
-    body: function (devices) {
+    body: function (devices, gameControllerPath) {
         var currentDevices = devices;
+        Game = require(gameControllerPath);
         do{      
             /// GAME INITIALIZATION	
             handlingDisconnection = false;
@@ -146,7 +144,7 @@ module.exports = {
                 p(devices[j].identity);
                 var player = new Player();
                 player.device = currentDevices[j];
-                player.device.frameworkCapability.initGame(config.initData);
+                player.device.frameworkCapability.initGame(Game.config.initData);
                 if(!handlingDisconnection){
                     var initState = player.device.frameworkCapability.getPlayerInitialState();
                     while(initState.null && !handlingDisconnection){
@@ -163,7 +161,7 @@ module.exports = {
                     handlingDisconnection = false;
                 j++;
             }
-            gameController = new Game(players);
+            gameController = new Game.Game(players);
             if(countActivePlayers() > 1)
                 showCurrentState();
             else{
@@ -181,7 +179,7 @@ module.exports = {
             while(countActivePlayers() > 1){
                 currentPlayer = gameController.nextPlayer(-1,players);
                 currentPhase = 0;
-                while(currentPhase < config.phases){
+                while(currentPhase < Game.config.phases){
                     gameController.phaseSetUp(currentPhase,players);
                     showCurrentState();
                     do{
@@ -190,7 +188,7 @@ module.exports = {
                             for(var i = 0; i < numPlayers; i++){
                                 var player = players[currentPlayer];
                                 currentStep = 0;
-                                while(currentStep < config.steps[currentPhase]){
+                                while(currentStep < Game.config.steps[currentPhase]){
                                     player.device.frameworkCapability.startStep(currentPhase,currentStep);
                                     var stepResult;
                                     if(!handlingDisconnection)

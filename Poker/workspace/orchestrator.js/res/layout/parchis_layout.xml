@@ -9,10 +9,10 @@
         android:layout_height="fill_parent"
         android:layout_weight="0.22"></FrameLayout>
 
-    <pfc.parchisgame.ParchisView
+    <framework.parchisgame.ParchisView
      android:layout_height="wrap_content"
      android:layout_width="wrap_content">
-     </pfc.parchisgame.ParchisView>
+     </framework.parchisgame.ParchisView>
 
     <FrameLayout
         android:layout_width="0dp"

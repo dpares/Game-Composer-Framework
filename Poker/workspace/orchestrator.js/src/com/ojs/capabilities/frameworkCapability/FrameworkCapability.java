@@ -1,11 +1,7 @@
 package com.ojs.capabilities.frameworkCapability;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.util.Log;
-import android.widget.Toast;
 
 import com.ojs.OrchestratorJsActivity;
 
@@ -13,9 +9,8 @@ import org.json.JSONException;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import pfc.engine.PokerException;
-import pfc.engine.PokerActivity;
-import pfc.pokergame.Player;
+import framework.engine.FrameworkGameException;
+import framework.engine.FrameworkGameActivity;
 
 /**
  * Created by fare on 29/09/14.
@@ -49,7 +44,7 @@ public class FrameworkCapability {
         try {
             return new JSONObject().put("null", true);
         } catch (JSONException e) {
-            throw new PokerException("Error parsing null JSON", e);
+            throw new FrameworkGameException("Error parsing null JSON", e);
         }
     }
 
@@ -61,39 +56,46 @@ public class FrameworkCapability {
         wantsRematch = false;
         gameLeft = false;
 
-        if (PokerActivity.getInstance() == null) {
-            Intent i = new Intent(FrameworkCapability.ctx, PokerActivity.class);
-            i.putExtra("init_data", initData.toString());
-            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            ctx.startActivity(i);
+        if (FrameworkGameActivity.getInstance() == null) {
+            try {
+                String className = initData.getString("activity_class");
+                Intent i = new Intent(FrameworkCapability.ctx, Class.forName(className));
+                i.putExtra("init_data", initData.toString());
+                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                ctx.startActivity(i);
+            } catch (JSONException e){
+                throw new FrameworkGameException("Error parsing initData JSON",e);
+            } catch (ClassNotFoundException e){
+                throw new FrameworkGameException("activityClass not found",e);
+            }
         } else
-            PokerActivity.getInstance().newGame(initData);
+            FrameworkGameActivity.getInstance().newGame(initData);
     }
 
     public void setPlayerState(JSONObject state) {
-        PokerActivity.getInstance().setPlayerState(state);
+        FrameworkGameActivity.getInstance().setPlayerState(state);
     }
 
     public JSONObject getPlayerInitialState() {
-        if (PokerActivity.getInstance() == null)
+        if (FrameworkGameActivity.getInstance() == null)
             return FrameworkCapability.nullJSON();
         else
             try{
                 JSONObject res = new JSONObject();
-                res.put("state",PokerActivity.getInstance().getPlayer().getJSON());
-                res.put("active",PokerActivity.getInstance().getPlayer().isActive());
+                res.put("state",FrameworkGameActivity.getInstance().getPlayer().getJSON());
+                res.put("active",FrameworkGameActivity.getInstance().getPlayer().isActive());
                 return res;
             }catch (JSONException e){
-                throw new PokerException("Error when creating initial state JSON",e);
+                throw new FrameworkGameException("Error when creating initial state JSON",e);
             }
     }
 
     public void showCurrentState(JSONArray players, JSONObject commonData) {
-        PokerActivity.getInstance().update(players, commonData);
+        FrameworkGameActivity.getInstance().update(players, commonData);
     }
 
     public void startStep(Integer phase, Integer step) {
-        PokerActivity.getInstance().startStep(phase, step);
+        FrameworkGameActivity.getInstance().startStep(phase, step);
     }
 
     public JSONObject getStepResult(Integer phase, Integer step) {
@@ -103,29 +105,29 @@ public class FrameworkCapability {
             playerDataAvailable = false;
             JSONObject res = new JSONObject();
             try {
-                res.put("common_data", PokerActivity.getInstance().getCommonDataJSON());
-                res.put("player_data", PokerActivity.getInstance().getPlayer().getJSON());
+                res.put("common_data", FrameworkGameActivity.getInstance().getCommonDataJSON());
+                res.put("player_data", FrameworkGameActivity.getInstance().getPlayer().getJSON());
                 return res;
             } catch (JSONException e) {
-                throw new PokerException("Error sending turn result", e);
+                throw new FrameworkGameException("Error sending turn result", e);
             }
         }
     }
 
     public JSONObject showResults(JSONObject winners, JSONArray players, JSONObject commonData) {
-        PokerActivity.getInstance().showResults(winners, players, commonData);
-        return PokerActivity.getInstance().getPlayer().getJSON();
+        FrameworkGameActivity.getInstance().showResults(winners, players, commonData);
+        return FrameworkGameActivity.getInstance().getPlayer().getJSON();
     }
 
     public JSONObject newRound() {
-        PokerActivity.getInstance().newRound();
-        return PokerActivity.getInstance().getPlayer().getJSON();
+        FrameworkGameActivity.getInstance().newRound();
+        return FrameworkGameActivity.getInstance().getPlayer().getJSON();
     }
 
     public void announceWinner(JSONArray players, Integer winner) {
-        PokerActivity.getInstance().announceWinner(players, winner);
+        FrameworkGameActivity.getInstance().announceWinner(players, winner);
         playerDataAvailable = false;
-        PokerActivity.getInstance().askForRematch();
+        FrameworkGameActivity.getInstance().askForRematch();
     }
 
     public static void rematchAnswer(boolean wantsRematch) {
@@ -140,13 +142,13 @@ public class FrameworkCapability {
             try {
                 return new JSONObject().put("value", FrameworkCapability.wantsRematch);
             } catch (JSONException e) {
-                throw new PokerException("Error when creating JSON on askForRematch", e);
+                throw new FrameworkGameException("Error when creating JSON on askForRematch", e);
             }
     }
 
     public void exitGame(String reason) {
         FrameworkCapability.leaveGame();
-        PokerActivity.getInstance().closeActivity(reason);
+        FrameworkGameActivity.getInstance().closeActivity(reason);
     }
 
     public static void endOfTurn() {

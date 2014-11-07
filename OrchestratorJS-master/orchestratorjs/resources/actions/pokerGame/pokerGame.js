@@ -10,6 +10,12 @@ var playerStatus = {
     FOLDED : 5
 };
 
+var config = {};
+config.initData = {initial_funds : 1000, activity_class : "framework.pokergame.PokerActivity", 
+    player_class : "framework.pokergame.PokerPlayer"};
+config.phases = 5;
+config.steps = [1,1,1,1,1];
+
 function compareBestHands(a,b) {
     var res = a.type - b.type; //comparing types
     var i = 0;
@@ -164,4 +170,5 @@ Game.prototype.exceptionHandler = function(players, device, exception_value){
     return remove(players,i);
 }
 
-module.exports = Game;
+module.exports.Game = Game;
+module.exports.config = config;

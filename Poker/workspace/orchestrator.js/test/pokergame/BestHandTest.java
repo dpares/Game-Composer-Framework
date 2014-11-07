@@ -1,21 +1,22 @@
 package pokergame;
 
+import org.json.JSONObject;
 import org.junit.Test;
 import org.junit.Assert;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import pfc.pokergame.BestHand;
-import pfc.pokergame.Card;
-import pfc.pokergame.Player;
+import framework.pokergame.BestHand;
+import framework.pokergame.Card;
+import framework.pokergame.PokerPlayer;
 
 /**
  * Created by fare on 21/09/14.
  */
 public class BestHandTest {
 
-    private Player p = new Player(1000,"0","",false);
+    private PokerPlayer p = new PokerPlayer(null,"0","",false);
 
     @Test
     public void testHighCard(){
