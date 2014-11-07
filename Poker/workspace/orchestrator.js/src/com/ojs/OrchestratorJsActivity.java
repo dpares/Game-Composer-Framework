@@ -20,7 +20,6 @@ import org.json.JSONArray;
 
 import org.json.JSONObject;
 
-import com.ojs.capabilities.frameworkCapability.settings.FrameworkSettingsActivity;
 import com.ojs.helpers.SettingHelpers;
 import com.ojs.libraries.SocketIOClient;
 import com.ojs.settings.GeneralSettingsActivity;
@@ -48,6 +47,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 
 import android.widget.Toast;
+
+import pfc.parchisgame.ParchisActivity;
 
 public class OrchestratorJsActivity extends Activity {
 
@@ -227,7 +228,7 @@ public class OrchestratorJsActivity extends Activity {
         testBtn = (Button) findViewById(R.id.testBtn);
         testBtn.setOnClickListener(new OnClickListener(){
             public void onClick(View v){
-                Intent i = new Intent(getBaseContext(), FrameworkSettingsActivity.class);
+                Intent i = new Intent(getBaseContext(), ParchisActivity.class);
                 i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(i);
             }

@@ -167,7 +167,6 @@ module.exports = {
             if(countActivePlayers() > 1)
                 showCurrentState();
             else{
-                j = 0;
                 while(j < players.length){
                     if(!handlingDisconnection)
                         players[j].device.frameworkCapability.exitGame("Not enough players");

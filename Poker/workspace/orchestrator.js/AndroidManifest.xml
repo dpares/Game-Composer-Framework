@@ -103,6 +103,13 @@
         </activity>
 
         <activity
+            android:name="pfc.parchisgame.ParchisActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation"
+            android:label="ParchisActivity"
+            android:screenOrientation="landscape" >
+        </activity>
+
+        <activity
             android:name="com.ojs.capabilities.frameworkCapability.settings.FrameworkSettingsActivity"
             android:configChanges="orientation"
             android:label="Settings"
