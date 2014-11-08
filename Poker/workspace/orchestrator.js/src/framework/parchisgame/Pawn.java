@@ -10,6 +10,8 @@ import framework.engine.FrameworkGameException;
  */
 public class Pawn {
     public static final int INITIAL_SQUARE = 0;
+    public static final int REGULAR_SQUARES = 68;
+    public static final int LAST_SQUARE = 100;
     private int square;
 
     public Pawn(int square){
@@ -22,6 +24,10 @@ public class Pawn {
         }catch(JSONException e){
             throw new FrameworkGameException("Error parsing JSON into Pawn", e);
         }
+    }
+
+    public int getSquare(){
+        return this.square;
     }
 
     public JSONObject getJSON(){

@@ -3,11 +3,12 @@ var playerStatus = {
     FINISHED : 1
 };
 
+var UNDEFINED_COLOUR = 4;
+
 var config = {};
-config.initData = {initial_funds : 1000, activity_class : "framework.pokergame.ParchisActivity", 
-    player_class : "framework.pokergame.ParchisPlayer"};
-config.phases = 2;
-config.steps = [1,3];
+config.initData = {activity_class : "framework.parchisgame.ParchisActivity", player_class : "framework.parchisgame.ParchisPlayer"};
+config.phases = 1;
+config.steps = [3];
 
 
 Game.prototype.newRound = function(players){
@@ -17,6 +18,9 @@ Game.prototype.newRound = function(players){
 
 function Game(players){
     this.newRound();
+
+    for(i in players)
+        players[i].state.colour = UNDEFINED_COLOUR;
 }
 
 Game.prototype.countAvailablePlayers = function(players){
@@ -25,7 +29,6 @@ Game.prototype.countAvailablePlayers = function(players){
         if(players[i].active && players[i].state.status != playerStatus.FINISHED)
             res++;
     }
-
     return res;
 }
 
@@ -47,10 +50,8 @@ Game.prototype.phaseSetUp = function(currentPhase,players){
     if(currentPhase == 0){
         for(i in players){
             players[i].state.colour = i;
-            players[i].device.frameworkCapability.setPlayerState(state);
+            players[i].device.frameworkCapability.setPlayerState(players[i].state);
         }
-    } else {
-        //TODO
     }
 }
 
@@ -69,12 +70,12 @@ Game.prototype.phaseEnd = function(currentPhase,players){
 }
 
 Game.prototype.updateCommonData = function(commonData){
-    //TODO
+    this.commonData.last_roll = commonData.last_roll
 }
 
 Game.prototype.computeResults = function(players){
     for(i in players)
-        if (players[i].status.state == playerStatus.FINISHED)
+        if (players[i].state.status == playerStatus.FINISHED)
             this.winners.push(players[i].state.name);
 }
 
@@ -83,7 +84,7 @@ Game.prototype.declareWinners = function(players){
 }
 
 Game.prototype.isActive = function(player){
-    return player.state.status == playerStatus.FINISHED;
+    return player.status == playerStatus.FINISHED;
 }
 
 function remove(array,index){
@@ -96,6 +97,14 @@ function remove(array,index){
 }
 
 Game.prototype.exceptionHandler = function(players, device, exception_value){
+    var playerFound = false;
+    var i = 0;
+    while(!playerFound && i<players.length){
+        if(players[i].device.identity == device.identity)
+            playerFound = true;
+        else
+            i++;
+    }
     return remove(players,i);
 }
 

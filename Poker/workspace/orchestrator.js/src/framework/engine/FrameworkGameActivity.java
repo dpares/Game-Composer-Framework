@@ -20,8 +20,6 @@ import org.json.JSONObject;
 
 import java.lang.reflect.Constructor;
 
-import framework.pokergame.PokerPlayer;
-
 /**
  * Created by fare on 07/11/14.
  */
@@ -63,8 +61,7 @@ public abstract class FrameworkGameActivity extends Activity {
     public void setPlayerState(JSONObject state) {
         try {
             Class playerClass = Class.forName(this.playerClassName);
-            Constructor playerConstructor = playerClass.getConstructor(JSONObject.class,
-                    String.class, String.class, boolean.class);
+            Constructor playerConstructor = playerClass.getConstructor(JSONObject.class);
             this.player = (FrameworkPlayer) playerConstructor.newInstance(state);
         } catch (ClassNotFoundException e){
             throw new FrameworkGameException("Player class not found",e);
@@ -106,7 +103,6 @@ public abstract class FrameworkGameActivity extends Activity {
     public void newGame(JSONObject initData) {
         try {
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-            int initialFunds = initData.getInt("initial_funds");
             String name = prefs.getString("pref_player_name", "Player");
             String avatar = SettingHelpers.getStringValue("pref_player_avatar", this);
             boolean spectate = prefs.getBoolean("pref_player_spectate", false);
@@ -132,6 +128,7 @@ public abstract class FrameworkGameActivity extends Activity {
         super.onBackPressed();
     }
 
+    @Override
     public void onBackPressed() {
         new AlertDialog.Builder(this).setIcon(android.R.drawable.ic_dialog_alert)
                 .setTitle("Leaving game").setMessage("Are you sure you want to leave the current game?")
@@ -144,13 +141,15 @@ public abstract class FrameworkGameActivity extends Activity {
                 }).setNegativeButton("No", null).show();
     }
 
-    public void onPause() {
+    @Override
+    protected void onPause() {
         super.onPause();
         FrameworkCapability.leaveGame();
         this.pausedActivity = true;
     }
 
-    public void onResume() {
+    @Override
+    protected void onResume() {
         super.onResume();
         if (pausedActivity) {
             new AlertDialog.Builder(this).setIcon(android.R.drawable.ic_dialog_alert)

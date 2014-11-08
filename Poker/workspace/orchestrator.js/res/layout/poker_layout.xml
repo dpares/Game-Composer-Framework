@@ -4,32 +4,553 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:background="@drawable/pokertable">
+    android:background="@drawable/blackjack">
 
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent">
 
-        <FrameLayout
+        <LinearLayout
+            android:orientation="horizontal"
             android:layout_width="fill_parent"
             android:layout_height="0dp"
-            android:layout_weight="0.25">
+            android:layout_weight="0.45"
+            android:id="@+id/playerLayouts"
+            android:visibility="visible"
+            android:layout_marginTop="5dp">
 
-            <TextView
-                android:layout_width="wrap_content"
+            <FrameLayout
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:id="@+id/winnersLabel"
-                android:layout_gravity="center_horizontal|bottom"
-                android:layout_centerHorizontal="true"
-                android:typeface="monospace"
-                android:text="Player 1 wins"
-                android:textColor="#fffffc42"
-                android:textStyle="bold"
-                android:textSize="30dp"
-                android:visibility="invisible" />
-        </FrameLayout>
+                android:layout_weight="1"
+                android:id="@+id/player1FrameLayout"
+                android:visibility="visible"></FrameLayout>
+
+            <RelativeLayout
+                android:orientation="vertical"
+                android:layout_width="90dp"
+                android:layout_height="150dp"
+                android:layout_alignParentBottom="false"
+                android:id="@+id/player1Layout"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:visibility="visible">
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="90dp"
+                    android:layout_height="95dp"
+                    android:id="@+id/player1_dataLayout"
+                    android:background="@drawable/playerbackground"
+                    android:visibility="visible">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:text="Player 1"
+                        android:id="@+id/player1_name"
+                        android:layout_weight="0.3"
+                        android:textColor="#ffffffff"
+                        android:textStyle="bold"
+                        android:textSize="20dp"
+                        android:layout_gravity="center_horizontal" />
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="0dp"
+                        android:id="@+id/player1_avatar"
+                        android:src="@drawable/defaultavatar"
+                        android:layout_weight="0.45"
+                        android:adjustViewBounds="true"
+                        android:layout_gravity="center_horizontal" />
+
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_weight="0.25"
+                        android:layout_gravity="center_horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="1000"
+                            android:id="@+id/player1_funds"
+                            android:layout_weight="0.8"
+                            android:textColor="#ffffff"
+                            android:textStyle="bold"
+                            android:textSize="20dp"
+                            android:paddingRight="5dp"
+                            android:layout_gravity="center_vertical" />
+
+                        <ImageView
+                            android:layout_width="0dp"
+                            android:layout_height="15dp"
+                            android:id="@+id/player1_chip"
+                            android:src="@drawable/chip"
+                            android:layout_weight="0.2"
+                            android:adjustViewBounds="true"
+                            android:layout_gravity="center_vertical" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <RelativeLayout
+                    android:orientation="vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/player1_bestHandLayout"
+                    android:visibility="visible"
+                    android:layout_alignParentStart="false"
+                    android:layout_below="@+id/player1_dataLayout"
+                    android:layout_marginTop="5dp">
+
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:visibility="visible"
+                        android:id="@+id/player1_holeCardsLayout"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_centerHorizontal="true">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="47dp"
+                            android:id="@+id/player1_holeCard1"
+                            android:src="@drawable/cardback"
+                            android:adjustViewBounds="true"
+                            android:scaleType="fitXY"
+                            android:layout_marginLeft="5dp" />
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="47dp"
+                            android:id="@+id/player1_holeCard2"
+                            android:src="@drawable/cardback"
+                            android:adjustViewBounds="true"
+                            android:scaleType="fitXY"
+                            android:layout_marginLeft="5dp" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="90dp"
+                        android:layout_height="wrap_content"
+                        android:text="CARD HIGH"
+                        android:id="@+id/player1_handType"
+                        android:textColor="#000000"
+                        android:textStyle="bold|italic"
+                        android:textSize="15dp"
+                        android:visibility="visible"
+                        android:singleLine="false"
+                        android:background="#fffffa1e"
+                        android:layout_centerHorizontal="true"
+                        android:layout_alignBottom="@+id/player1_holeCardsLayout"
+                        android:gravity="center_horizontal" />
+                </RelativeLayout>
+
+            </RelativeLayout>
+
+            <FrameLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:visibility="visible"
+                android:id="@+id/player2FrameLayout"></FrameLayout>
+
+            <RelativeLayout
+                android:orientation="vertical"
+                android:layout_width="90dp"
+                android:layout_height="150dp"
+                android:layout_alignParentBottom="false"
+                android:id="@+id/player2Layout"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:visibility="visible" >
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="90dp"
+                    android:layout_height="95dp"
+                    android:id="@+id/player2_dataLayout"
+                    android:background="@drawable/playerbackground"
+                    android:visibility="visible" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:text="Player 1"
+                        android:id="@+id/player2_name"
+                        android:layout_weight="0.3"
+                        android:textColor="#ffffffff"
+                        android:textStyle="bold"
+                        android:textSize="20dp"
+                        android:layout_gravity="center_horizontal" />
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="0dp"
+                        android:id="@+id/player2_avatar"
+                        android:src="@drawable/defaultavatar"
+                        android:layout_weight="0.45"
+                        android:adjustViewBounds="true"
+                        android:layout_gravity="center_horizontal" />
+
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_weight="0.25"
+                        android:layout_gravity="center_horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="1000"
+                            android:id="@+id/player2_funds"
+                            android:layout_weight="0.8"
+                            android:textColor="#ffffff"
+                            android:textStyle="bold"
+                            android:textSize="20dp"
+                            android:paddingRight="5dp" />
+
+                        <ImageView
+                            android:layout_width="0dp"
+                            android:layout_height="20dp"
+                            android:id="@+id/player2_chip"
+                            android:src="@drawable/chip"
+                            android:layout_weight="0.2"
+                            android:adjustViewBounds="true"
+                            android:layout_gravity="center_vertical" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <RelativeLayout
+                    android:orientation="vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/player2_bestHandLayout"
+                    android:visibility="visible"
+                    android:layout_alignParentStart="false"
+                    android:layout_below="@+id/player2_dataLayout"
+                    android:layout_marginTop="5dp" >
+
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:visibility="visible"
+                        android:id="@+id/player2_holeCardsLayout"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_centerHorizontal="true" >
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="47dp"
+                            android:id="@+id/player2_holeCard1"
+                            android:src="@drawable/cardback"
+                            android:adjustViewBounds="true"
+                            android:scaleType="fitXY"
+                            android:layout_marginLeft="5dp" />
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="47dp"
+                            android:id="@+id/player2_holeCard2"
+                            android:src="@drawable/cardback"
+                            android:adjustViewBounds="true"
+                            android:scaleType="fitXY"
+                            android:layout_marginLeft="5dp" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="90dp"
+                        android:layout_height="wrap_content"
+                        android:text="CARD HIGH"
+                        android:id="@+id/player2_handType"
+                        android:textColor="#000000"
+                        android:textStyle="bold|italic"
+                        android:textSize="15dp"
+                        android:visibility="visible"
+                        android:singleLine="false"
+                        android:background="#fffffa1e"
+                        android:layout_centerHorizontal="true"
+                        android:layout_alignBottom="@+id/player2_holeCardsLayout"
+                        android:gravity="center_horizontal" />
+                </RelativeLayout>
+            </RelativeLayout>
+
+            <FrameLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:id="@+id/player3FrameLayout"
+                android:visibility="visible" />
+
+            <RelativeLayout
+                android:orientation="vertical"
+                android:layout_width="90dp"
+                android:layout_height="150dp"
+                android:layout_alignParentBottom="false"
+                android:id="@+id/player3Layout"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:visibility="visible" >
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="90dp"
+                    android:layout_height="95dp"
+                    android:id="@+id/player3_dataLayout"
+                    android:background="@drawable/playerbackground"
+                    android:visibility="visible" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:text="Player 1"
+                        android:id="@+id/player3_name"
+                        android:layout_weight="0.3"
+                        android:textColor="#ffffffff"
+                        android:textStyle="bold"
+                        android:textSize="20dp"
+                        android:layout_gravity="center_horizontal" />
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="0dp"
+                        android:id="@+id/player3_avatar"
+                        android:src="@drawable/defaultavatar"
+                        android:layout_weight="0.45"
+                        android:adjustViewBounds="true"
+                        android:layout_gravity="center_horizontal" />
+
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_weight="0.25"
+                        android:layout_gravity="center_horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="1000"
+                            android:id="@+id/player3_funds"
+                            android:layout_weight="0.8"
+                            android:textColor="#ffffff"
+                            android:textStyle="bold"
+                            android:textSize="20dp"
+                            android:paddingRight="5dp" />
+
+                        <ImageView
+                            android:layout_width="0dp"
+                            android:layout_height="20dp"
+                            android:id="@+id/player3_chip"
+                            android:src="@drawable/chip"
+                            android:layout_weight="0.2"
+                            android:adjustViewBounds="true"
+                            android:layout_gravity="center_vertical" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <RelativeLayout
+                    android:orientation="vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/player3_bestHandLayout"
+                    android:visibility="visible"
+                    android:layout_alignParentStart="false"
+                    android:layout_below="@+id/player3_dataLayout"
+                    android:layout_marginTop="5dp" >
+
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:visibility="visible"
+                        android:id="@+id/player3_holeCardsLayout"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_centerHorizontal="true" >
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="47dp"
+                            android:id="@+id/player3_holeCard1"
+                            android:src="@drawable/cardback"
+                            android:adjustViewBounds="true"
+                            android:scaleType="fitXY"
+                            android:layout_marginLeft="5dp" />
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="47dp"
+                            android:id="@+id/player3_holeCard2"
+                            android:src="@drawable/cardback"
+                            android:adjustViewBounds="true"
+                            android:scaleType="fitXY"
+                            android:layout_marginLeft="5dp" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="90dp"
+                        android:layout_height="wrap_content"
+                        android:text="CARD HIGH"
+                        android:id="@+id/player3_handType"
+                        android:textColor="#000000"
+                        android:textStyle="bold|italic"
+                        android:textSize="15dp"
+                        android:visibility="visible"
+                        android:singleLine="false"
+                        android:background="#fffffa1e"
+                        android:layout_centerHorizontal="true"
+                        android:layout_alignBottom="@+id/player3_holeCardsLayout"
+                        android:gravity="center_horizontal" />
+                </RelativeLayout>
+            </RelativeLayout>
+
+            <FrameLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:id="@+id/player4FrameLayout"
+                android:visibility="visible" />
+
+            <RelativeLayout
+                android:orientation="vertical"
+                android:layout_width="90dp"
+                android:layout_height="150dp"
+                android:layout_alignParentBottom="false"
+                android:id="@+id/player4Layout"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:visibility="visible" >
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="90dp"
+                    android:layout_height="95dp"
+                    android:id="@+id/player4_dataLayout"
+                    android:background="@drawable/playerbackground"
+                    android:visibility="visible" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:text="Player 1"
+                        android:id="@+id/player4_name"
+                        android:layout_weight="0.3"
+                        android:textColor="#ffffffff"
+                        android:textStyle="bold"
+                        android:textSize="20dp"
+                        android:layout_gravity="center_horizontal" />
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="0dp"
+                        android:id="@+id/player4_avatar"
+                        android:src="@drawable/defaultavatar"
+                        android:layout_weight="0.45"
+                        android:adjustViewBounds="true"
+                        android:layout_gravity="center_horizontal" />
+
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_weight="0.25"
+                        android:layout_gravity="center_horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="1000"
+                            android:id="@+id/player4_funds"
+                            android:layout_weight="0.8"
+                            android:textColor="#ffffff"
+                            android:textStyle="bold"
+                            android:textSize="20dp"
+                            android:paddingRight="5dp" />
+
+                        <ImageView
+                            android:layout_width="0dp"
+                            android:layout_height="20dp"
+                            android:id="@+id/player4_chip"
+                            android:src="@drawable/chip"
+                            android:layout_weight="0.2"
+                            android:adjustViewBounds="true"
+                            android:layout_gravity="center_vertical" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <RelativeLayout
+                    android:orientation="vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/player4_bestHandLayout"
+                    android:visibility="visible"
+                    android:layout_alignParentStart="false"
+                    android:layout_below="@+id/player4_dataLayout"
+                    android:layout_marginTop="5dp" >
+
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:visibility="visible"
+                        android:id="@+id/player4_holeCardsLayout"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_centerHorizontal="true" >
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="47dp"
+                            android:id="@+id/player4_holeCard1"
+                            android:src="@drawable/cardback"
+                            android:adjustViewBounds="true"
+                            android:scaleType="fitXY"
+                            android:layout_marginLeft="5dp" />
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="47dp"
+                            android:id="@+id/player4_holeCard2"
+                            android:src="@drawable/cardback"
+                            android:adjustViewBounds="true"
+                            android:scaleType="fitXY"
+                            android:layout_marginLeft="5dp" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="90dp"
+                        android:layout_height="wrap_content"
+                        android:text="CARD HIGH"
+                        android:id="@+id/player4_handType"
+                        android:textColor="#000000"
+                        android:textStyle="bold|italic"
+                        android:textSize="15dp"
+                        android:visibility="visible"
+                        android:singleLine="false"
+                        android:background="#fffffa1e"
+                        android:layout_centerHorizontal="true"
+                        android:layout_alignBottom="@+id/player4_holeCardsLayout"
+                        android:gravity="center_horizontal" />
+                </RelativeLayout>
+            </RelativeLayout>
+
+            <FrameLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:id="@+id/frameLayout3"
+                android:visibility="visible" />
+
+        </LinearLayout>
 
         <LinearLayout
             android:orientation="horizontal"
@@ -38,70 +559,71 @@
             android:id="@+id/communityCardsLayout"
             android:visibility="visible"
             android:layout_centerHorizontal="true"
-            android:layout_weight="0.4">
+            android:layout_weight="0.2">
 
             <FrameLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:visibility="invisible"
-                android:layout_weight="0.15"
+                android:layout_weight="1"
                 android:layout_gravity="center_vertical"></FrameLayout>
 
             <ImageView
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/communityCard1"
-                android:layout_weight="0.14"
                 android:src="@drawable/cardback"
                 android:layout_gravity="center_vertical"
-                android:visibility="invisible"
-                android:adjustViewBounds="true" />
+                android:visibility="visible"
+                android:adjustViewBounds="true"
+                android:scaleType="fitXY"
+                android:layout_marginLeft="10dp" />
 
             <ImageView
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/communityCard2"
-                android:layout_weight="0.14"
                 android:src="@drawable/cardback"
                 android:layout_gravity="center_vertical"
-                android:visibility="invisible"
-                android:adjustViewBounds="true" />
+                android:visibility="visible"
+                android:adjustViewBounds="true"
+                android:layout_marginLeft="10dp" />
 
             <ImageView
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/communityCard3"
-                android:layout_weight="0.14"
                 android:src="@drawable/cardback"
                 android:layout_gravity="center_vertical"
-                android:visibility="invisible"
-                android:adjustViewBounds="true" />
+                android:visibility="visible"
+                android:adjustViewBounds="true"
+                android:layout_marginLeft="10dp" />
 
             <ImageView
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/communityCard4"
-                android:layout_weight="0.14"
                 android:src="@drawable/cardback"
                 android:layout_gravity="center_vertical"
-                android:visibility="invisible"
-                android:adjustViewBounds="true" />
+                android:visibility="visible"
+                android:adjustViewBounds="true"
+                android:layout_marginLeft="10dp" />
 
             <ImageView
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/communityCard5"
-                android:layout_weight="0.14"
                 android:src="@drawable/cardback"
                 android:layout_gravity="center_vertical"
-                android:visibility="invisible"
-                android:adjustViewBounds="true" />
+                android:visibility="visible"
+                android:adjustViewBounds="true"
+                android:layout_marginLeft="10dp" />
 
             <FrameLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:visibility="invisible"
-                android:layout_weight="0.15"
+                android:layout_weight="1"
                 android:layout_gravity="center_vertical">
 
             </FrameLayout>
@@ -110,7 +632,7 @@
         <FrameLayout
             android:layout_width="fill_parent"
             android:layout_height="0dp"
-            android:layout_weight="0.35">
+            android:layout_weight="0.3">
 
             <LinearLayout
                 android:orientation="horizontal"
@@ -120,7 +642,8 @@
                 android:id="@+id/potLayout"
                 android:layout_above="@+id/buttonLayout"
                 android:layout_centerHorizontal="true"
-                android:layout_gravity="center_horizontal">
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="5dp">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -145,6 +668,7 @@
 
             </LinearLayout>
         </FrameLayout>
+
     </LinearLayout>
 
     <LinearLayout
@@ -212,30 +736,33 @@
 
             <ImageButton
                 android:layout_width="0dp"
-                android:layout_height="fill_parent"
+                android:layout_height="match_parent"
                 android:src="@drawable/minusbutton"
                 android:id="@+id/minusButton"
                 android:onClick="decreaseBet"
                 android:clickable="true"
                 android:enabled="true"
                 android:adjustViewBounds="true"
-                android:layout_weight="0.33" />
+                android:layout_weight="0.33"
+                android:scaleType="fitXY"
+                android:background="@null" />
 
             <TextView
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
+                android:layout_height="46dp"
                 android:text="100"
                 android:id="@+id/currentBet"
                 android:textSize="30dp"
                 android:clickable="true"
                 android:layout_weight="0.34"
                 android:typeface="monospace"
-                android:gravity="center_vertical"
-                android:background="@drawable/betbackground" />
+                android:gravity="center_vertical|center_horizontal"
+                android:background="@drawable/betbackground"
+                android:layout_gravity="center_vertical" />
 
             <ImageButton
                 android:layout_width="0dp"
-                android:layout_height="fill_parent"
+                android:layout_height="match_parent"
                 android:src="@drawable/plusbutton"
                 android:id="@+id/plusButton"
                 android:onClick="increaseBet"
@@ -243,7 +770,9 @@
                 android:clickable="true"
                 android:enabled="true"
                 android:adjustViewBounds="true"
-                android:layout_weight="0.33" />
+                android:layout_weight="0.33"
+                android:background="@null"
+                android:scaleType="fitXY" />
         </LinearLayout>
 
         <Button
@@ -268,256 +797,47 @@
 
     </LinearLayout>
 
-    <LinearLayout
-        android:orientation="vertical"
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="false"
-        android:id="@+id/player1Layout"
-        android:layout_alignParentLeft="true"
-        android:layout_centerVertical="true"
-        android:visibility="invisible">
-
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/player1_dataLayout"
-            android:layout_alignParentLeft="false"
-            android:layout_alignParentBottom="true"
-            android:background="@drawable/playerbackground"
-            android:visibility="visible"
-            android:layout_centerHorizontal="true">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="Player 1"
-                android:id="@+id/player1_name"
-                android:layout_weight="0.2"
-                android:textColor="#ffffffff"
-                android:textStyle="bold"
-                android:textSize="20dp"
-                android:layout_gravity="center_horizontal" />
-
-            <ImageView
-                android:layout_width="80dp"
-                android:layout_height="0dp"
-                android:id="@+id/player1_avatar"
-                android:src="@drawable/defaultavatar"
-                android:layout_weight="0.6"
-                android:adjustViewBounds="true"
-                android:layout_gravity="center_horizontal" />
-
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:layout_weight="0.2"
-                android:layout_gravity="center_horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="1000"
-                    android:id="@+id/player1_funds"
-                    android:layout_weight="0.8"
-                    android:textColor="#ffffff"
-                    android:textStyle="bold"
-                    android:textSize="20dp"
-                    android:paddingRight="5dp" />
-
-                <ImageView
-                    android:layout_width="0dp"
-                    android:layout_height="20dp"
-                    android:id="@+id/player1_chip"
-                    android:src="@drawable/chip"
-                    android:layout_weight="0.2"
-                    android:adjustViewBounds="true"
-                    android:layout_gravity="center_vertical" />
-            </LinearLayout>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/player1_bestHandLayout"
-            android:layout_gravity="center_horizontal">
-
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_alignParentRight="false"
-                android:layout_alignParentBottom="true"
-                android:visibility="invisible"
-                android:focusableInTouchMode="false"
-                android:id="@+id/player1_holeCardsLayout"
-                android:layout_alignParentLeft="true"
-                android:layout_gravity="center_horizontal"
-                android:layout_weight="0.67">
-
-                <ImageView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/player1_holeCard1"
-                    android:layout_gravity="center_vertical|left"
-                    android:src="@drawable/cardback"
-                    android:layout_weight="0.5"
-                    android:adjustViewBounds="true" />
-
-                <ImageView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/player1_holeCard2"
-                    android:layout_gravity="center_vertical|left"
-                    android:src="@drawable/cardback"
-                    android:layout_weight="0.5"
-                    android:adjustViewBounds="true" />
-
-            </LinearLayout>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:text="CARD HIGH"
-                android:id="@+id/player1_handType"
-                android:layout_gravity="center_horizontal"
-                android:textColor="#6869ff"
-                android:textStyle="bold"
-                android:textSize="20dp"
-                android:layout_weight="0.33"
-                android:visibility="invisible" />
-
-        </LinearLayout>
-    </LinearLayout>
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:id="@+id/winnersLabel"
+        android:layout_gravity="center_horizontal|bottom"
+        android:text="Player 1 wins"
+        android:textColor="#ffffff"
+        android:textStyle="bold|italic"
+        android:textSize="50dp"
+        android:layout_centerHorizontal="true"
+        android:autoText="false"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="20dp"
+        android:visibility="invisible" />
 
     <LinearLayout
-        android:orientation="vertical"
+        android:id="@+id/loadingPanel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="false"
-        android:id="@+id/player2Layout"
-        android:layout_alignParentLeft="false"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        android:visibility="invisible">
+        android:orientation="vertical"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:visibility="gone">
 
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/player2_dataLayout"
-            android:layout_alignParentLeft="false"
-            android:layout_alignParentBottom="true"
-            android:background="@drawable/playerbackground"
-            android:visibility="visible"
-            android:layout_centerHorizontal="true" >
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="Player 2"
-                android:id="@+id/player2_name"
-                android:layout_weight="0.2"
-                android:textColor="#ffffffff"
-                android:textStyle="bold"
-                android:textSize="20dp"
-                android:layout_gravity="center_horizontal" />
-
-            <ImageView
-                android:layout_width="80dp"
-                android:layout_height="0dp"
-                android:id="@+id/player2_avatar"
-                android:src="@drawable/defaultavatar"
-                android:layout_weight="0.6"
-                android:adjustViewBounds="true"
-                android:layout_gravity="center_horizontal" />
-
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:layout_weight="0.2"
-                android:layout_gravity="center_horizontal" >
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="1000"
-                    android:id="@+id/player2_funds"
-                    android:layout_weight="0.8"
-                    android:textColor="#ffffff"
-                    android:textStyle="bold"
-                    android:textSize="20dp"
-                    android:paddingRight="5dp" />
-
-                <ImageView
-                    android:layout_width="0dp"
-                    android:layout_height="20dp"
-                    android:id="@+id/player2_chip"
-                    android:src="@drawable/chip"
-                    android:layout_weight="0.2"
-                    android:adjustViewBounds="true"
-                    android:layout_gravity="center_vertical" />
-            </LinearLayout>
-        </LinearLayout>
-
-        <LinearLayout
-            android:orientation="vertical"
+        <ProgressBar
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/player2_bestHandLayout"
-            android:layout_gravity="center_horizontal" >
+            android:indeterminate="true"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center_horizontal" />
 
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_alignParentRight="false"
-                android:layout_alignParentBottom="true"
-                android:visibility="invisible"
-                android:focusableInTouchMode="false"
-                android:id="@+id/player2_holeCardsLayout"
-                android:layout_alignParentLeft="true"
-                android:layout_gravity="center_horizontal"
-                android:layout_weight="0.67" >
-
-                <ImageView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/player2_holeCard1"
-                    android:layout_gravity="center_vertical|left"
-                    android:src="@drawable/cardback"
-                    android:layout_weight="0.5"
-                    android:adjustViewBounds="true" />
-
-                <ImageView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/player2_holeCard2"
-                    android:layout_gravity="center_vertical|left"
-                    android:src="@drawable/cardback"
-                    android:layout_weight="0.5"
-                    android:adjustViewBounds="true" />
-            </LinearLayout>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:text="CARD HIGH"
-                android:id="@+id/player2_handType"
-                android:layout_gravity="center_horizontal"
-                android:textColor="#6869ff"
-                android:textStyle="bold"
-                android:textSize="20dp"
-                android:layout_weight="0.33"
-                android:visibility="invisible" />
-        </LinearLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15dp"
+            android:text="Wait for others to finish..."
+            android:layout_alignParentEnd="false"
+            android:layout_centerHorizontal="true"
+            android:textStyle="bold"
+            android:textColor="#999999" />
     </LinearLayout>
 
 </RelativeLayout>

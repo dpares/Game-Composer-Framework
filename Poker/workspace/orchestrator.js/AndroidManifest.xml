@@ -106,7 +106,7 @@
             android:name="framework.parchisgame.ParchisActivity"
             android:configChanges="keyboard|keyboardHidden|orientation"
             android:label="ParchisActivity"
-            android:screenOrientation="landscape" >
+            android:screenOrientation="portrait" >
         </activity>
 
         <activity

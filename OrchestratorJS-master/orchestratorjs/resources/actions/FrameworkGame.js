@@ -4,7 +4,7 @@ var misc = require('./misc.js');
 var players;
 var j, currentPlayer, numPlayers, currentPhase, currentStep;
 var Game, gameController ;
-var handlingDisconnection;
+var handlingDisconnection, playersInitialized;
 
 function Player() { 
     this.device = null;
@@ -92,9 +92,9 @@ function handleDisconnection(action, device, event_value){
         }
         players = gameController.exceptionHandler(players, device, event_value);
         numPlayers--;
-    } else if(typeof players[j] === 'undefined')
+    } else if(!playersInitialized){
         handlingDisconnection = true;
-    else {
+    }else {
         if(j < players.length && players[j].device.identity == device.identity)
             handlingDisconnection = true;
         players = gameController.exceptionHandler(players, device, event_value);
@@ -108,7 +108,10 @@ module.exports = {
 
     exceptionHandler: function(action, device, exception_value) {
         console.log('error on client-side: '+ device.identity+', '+exception_value);
-        device.frameworkCapability.exitGame("An error ocurred");
+        if(playersInitialized)
+            device.frameworkCapability.exitGame("An error ocurred");
+        else
+            handlingDisconnection = true
     },
 
     serverSideExceptionHandler: function(action, exception_value) {
@@ -132,6 +135,7 @@ module.exports = {
         do{      
             /// GAME INITIALIZATION	
             handlingDisconnection = false;
+            playersInitialized = false;
             currentPlayer = -1;
             players = [];
             if(players.length > 0){
@@ -141,7 +145,7 @@ module.exports = {
             }
             j = 0;
             while(j < currentDevices.length) {
-                p(devices[j].identity);
+                p(currentDevices[j].identity);
                 var player = new Player();
                 player.device = currentDevices[j];
                 player.device.frameworkCapability.initGame(Game.config.initData);
@@ -149,7 +153,8 @@ module.exports = {
                     var initState = player.device.frameworkCapability.getPlayerInitialState();
                     while(initState.null && !handlingDisconnection){
                         misc.sleep(1);
-                        initState = player.device.frameworkCapability.getPlayerInitialState();
+                        if(!handlingDisconnection)
+                            initState = player.device.frameworkCapability.getPlayerInitialState();
                     }
                     if(!handlingDisconnection){
                         player.state = initState.state;
@@ -161,6 +166,7 @@ module.exports = {
                     handlingDisconnection = false;
                 j++;
             }
+            playersInitialized = true;
             gameController = new Game.Game(players);
             if(countActivePlayers() > 1)
                 showCurrentState();

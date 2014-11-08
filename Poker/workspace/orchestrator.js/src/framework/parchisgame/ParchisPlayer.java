@@ -17,7 +17,7 @@ public class ParchisPlayer extends FrameworkPlayer {
 
     public enum ParchisState implements State {DEFAULT, FINISHED};
 
-    public enum Colour {YELLOW, RED, GREEN, BLUE, UNDEFINED};
+    public enum Colour {YELLOW, BLUE, RED, GREEN, UNDEFINED};
 
     private Colour colour;
 
@@ -54,7 +54,7 @@ public class ParchisPlayer extends FrameworkPlayer {
             JSONArray pawns = new JSONArray();
             for (Pawn p : this.pawns)
                 pawns.put(p.getJSON());
-            res.put("hole_cards", pawns);
+            res.put("pawns", pawns);
             res.put("name", this.name);
             res.put("avatar", this.avatar);
             return res;

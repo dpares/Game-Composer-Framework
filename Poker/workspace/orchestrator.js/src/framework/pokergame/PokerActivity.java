@@ -49,7 +49,7 @@ public class PokerActivity extends FrameworkGameActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.poker_layout_new);
+        setContentView(R.layout.poker_layout);
 
         instance = this;
         showingResults = false;
@@ -253,7 +253,7 @@ public class PokerActivity extends FrameworkGameActivity {
 
     @Override
     public void newRound() {
-        ((PokerPlayer) this.player).newRound();
+        this.player.newRound();
         this.numPlayers = -1;
         winnersLabel.setVisibility(View.INVISIBLE);
         for (ImageView iv : communityCardImages)
