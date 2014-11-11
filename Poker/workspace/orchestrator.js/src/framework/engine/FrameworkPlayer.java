@@ -50,4 +50,10 @@ public abstract class FrameworkPlayer {
         return ctx.getResources().getDrawable(resourceId);
     }
 
+    @Override
+    public boolean equals(Object o){
+        return this.name.equals(((FrameworkPlayer)o).name) &&
+                this.avatar.equals(((FrameworkPlayer)o).avatar);
+    }
+
 }

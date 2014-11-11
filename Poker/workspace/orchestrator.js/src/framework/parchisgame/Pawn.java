@@ -11,32 +11,47 @@ import framework.engine.FrameworkGameException;
 public class Pawn {
     public static final int INITIAL_SQUARE = 0;
     public static final int REGULAR_SQUARES = 68;
-    public static final int LAST_SQUARE = 100;
-    private int square;
+    public static final int LAST_SQUARE = 75;
+    public static final int STARTING_POSITIONS[] = {4, 21, 38, 55};
 
-    public Pawn(int square){
+    private int square;
+    private int colour;
+
+    public Pawn(int colour, int square) {
+        this.colour = colour;
         this.square = square;
     }
 
-    public Pawn(JSONObject pawn){
-        try{
+    public Pawn(JSONObject pawn) {
+        try {
             this.square = pawn.getInt("square");
-        }catch(JSONException e){
+            this.colour = pawn.getInt("colour");
+        } catch (JSONException e) {
             throw new FrameworkGameException("Error parsing JSON into Pawn", e);
         }
     }
 
-    public int getSquare(){
+    public int getSquare() {
         return this.square;
     }
 
-    public JSONObject getJSON(){
-        try{
+    public int getColour() {
+        return this.colour;
+    }
+
+    public JSONObject getJSON() {
+        try {
             JSONObject res = new JSONObject();
-            res.put("square",this.square);
+            res.put("square", this.square);
+            res.put("colour", this.colour);
             return res;
-        } catch(JSONException e){
+        } catch (JSONException e) {
             throw new FrameworkGameException("Error parsing Pawn into JSON", e);
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        return o instanceof Pawn && ((Pawn) o).square == this.square && ((Pawn) o).colour == this.colour;
     }
 }

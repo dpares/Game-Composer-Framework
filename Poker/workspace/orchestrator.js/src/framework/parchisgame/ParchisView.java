@@ -33,6 +33,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
+import android.util.Pair;
 import android.view.View;
 
 import com.ojs.R;
@@ -44,7 +45,9 @@ public class ParchisView extends View {
 
     private Bitmap boardBitmap = null;
     private Bitmap pawnBitmaps[] = new Bitmap[4];
+    private Bitmap bigPawnBitmaps[] = new Bitmap[4];
     private Bitmap avatarBitmaps[] = new Bitmap[4];
+    private Bitmap destinationBitmap;
     private Paint paint = new Paint();
     private int boardSize;
     private int pawnSize;
@@ -58,6 +61,14 @@ public class ParchisView extends View {
     private double scale;
 
     private List<ParchisPlayer> players;
+    private List<ParchisPlayer> updatedPlayers;
+    private GameBoard gameBoard;
+    private PawnMovement currentMovement;
+
+    private boolean showingDestination = false;
+    private int currentMovementShown;
+    private Pawn destinationMark;
+    private Pair<ParchisPlayer, Pawn> pawnToMove;
 
     private class PosG {
         public int x;
@@ -71,6 +82,13 @@ public class ParchisView extends View {
         public PosG(int newX, int newY, boolean conv) {
             x = newX;
             y = newY;
+        }
+
+        public int[] getIntArray() {
+            int res[] = new int[2];
+            res[0] = x;
+            res[1] = y;
+            return res;
         }
     }
 
@@ -104,16 +122,20 @@ public class ParchisView extends View {
         pawnBitmaps[1] = loadBitmap(r.getDrawable(R.drawable.blueplayer), pawnSize);
         pawnBitmaps[2] = loadBitmap(r.getDrawable(R.drawable.redplayer), pawnSize);
         pawnBitmaps[3] = loadBitmap(r.getDrawable(R.drawable.greenplayer), pawnSize);
-
+        bigPawnBitmaps[0] = loadBitmap(r.getDrawable(R.drawable.yellowplayer), pawnSize * 2);
+        bigPawnBitmaps[1] = loadBitmap(r.getDrawable(R.drawable.blueplayer), pawnSize * 2);
+        bigPawnBitmaps[2] = loadBitmap(r.getDrawable(R.drawable.redplayer), pawnSize * 2);
+        bigPawnBitmaps[3] = loadBitmap(r.getDrawable(R.drawable.greenplayer), pawnSize * 2);
+        destinationBitmap = loadBitmap(r.getDrawable(R.drawable.pawndestination), pawnSize * 2);
         loadAvatarBitmaps();
         initGBoard();
     }
 
-    private void loadAvatarBitmaps(){
+    private void loadAvatarBitmaps() {
         if (this.players != null) {
             for (int i = 0; i < this.players.size(); i++) {
                 int colour = this.players.get(i).getColour().ordinal();
-                if(colour != ParchisPlayer.Colour.UNDEFINED.ordinal())
+                if (colour != ParchisPlayer.Colour.UNDEFINED.ordinal())
                     avatarBitmaps[colour] = loadBitmap(this.players.get(i).getAvatarDrawable(), pawnSize * 2);
             }
         }
@@ -237,14 +259,14 @@ public class ParchisView extends View {
         finishPositions[3][2] = new PosG(x4, y5 - 2);
         finishPositions[3][3] = new PosG(x3, y4 - 2);
 
-        avatarPositions[0] = new PosG(squarePositions[4][0].x+pawnSize/2+2,
-                squarePositions[13][0].y+pawnSize/2+2, false);
-        avatarPositions[1] = new PosG(squarePositions[30][0].x+pawnSize/2+2,
-                squarePositions[19][0].y+pawnSize/2+2, false);
-        avatarPositions[2] = new PosG(squarePositions[36][0].x+pawnSize/2+2,
-                squarePositions[45][0].y+pawnSize/2+2, false);
-        avatarPositions[3] = new PosG(squarePositions[62][0].x+pawnSize/2+2,
-                squarePositions[55][0].y+pawnSize/2+2, false);
+        avatarPositions[0] = new PosG(squarePositions[4][0].x + pawnSize / 2 + 2,
+                squarePositions[13][0].y + pawnSize / 2 + 2, false);
+        avatarPositions[1] = new PosG(squarePositions[30][0].x + pawnSize / 2 + 2,
+                squarePositions[19][0].y + pawnSize / 2 + 2, false);
+        avatarPositions[2] = new PosG(squarePositions[36][0].x + pawnSize / 2 + 2,
+                squarePositions[45][0].y + pawnSize / 2 + 2, false);
+        avatarPositions[3] = new PosG(squarePositions[62][0].x + pawnSize / 2 + 2,
+                squarePositions[55][0].y + pawnSize / 2 + 2, false);
     }
 
     @Override
@@ -258,55 +280,264 @@ public class ParchisView extends View {
         canvas.drawBitmap(boardBitmap, offsetX, offsetY, paint);
         if (this.players != null) {
             drawAvatars(canvas);
-            drawPawns(canvas);
+            drawAllPawns(canvas);
         }
+        if (showingDestination)
+            drawPossibleMovement(canvas);
 
-
+        if (this.currentMovement != null) {
+            invalidate();
+            if (this.currentMovement.isFinished()) {
+                this.currentMovement = null;
+                this.players = this.updatedPlayers;
+                this.updatedPlayers = new ArrayList<ParchisPlayer>();
+            }
+        }
     }
 
     private void drawAvatars(Canvas canvas) {
         for (int i = 0; i < this.players.size(); i++) {
             int colour = this.players.get(i).getColour().ordinal();
-            if(colour != ParchisPlayer.Colour.UNDEFINED.ordinal())
+            if (colour != ParchisPlayer.Colour.UNDEFINED.ordinal())
                 canvas.drawBitmap(avatarBitmaps[colour], avatarPositions[colour].x,
                         avatarPositions[colour].y, paint);
         }
     }
 
-    private void drawPawns(Canvas canvas) {
-        for (ParchisPlayer player : this.players) {
+    private void drawAllPawns(Canvas canvas) {
+        for (int i = 0; i < this.players.size(); i++) {
+            ParchisPlayer player = this.players.get(i);
             int colour = player.getColour().ordinal();
             if (colour != ParchisPlayer.Colour.UNDEFINED.ordinal()) {
-                List<Pawn> pawns = player.getPawns();
-                for (int i = 0; i < 4; i++) {
-                    int pos = pawns.get(i).getSquare();
-                    if (pos == Pawn.INITIAL_SQUARE)
-                        canvas.drawBitmap(pawnBitmaps[colour], homePositions[colour][i].x,
-                                homePositions[colour][i].y, paint);
-                    else if (pos == Pawn.LAST_SQUARE)
-                        canvas.drawBitmap(pawnBitmaps[colour], finishPositions[colour][i].x,
-                                finishPositions[colour][0].y, paint);
-                    else if(pos > Pawn.REGULAR_SQUARES) {
-                        int corridorPos = pos - Pawn.REGULAR_SQUARES;
-                        canvas.drawBitmap(pawnBitmaps[colour], corridorPositions[colour][corridorPos][0].x,
-                                corridorPositions[colour][corridorPos][0].y,paint);
-                    } else
-                        canvas.drawBitmap(pawnBitmaps[colour],squarePositions[pos][0].x,
-                                squarePositions[pos][0].y,paint);
+                if (this.updatedPlayers.size() > 0) { // Move pawns
+                    for (int j = 0; j < player.getPawns().size(); j++)
+                        movePawn(j, player, this.players.get(i).getPawns().get(j),
+                                this.updatedPlayers.get(i).getPawns().get(j), canvas);
+                } else {
+                    List<Pawn> pawns = player.getPawns();
+                    for (int j = 0; j < 4; j++)
+                        drawPawn(pawns.get(j), j, canvas);
                 }
+            }
+        }
+        if (this.updatedPlayers.size() > 0 && this.currentMovement == null) {
+            this.players = this.updatedPlayers;
+            this.updatedPlayers = new ArrayList<ParchisPlayer>();
+        }
+    }
+
+    private void drawPossibleMovement(Canvas canvas) {
+        ParchisPlayer player = pawnToMove.first;
+        Pawn movablePawn = pawnToMove.second;
+        int colour = movablePawn.getColour();
+        int pawnInSquare;
+        int square;
+        Bitmap pawnBitmap;
+
+        for (int i = 0; i < 2; i++) {
+            square = i == 0 ? movablePawn.getSquare() : destinationMark.getSquare();
+            pawnBitmap = i == 0 ? bigPawnBitmaps[colour] : destinationBitmap;
+            if (square == Pawn.INITIAL_SQUARE) {
+                pawnInSquare = i == 0 ? player.getHomePawns() - 1 : player.getHomePawns();
+                canvas.drawBitmap(pawnBitmap, homePositions[colour][pawnInSquare].x - pawnSize / 2,
+                        homePositions[colour][pawnInSquare].y - pawnSize / 2, paint);
+            } else if (square == Pawn.LAST_SQUARE) {
+                pawnInSquare = player.getFinishedPawns();
+                canvas.drawBitmap(pawnBitmap, finishPositions[colour][pawnInSquare].x - pawnSize / 2,
+                        finishPositions[colour][pawnInSquare].y - pawnSize / 2, paint);
+            } else {
+                if (i == 0)
+                    pawnInSquare = gameBoard.pawnsInSquare(colour, square).indexOf(movablePawn);
+                else
+                    pawnInSquare = gameBoard.nextSpaceInSquare(colour, square);
+                if (square > Pawn.REGULAR_SQUARES) {
+                    int corridorPos = square - Pawn.REGULAR_SQUARES;
+                    canvas.drawBitmap(pawnBitmap, corridorPositions[colour][corridorPos][pawnInSquare].x - pawnSize / 2,
+                            corridorPositions[colour][corridorPos][pawnInSquare].y - pawnSize / 2, paint);
+                } else
+                    canvas.drawBitmap(pawnBitmap, squarePositions[square][pawnInSquare].x - pawnSize / 2,
+                            squarePositions[square][pawnInSquare].y - pawnSize / 2, paint);
             }
         }
     }
 
-    public void updatePlayers(List<ParchisPlayer> players) {
+    private void drawPawn(Pawn pawn, int pawnNumber, Canvas canvas) {
+        int colour = pawn.getColour();
+        int square = pawn.getSquare();
+        if (square == 4)
+            square = 4;
+        Bitmap pawnBitmap = pawnNumber == -1 ? destinationBitmap : pawnBitmaps[colour];
+        if (square == Pawn.INITIAL_SQUARE)
+            canvas.drawBitmap(pawnBitmap, homePositions[colour][pawnNumber].x,
+                    homePositions[colour][pawnNumber].y, paint);
+        else if (square == Pawn.LAST_SQUARE)
+            canvas.drawBitmap(pawnBitmap, finishPositions[colour][pawnNumber].x,
+                    finishPositions[colour][pawnNumber].y, paint);
+        else {
+            int pawnInSquare;
+            if (pawnNumber == -1)
+                pawnInSquare = gameBoard.nextSpaceInSquare(colour, square);
+            else
+                pawnInSquare = gameBoard.pawnsInSquare(colour, square).indexOf(pawn);
+            if (square > Pawn.REGULAR_SQUARES) {
+                int corridorPos = square - Pawn.REGULAR_SQUARES;
+                canvas.drawBitmap(pawnBitmap, corridorPositions[colour][corridorPos][pawnInSquare].x,
+                        corridorPositions[colour][corridorPos][pawnInSquare].y, paint);
+            } else
+                canvas.drawBitmap(pawnBitmap, squarePositions[square][pawnInSquare].x,
+                        squarePositions[square][pawnInSquare].y, paint);
+        }
+    }
+
+    private void movePawn(int pawnNumber, ParchisPlayer player, Pawn previousPawn, Pawn finalPawn, Canvas canvas) {
+        if (!previousPawn.equals(finalPawn)) {
+            if (this.currentMovement == null) {
+                int initialCoords[];
+                int finalCoords[];
+                int square;
+                if (previousPawn.getSquare() == Pawn.INITIAL_SQUARE) {
+                    initialCoords = homePositions[previousPawn.getColour()]
+                            [player.getHomePawns() - 1].getIntArray();
+                    square = finalPawn.getSquare();
+                    if (square < Pawn.REGULAR_SQUARES)
+                        finalCoords = squarePositions[finalPawn.getSquare()]
+                                [gameBoard.nextSpaceInSquare(finalPawn.getColour(),
+                                finalPawn.getSquare())].getIntArray();
+                    else
+                        finalCoords = corridorPositions[finalPawn.getColour()]
+                                [finalPawn.getSquare() - Pawn.REGULAR_SQUARES]
+                                [gameBoard.nextSpaceInSquare(finalPawn.getColour(),
+                                finalPawn.getSquare())].getIntArray();
+                    this.currentMovement = new PawnMovement(previousPawn.getSquare(), initialCoords,
+                            finalPawn.getSquare(), finalCoords, pawnSize);
+                } else if (finalPawn.getSquare() == Pawn.INITIAL_SQUARE) {
+                    initialCoords = homePositions[finalPawn.getColour()]
+                            [player.getHomePawns() - 1].getIntArray();
+                    square = previousPawn.getSquare();
+                    if (square < Pawn.REGULAR_SQUARES)
+                        finalCoords = squarePositions[previousPawn.getSquare()]
+                                [gameBoard.nextSpaceInSquare(previousPawn.getColour(),
+                                previousPawn.getSquare())].getIntArray();
+                    else
+                        finalCoords = corridorPositions[previousPawn.getColour()]
+                                [previousPawn.getSquare() - Pawn.REGULAR_SQUARES]
+                                [gameBoard.nextSpaceInSquare(previousPawn.getColour(),
+                                previousPawn.getSquare())].getIntArray();
+                    this.currentMovement = new PawnMovement(previousPawn.getSquare(), initialCoords,
+                            finalPawn.getSquare(), finalCoords, pawnSize);
+                } else {
+                    int coords[] = {0, 0}; // In a regular movement, coordinates don't matter
+                    this.currentMovement = new PawnMovement(previousPawn.getSquare(), coords,
+                            finalPawn.getSquare(), coords, pawnSize);
+                }
+            }
+            int coords[] = this.currentMovement.nextStep();
+            if (this.currentMovement.isSpecial())
+                canvas.drawBitmap(bigPawnBitmaps[previousPawn.getColour()], coords[0], coords[1], paint);
+            else { // MUST BE CHANGED
+                canvas.drawBitmap(bigPawnBitmaps[previousPawn.getColour()],
+                        squarePositions[coords[0]][0].x, squarePositions[coords[0]][0].y, paint);
+            }
+            if (this.currentMovement.isFinished())
+                gameBoard.insertPawn(finalPawn);
+        } else
+            drawPawn(previousPawn, pawnNumber, canvas);
+    }
+
+    public void updatePlayers(List<ParchisPlayer> players, boolean orderChanged) {
+        if (orderChanged || this.players.size() < players.size())
+            this.players = players;
+        else if (this.players.size() > 0 &&
+                this.players.get(0).getColour() == ParchisPlayer.Colour.UNDEFINED) {
             this.players = players;
             loadAvatarBitmaps();
-        invalidate();
+            invalidate();
+        } else {
+            this.updatedPlayers = players;
+            invalidate();
+        }
     }
 
     public void newGame() {
         this.players = new ArrayList<ParchisPlayer>();
+        this.updatedPlayers = new ArrayList<ParchisPlayer>();
+        this.gameBoard = new GameBoard();
+        this.showingDestination = false;
+        this.currentMovementShown = -1;
+        this.currentMovement = null;
     }
+
+    public Pair<Integer, Pawn> confirmMove() {
+        Pair<Integer, Pawn> res = new Pair<Integer, Pawn>(currentMovementShown, destinationMark);
+        showingDestination = false;
+        destinationMark = null;
+        currentMovementShown = -1;
+        pawnToMove = null;
+
+        return res;
+    }
+
+    public boolean showNextMove(int playerIndex, int roll) {
+        ParchisPlayer player = this.players.get(playerIndex);
+        List<Pawn> pawns = player.getPawns();
+        boolean possibleMovement = false;
+        int i = 0;
+
+        if (roll == 5 && player.getHomePawns() > 0) {
+            currentMovementShown = player.getHomePawns() - 1;
+            possibleMovement = true;
+            showingDestination = true;
+            destinationMark = new Pawn(player.getColour().ordinal(),
+                    Pawn.STARTING_POSITIONS[player.getColour().ordinal()]);
+            pawnToMove = new Pair<ParchisPlayer, Pawn>(player, player.firstHomePawn());
+            invalidate();
+        } else if (player.getHomePawns() < 4 && player.getFinishedPawns() < 4) {
+            while (!possibleMovement && i < pawns.size()) {
+                currentMovementShown++;
+                if (currentMovementShown == pawns.size())
+                    currentMovementShown = 0;
+                Pawn pawn = pawns.get(currentMovementShown);
+                if (pawn.getSquare() != Pawn.INITIAL_SQUARE &&
+                        pawn.getSquare() != Pawn.LAST_SQUARE) {
+                    int pos = pawn.getSquare() + roll;
+                    int colour = pawn.getColour();
+                    if (gameBoard.spaceInSquare(colour, pos)) { // Free space on the square
+                        possibleMovement = true;
+                        showingDestination = true;
+                        destinationMark = new Pawn(pawn.getColour(), pos);
+                        pawnToMove = new Pair<ParchisPlayer, Pawn>(player, pawn);
+                        gameBoard.removePawn(pawn);
+                        invalidate();
+                    } else { // Check if a pawn could be eaten
+                        boolean canEat = false;
+                        int j = 0;
+                        while (!canEat && j < 2) {
+                            if (gameBoard.pawnsInSquare(colour, pos).get(j).getColour() !=
+                                    pawns.get(currentMovementShown).getColour())
+                                canEat = true;
+                            else
+                                j++;
+                        }
+                        if (canEat) {
+                            possibleMovement = true;
+                            showingDestination = true;
+                            destinationMark = new Pawn(pawn.getColour(), pos);
+                            gameBoard.removePawn(pawn);
+                            pawnToMove = new Pair<ParchisPlayer, Pawn>(player, pawn);
+                            invalidate();
+                        } else
+                            i++;
+                    }
+                } else
+                    i++;
+            }
+        }
+
+        return possibleMovement;
+    }
+
+//TODO
+// - Somehow save that a player has been eaten
 
 
 }

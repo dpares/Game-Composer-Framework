@@ -68,10 +68,51 @@
         <ImageView android:id="@+id/die"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="HandleClick"
+            android:onClick="rollDie"
             android:src="@drawable/dice3droll"
             android:layout_gravity="center_horizontal"
-            android:layout_centerInParent="true" />
+            android:layout_centerInParent="true"
+            android:visibility="invisible" />
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="5dp"
+            android:id="@+id/buttonLayout"
+            android:visibility="invisible">
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Confirm\nMovement"
+                android:id="@+id/confirmButton"
+                android:background="@drawable/redbutton"
+                android:textColor="#ffffff"
+                android:textStyle="bold"
+                android:textSize="30dp"
+                android:onClick="confirmMove"
+                android:clickable="true" />
+
+            <FrameLayout
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"></FrameLayout>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Switch\nPawn"
+                android:id="@+id/switchButton"
+                android:background="@drawable/redbutton"
+                android:textColor="#ffffff"
+                android:textStyle="bold"
+                android:textSize="30dp"
+                android:onClick="showNextMove"
+                android:clickable="true" />
+        </LinearLayout>
 
     </RelativeLayout>
 

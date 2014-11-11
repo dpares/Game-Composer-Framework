@@ -13,7 +13,7 @@ config.steps = [3];
 
 Game.prototype.newRound = function(players){
     this.winners = [];
-    this.commonData = {last_roll: 0};
+    this.commonData = {last_roll: 0, last_player: -1, skip_turn: false};
 }
 
 function Game(players){
@@ -50,27 +50,27 @@ Game.prototype.phaseSetUp = function(currentPhase,players){
     if(currentPhase == 0){
         for(i in players){
             players[i].state.colour = i;
+            for(j in players[i].state.pawns)
+                players[i].state.pawns[j].colour = i;
             players[i].device.frameworkCapability.setPlayerState(players[i].state);
         }
     }
 }
 
 Game.prototype.phaseEnd = function(currentPhase,players){
-    var res = true;
-    if(currentPhase == 1){
-        var i = 0;
-        while (i < players.length && res) {
-            if (players[i].state.status == playerStatus.DEFAULT)
-                i++;
-            else
-                res = false;
-        }
+    var res = false;
+    var i = 0;
+    while (i < players.length && !res) {
+        if (players[i].state.status == playerStatus.DEFAULT)
+            i++;
+        else
+            res = true;
     }
     return res;
 }
 
 Game.prototype.updateCommonData = function(commonData){
-    this.commonData.last_roll = commonData.last_roll
+    this.commonData = commonData;
 }
 
 Game.prototype.computeResults = function(players){

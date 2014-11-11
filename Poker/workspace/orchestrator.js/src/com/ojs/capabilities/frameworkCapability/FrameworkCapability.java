@@ -63,10 +63,10 @@ public class FrameworkCapability {
                 i.putExtra("init_data", initData.toString());
                 i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 ctx.startActivity(i);
-            } catch (JSONException e){
-                throw new FrameworkGameException("Error parsing initData JSON",e);
-            } catch (ClassNotFoundException e){
-                throw new FrameworkGameException("activityClass not found",e);
+            } catch (JSONException e) {
+                throw new FrameworkGameException("Error parsing initData JSON", e);
+            } catch (ClassNotFoundException e) {
+                throw new FrameworkGameException("activityClass not found", e);
             }
         } else
             FrameworkGameActivity.getInstance().newGame(initData);
@@ -80,13 +80,13 @@ public class FrameworkCapability {
         if (FrameworkGameActivity.getInstance() == null)
             return FrameworkCapability.nullJSON();
         else
-            try{
+            try {
                 JSONObject res = new JSONObject();
-                res.put("state",FrameworkGameActivity.getInstance().getPlayer().getJSON());
-                res.put("active",FrameworkGameActivity.getInstance().getPlayer().isActive());
+                res.put("state", FrameworkGameActivity.getInstance().getPlayer().getJSON());
+                res.put("active", FrameworkGameActivity.getInstance().getPlayer().isActive());
                 return res;
-            }catch (JSONException e){
-                throw new FrameworkGameException("Error when creating initial state JSON",e);
+            } catch (JSONException e) {
+                throw new FrameworkGameException("Error when creating initial state JSON", e);
             }
     }
 
@@ -156,7 +156,7 @@ public class FrameworkCapability {
     }
 
     public static void leaveGame() {
-        if(!gameLeft) {
+        if (!gameLeft) {
             OrchestratorJsActivity.singleton.sendEvent("disconnect");
             gameLeft = true;
         }
