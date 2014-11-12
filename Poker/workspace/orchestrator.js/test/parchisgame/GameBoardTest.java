@@ -14,7 +14,7 @@ public class GameBoardTest {
     @Test
     public void testInsertPawnInEmptySquare(){
         GameBoard gb = new GameBoard();
-        gb.insertPawn(new Pawn(0,5));
+        gb.insertPawn(new Pawn(0,5,-1));
         Assert.assertEquals(gb.spaceInSquare(0,5),true);
         Assert.assertEquals(gb.nextSpaceInSquare(0,5),1);
         Assert.assertEquals(gb.pawnsInSquare(0,5).size(),1);
@@ -23,8 +23,8 @@ public class GameBoardTest {
     @Test
     public void testInsertPawnInPartiallyFullSquare(){
         GameBoard gb = new GameBoard();
-        gb.insertPawn(new Pawn(0,5));
-        gb.insertPawn(new Pawn(0,5));
+        gb.insertPawn(new Pawn(0,5,-1));
+        gb.insertPawn(new Pawn(0,5,-1));
         Assert.assertEquals(gb.spaceInSquare(0,5),false);
         Assert.assertEquals(gb.nextSpaceInSquare(0,5),-1);
         Assert.assertEquals(gb.pawnsInSquare(0,5).size(),2);
@@ -33,9 +33,9 @@ public class GameBoardTest {
     @Test
     public void testInsertPawnInFullSquare(){
         GameBoard gb = new GameBoard();
-        gb.insertPawn(new Pawn(0,5));
-        gb.insertPawn(new Pawn(0,5));
-        gb.insertPawn(new Pawn(0,5));
+        gb.insertPawn(new Pawn(0,5,-1));
+        gb.insertPawn(new Pawn(0,5,-1));
+        gb.insertPawn(new Pawn(0,5,-1));
         Assert.assertEquals(gb.spaceInSquare(0,5),false);
         Assert.assertEquals(gb.nextSpaceInSquare(0,5),-1);
         Assert.assertEquals(gb.pawnsInSquare(0,5).size(),2);
@@ -44,7 +44,7 @@ public class GameBoardTest {
     @Test
     public void testRemovePawnInEmptySquare(){
         GameBoard gb = new GameBoard();
-        gb.removePawn(new Pawn(0,5));
+        gb.removePawn(new Pawn(0,5,-1));
         Assert.assertEquals(gb.spaceInSquare(0,5),true);
         Assert.assertEquals(gb.nextSpaceInSquare(0,5),0);
         Assert.assertEquals(gb.pawnsInSquare(0,5),null);
@@ -53,8 +53,8 @@ public class GameBoardTest {
     @Test
     public void testRemovePawnInPartiallyFullSquare(){
         GameBoard gb = new GameBoard();
-        gb.insertPawn(new Pawn(0,5));
-        gb.removePawn(new Pawn(0,5));
+        gb.insertPawn(new Pawn(0,5,-1));
+        gb.removePawn(new Pawn(0,5,-1));
         Assert.assertEquals(gb.spaceInSquare(0,5),true);
         Assert.assertEquals(gb.nextSpaceInSquare(0,5),0);
         Assert.assertEquals(gb.pawnsInSquare(0,5).size(),0);
@@ -63,9 +63,9 @@ public class GameBoardTest {
     @Test
     public void testRemovePawnInFullSquare(){
         GameBoard gb = new GameBoard();
-        gb.insertPawn(new Pawn(0,5));
-        gb.insertPawn(new Pawn(0,5));
-        gb.removePawn(new Pawn(0,5));
+        gb.insertPawn(new Pawn(0,5,-1));
+        gb.insertPawn(new Pawn(0,5,-1));
+        gb.removePawn(new Pawn(0,5,-1));
         Assert.assertEquals(gb.spaceInSquare(0,5),true);
         Assert.assertEquals(gb.nextSpaceInSquare(0,5),1);
         Assert.assertEquals(gb.pawnsInSquare(0,5).size(),1);

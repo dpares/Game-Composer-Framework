@@ -18,16 +18,19 @@ public class Pawn {
 
     private int square;
     private int colour;
+    private int number;
 
-    public Pawn(int colour, int square) {
+    public Pawn(int colour, int square, int number) {
         this.colour = colour;
         this.square = square;
+        this.number = number;
     }
 
     public Pawn(JSONObject pawn) {
         try {
             this.square = pawn.getInt("square");
             this.colour = pawn.getInt("colour");
+            this.number = pawn.getInt("number");
         } catch (JSONException e) {
             throw new FrameworkGameException("Error parsing JSON into Pawn", e);
         }
@@ -41,11 +44,16 @@ public class Pawn {
         return this.colour;
     }
 
+    public int getNumber() {
+        return this.number;
+    }
+
     public JSONObject getJSON() {
         try {
             JSONObject res = new JSONObject();
             res.put("square", this.square);
             res.put("colour", this.colour);
+            res.put("number", this.number);
             return res;
         } catch (JSONException e) {
             throw new FrameworkGameException("Error parsing Pawn into JSON", e);
@@ -67,6 +75,7 @@ public class Pawn {
 
     @Override
     public boolean equals(Object o) {
-        return o instanceof Pawn && ((Pawn) o).square == this.square && ((Pawn) o).colour == this.colour;
+        return o instanceof Pawn && ((Pawn) o).square == this.square &&
+                ((Pawn) o).colour == this.colour && ((Pawn) o).number == this.number;
     }
 }

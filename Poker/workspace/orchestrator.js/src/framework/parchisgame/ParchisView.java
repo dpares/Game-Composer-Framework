@@ -353,7 +353,7 @@ public class ParchisView extends View {
                     pawnInSquare = gameBoard.nextSpaceInSquare(colour, square);
                     if (pawnInSquare == -1)
                         pawnInSquare = gameBoard.pawnsInSquare(colour, square).get(0).getColour() ==
-                                movablePawn.getColour() ? 0 : 1;
+                                movablePawn.getColour() ? 1 : 0;
                 }
                 if (square > Pawn.REGULAR_SQUARES) {
                     int corridorPos = square - Pawn.REGULAR_SQUARES;
@@ -400,27 +400,21 @@ public class ParchisView extends View {
                     initialCoords = homePositions[previousPawn.getColour()]
                             [player.getHomePawns() - 1].getIntArray();
                     square = finalPawn.getSquare();
-                    if (square < Pawn.REGULAR_SQUARES)
-                        finalCoords = squarePositions[finalPawn.getSquare()]
-                                [gameBoard.nextSpaceInSquare(finalPawn.getColour(),
-                                finalPawn.getSquare())].getIntArray();
-                    else
-                        finalCoords = corridorPositions[finalPawn.getColour()]
-                                [finalPawn.getSquare() - Pawn.REGULAR_SQUARES]
-                                [gameBoard.nextSpaceInSquare(finalPawn.getColour(),
-                                finalPawn.getSquare())].getIntArray();
+                    finalCoords = squarePositions[finalPawn.getSquare()]
+                            [gameBoard.nextSpaceInSquare(finalPawn.getColour(),
+                            finalPawn.getSquare())].getIntArray();
                     this.currentMovement = new PawnMovement(previousPawn.getSquare(), initialCoords,
                             finalPawn.getSquare(), finalCoords, pawnSize);
                 } else if (finalPawn.getSquare() == Pawn.INITIAL_SQUARE) {
-                    initialCoords = homePositions[finalPawn.getColour()]
-                            [player.getHomePawns() - 1].getIntArray();
+                    finalCoords = homePositions[finalPawn.getColour()]
+                            [player.getHomePawns()].getIntArray();
                     square = previousPawn.getSquare();
                     if (square < Pawn.REGULAR_SQUARES)
-                        finalCoords = squarePositions[previousPawn.getSquare()]
+                        initialCoords = squarePositions[previousPawn.getSquare()]
                                 [gameBoard.nextSpaceInSquare(previousPawn.getColour(),
                                 previousPawn.getSquare())].getIntArray();
                     else
-                        finalCoords = corridorPositions[previousPawn.getColour()]
+                        initialCoords = corridorPositions[previousPawn.getColour()]
                                 [previousPawn.getSquare() - Pawn.REGULAR_SQUARES]
                                 [gameBoard.nextSpaceInSquare(previousPawn.getColour(),
                                 previousPawn.getSquare())].getIntArray();
@@ -491,8 +485,8 @@ public class ParchisView extends View {
         this.eatenPawn = null;
     }
 
-    public Pair<Integer, Pawn> confirmMove() {
-        Pair<Integer, Pawn> res = new Pair<Integer, Pawn>(currentMovementShown, destinationMark);
+    public Pawn confirmMove() {
+        Pawn res = destinationMark;
         showingDestination = false;
         destinationMark = null;
         currentMovementShown = -1;
@@ -508,12 +502,13 @@ public class ParchisView extends View {
         boolean possibleMovement = false;
         int i = 0;
 
-        if (roll == 5 && player.getHomePawns() > 0) {
+        if (roll == 5 && player.getHomePawns() > 0 && gameBoard.spaceInSquare(
+                player.getColour().ordinal(), Pawn.STARTING_POSITIONS[player.getColour().ordinal()])) {
             currentMovementShown = player.getHomePawns() - 1;
             possibleMovement = true;
             showingDestination = true;
             destinationMark = new Pawn(player.getColour().ordinal(),
-                    Pawn.STARTING_POSITIONS[player.getColour().ordinal()]);
+                    Pawn.STARTING_POSITIONS[player.getColour().ordinal()], currentMovementShown);
             pawnToMove = new Pair<ParchisPlayer, Pawn>(player, player.firstHomePawn());
             invalidate();
         } else if (player.getHomePawns() < 4 && player.getFinishedPawns() < 4) {
@@ -534,7 +529,7 @@ public class ParchisView extends View {
                     if (gameBoard.nextSpaceInSquare(colour, pos) == 0) { // Empty square
                         possibleMovement = true;
                         showingDestination = true;
-                        destinationMark = new Pawn(pawn.getColour(), pos);
+                        destinationMark = new Pawn(pawn.getColour(), pos, currentMovementShown);
                         pawnToMove = new Pair<ParchisPlayer, Pawn>(player, pawn);
                         invalidate();
                     } else { // Check if a pawn could be eaten
@@ -552,7 +547,7 @@ public class ParchisView extends View {
                         if (canEat || gameBoard.spaceInSquare(colour, pos)) {
                             possibleMovement = true;
                             showingDestination = true;
-                            destinationMark = new Pawn(pawn.getColour(), pos);
+                            destinationMark = new Pawn(pawn.getColour(), pos, currentMovementShown);
                             pawnToMove = new Pair<ParchisPlayer, Pawn>(player, pawn);
                             invalidate();
                         } else
@@ -564,6 +559,14 @@ public class ParchisView extends View {
         } else
             i++;
         return possibleMovement;
+    }
+
+    public void returnPawnToHome(ParchisPlayer player, Pawn pawn){
+        showingDestination = true;
+        currentMovementShown = pawn.getNumber();
+        destinationMark = new Pawn(pawn.getColour(), Pawn.INITIAL_SQUARE, pawn.getNumber());
+        pawnToMove = new Pair<ParchisPlayer, Pawn>(player, pawn);
+        invalidate();
     }
 
 //TODO

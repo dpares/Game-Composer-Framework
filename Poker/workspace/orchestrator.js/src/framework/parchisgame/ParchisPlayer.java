@@ -39,7 +39,7 @@ public class ParchisPlayer extends FrameworkPlayer {
             this.colour = Colour.values()[p.getInt("colour")];
             for (int i = 0; i < aux.length(); i++)
                 this.pawns.add(new Pawn(aux.getJSONObject(i).getInt("colour"),
-                        aux.getJSONObject(i).getInt("square")));
+                        aux.getJSONObject(i).getInt("square"), aux.getJSONObject(i).getInt("number")));
         } catch (JSONException e) {
             throw new FrameworkGameException("Error parsing JSON into Player", e);
         }
@@ -70,7 +70,7 @@ public class ParchisPlayer extends FrameworkPlayer {
         this.currentState = ParchisState.DEFAULT;
         this.pawns = new ArrayList<Pawn>();
         for (int i = 0; i < 4; i++)
-            pawns.add(new Pawn(Colour.UNDEFINED.ordinal(), Pawn.INITIAL_SQUARE));
+            pawns.add(new Pawn(Colour.UNDEFINED.ordinal(), Pawn.INITIAL_SQUARE,i));
     }
 
     public List<Pawn> getPawns() {

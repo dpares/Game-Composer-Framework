@@ -1,5 +1,7 @@
 package framework.parchisgame;
 
+import android.util.SparseArray;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -9,10 +11,10 @@ import java.util.Map;
  * Created by fare on 10/11/14.
  */
 public class GameBoard {
-    private Map<Integer, List<Pawn>> squareStates;
+    private SparseArray<List<Pawn>> squareStates;
 
     public GameBoard() {
-        this.squareStates = new HashMap<Integer, List<Pawn>>();
+        this.squareStates = new SparseArray<List<Pawn>>();
     }
 
     private int getSquareKey(int colour, int pos) {
@@ -38,7 +40,7 @@ public class GameBoard {
     }
 
     public boolean spaceInSquare(int colour, int pos) {
-        return (!squareStates.containsKey(getSquareKey(colour, pos)) ||
+        return (squareStates.indexOfKey(getSquareKey(colour, pos)) == -1 ||
                 squareStates.get(getSquareKey(colour, pos)).size() < 2);
     }
 

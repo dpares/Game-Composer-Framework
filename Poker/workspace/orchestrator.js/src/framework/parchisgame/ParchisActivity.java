@@ -41,7 +41,6 @@ public class ParchisActivity extends FrameworkGameActivity {
     private Random rng = new Random(); //generate random numbers
     private SoundPool die_sound = new SoundPool(1, AudioManager.STREAM_MUSIC, 0);
     private int sound_id; //Used to control sound stream return by SoundPool
-    private Handler handler; //Post message to start roll
     private boolean rolled = false; //Is die rolled?
     private int roll; //Last number rolled by the player
 
@@ -51,6 +50,8 @@ public class ParchisActivity extends FrameworkGameActivity {
     private int lastRoll;
     private int lastPlayerIndex;
     private boolean skipTurn;
+    private Pawn lastMovedPawn;
+    private int currentStep;
 
     @Override
     public void onCreate(Bundle savedBundledInstance) {
@@ -77,7 +78,6 @@ public class ParchisActivity extends FrameworkGameActivity {
         playerIndex = -1;
         showLastroll = false;
         skipTurn = false;
-        handler = new Handler();
         this.newRound();
     }
 
@@ -123,6 +123,7 @@ public class ParchisActivity extends FrameworkGameActivity {
 
     @Override
     public void startStep(int phase, int step) {
+        currentStep = step;
         if (step == 0 || this.roll == 6) {
             this.skipTurn = false;
             this.spinningWheel.setVisibility(View.INVISIBLE);
@@ -143,7 +144,8 @@ public class ParchisActivity extends FrameworkGameActivity {
             //Start rolling sound
             die_sound.play(sound_id, 1.0f, 1.0f, 0, 0, 1.0f);
             //Pause to allow image to update
-            handler.post(new Runnable() {
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
                 public void run() {
                     try {
                         if (showLastroll)
@@ -175,32 +177,38 @@ public class ParchisActivity extends FrameworkGameActivity {
                             showLastroll = false;
                         else
                             showNextMove(null);
-                    } catch (InterruptedException e) {
+                    } catch (Exception e) {
                         throw new FrameworkGameException("Error waiting for die roll", e);
                     }
                 }
-            });
+            }, 10);
         }
     }
 
     public void confirmMove(View v) {
-        Pair<Integer, Pawn> aux = board.confirmMove();
-        ((ParchisPlayer) this.player).getPawns().set(aux.first, aux.second);
+        lastMovedPawn = board.confirmMove();
+        ((ParchisPlayer) this.player).getPawns().set(lastMovedPawn.getNumber(), lastMovedPawn);
         this.finishTurn();
     }
 
     public void showNextMove(View v) {
-        boolean canMove = board.showNextMove(this.playerIndex, this.roll);
-        if (!canMove) {
-            Toast.makeText(FrameworkCapability.getContext(), "You can't move in this turn",
-                    Toast.LENGTH_LONG).show();
-            handler.postDelayed(new Runnable() {
-                public void run() {
-                    finishTurn();
-                }
-            }, 1000);
-        } else
-            this.buttonLayout.setVisibility(View.VISIBLE);
+        if(currentStep == 2 && roll == 6 && this.lastMovedPawn != null) {
+            board.returnPawnToHome((ParchisPlayer) this.player, this.lastMovedPawn);
+            this.confirmMove(v);
+        } else {
+            boolean canMove = board.showNextMove(this.playerIndex, this.roll);
+            if (!canMove) {
+                Toast.makeText(FrameworkCapability.getContext(), "You can't move in this turn",
+                        Toast.LENGTH_SHORT).show();
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    public void run() {
+                        finishTurn();
+                    }
+                }, 1000);
+            } else
+                this.buttonLayout.setVisibility(View.VISIBLE);
+        }
 
     }
 
@@ -244,6 +252,8 @@ public class ParchisActivity extends FrameworkGameActivity {
     }
 
     private void finishTurn() {
+        if(this.currentStep == 2)
+            this.lastMovedPawn = null;
         this.die.setVisibility(View.INVISIBLE);
         this.buttonLayout.setVisibility(View.INVISIBLE);
         this.spinningWheel.setVisibility(View.VISIBLE);
