@@ -13,6 +13,8 @@ public class Pawn {
     public static final int REGULAR_SQUARES = 68;
     public static final int LAST_SQUARE = 75;
     public static final int STARTING_POSITIONS[] = {4, 21, 38, 55};
+    public static final int CORRIDOR_START[] = {67, 16, 33, 50};
+    private static final int SAFE_SQUARES[] = {4, 11, 17, 21, 28, 33, 38, 45, 50, 55, 62, 67};
 
     private int square;
     private int colour;
@@ -48,6 +50,19 @@ public class Pawn {
         } catch (JSONException e) {
             throw new FrameworkGameException("Error parsing Pawn into JSON", e);
         }
+    }
+
+    public static boolean isSafeSquare(int pos) {
+        boolean res = false;
+        int i = 0;
+        while (!res && i < SAFE_SQUARES.length) {
+            if (SAFE_SQUARES[i] == pos)
+                res = true;
+            else
+                i++;
+        }
+
+        return res;
     }
 
     @Override

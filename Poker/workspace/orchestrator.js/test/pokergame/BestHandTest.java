@@ -1,6 +1,9 @@
 package pokergame;
 
+import org.json.JSONException;
 import org.json.JSONObject;
+import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.Assert;
 
@@ -16,7 +19,7 @@ import framework.pokergame.PokerPlayer;
  */
 public class BestHandTest {
 
-    private PokerPlayer p = new PokerPlayer(null,"0","",false);
+    private PokerPlayer p = null;
 
     @Test
     public void testHighCard(){

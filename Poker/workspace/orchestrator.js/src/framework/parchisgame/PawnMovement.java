@@ -32,11 +32,21 @@ public class PawnMovement {
             for (int i = 0; i < this.movementCoordinates.length; i++)
                 for (int j = 0; j < 2; j++)
                     this.movementCoordinates[i][j] = startCoords[j] + i * stepIncrease[j] - pawnSize / 2;
-        } else {
+        } else if (this.startSquare < this.destSquare) {
             this.movementCoordinates = new int[this.destSquare - this.startSquare][2];
             for (int i = 0; i < this.movementCoordinates.length; i++)
                 for (int j = 0; j < 2; j++)
                     this.movementCoordinates[i][j] = startSquare + i;
+        } else {
+            int turningPoint = Pawn.REGULAR_SQUARES - this.startSquare + 1;
+            this.movementCoordinates = new int[turningPoint + this.destSquare][2];
+            int aux = startSquare;
+            for (int i = 0; i < this.movementCoordinates.length; i++)
+                for (int j = 0; j < 2; j++) {
+                    this.movementCoordinates[i][j] = aux++;
+                    if(aux == Pawn.REGULAR_SQUARES)
+                        aux = 0;
+                }
         }
     }
 
@@ -48,7 +58,7 @@ public class PawnMovement {
         return this.currentStep == this.movementCoordinates.length;
     }
 
-    public boolean isSpecial(){
+    public boolean isSpecial() {
         return this.movementCoordinates.length == MAX_STEPS;
     }
 

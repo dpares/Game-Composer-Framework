@@ -46,15 +46,18 @@ public class GameBoard {
         List<Pawn> aux = pawnsInSquare(pawn.getColour(), pawn.getSquare());
         if (aux == null)
             aux = new ArrayList<Pawn>();
-        aux.add(pawn);
-        this.squareStates.put(getSquareKey(pawn.getColour(), pawn.getSquare()), aux);
+        if(aux.size() < 2) {
+            aux.add(pawn);
+            this.squareStates.put(getSquareKey(pawn.getColour(), pawn.getSquare()), aux);
+        }
     }
 
     public void removePawn(Pawn pawn) {
         List<Pawn> aux = pawnsInSquare(pawn.getColour(), pawn.getSquare());
-        if (aux != null)
+        if (aux != null) {
             aux.remove(pawn);
-        this.squareStates.put(getSquareKey(pawn.getColour(), pawn.getSquare()), aux);
+            this.squareStates.put(getSquareKey(pawn.getColour(), pawn.getSquare()), aux);
+        }
     }
 
 }

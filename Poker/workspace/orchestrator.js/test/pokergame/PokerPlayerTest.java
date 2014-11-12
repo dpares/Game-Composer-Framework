@@ -31,7 +31,7 @@ public class PokerPlayerTest {
             Assert.assertEquals(p.getFunds(), 0);
             Assert.assertEquals(p.getBet(), 1000);
         } catch (JSONException e){
-            throw new FrameworkGameException("Error creatint initData JSON",e);
+            throw new FrameworkGameException("Error creating initData JSON",e);
         }
     }
 
