@@ -195,7 +195,7 @@ module.exports = {
                     showCurrentState();
                     do{
                         numPlayers = gameController.countAvailablePlayers(players);
-                        if(numPlayers == 1 && !gameController.phaseEnd(currentPhase,players) || numPlayers > 1){
+                        if(numPlayers > 1 || numPlayers == 1 && !gameController.phaseEnd(currentPhase,players)){
                             for(var i = 0; i < numPlayers; i++){
                                 var player = players[currentPlayer];
                                 currentStep = 0;
@@ -217,7 +217,8 @@ module.exports = {
                                         else if(stepResult.hasOwnProperty("all_players_data"))
                                             updatePlayerStates(stepResult.all_players_data);
                                         gameController.updateCommonData(stepResult.common_data);
-                                        currentStep++;
+                                        if(!stepResult.hasOwnProperty("additional_step"))
+                                            currentStep++;
                                     }
                                     showCurrentState();
                                 }
@@ -255,6 +256,7 @@ module.exports = {
                 if(handlingDisconnection)
                     handlingDisconnection = false;
             }
+            misc.sleep(4);
             j = 0;
             while (j < players.length){
                 var wantsRematch;

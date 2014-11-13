@@ -301,11 +301,11 @@ public class ParchisView extends View {
         }
     }
 
-    private boolean allMovesFinished(){
+    private boolean allMovesFinished() {
         boolean res = true;
-        int i=0;
-        while(res && i < this.movements.size()){
-            if(this.movements.get(i).isFinished())
+        int i = 0;
+        while (res && i < this.movements.size()) {
+            if (this.movements.get(i).isFinished())
                 i++;
             else
                 res = false;
@@ -347,10 +347,10 @@ public class ParchisView extends View {
         }
     }
 
-    private ParchisPlayer findPlayerByColour(int colour){
+    private ParchisPlayer findPlayerByColour(int colour) {
         ParchisPlayer res = null;
         int i = 0;
-        while(res == null && i <this.players.size()) {
+        while (res == null && i < this.players.size()) {
             if (this.players.get(i).getColour().ordinal() == colour)
                 res = this.players.get(i);
             else
@@ -383,9 +383,11 @@ public class ParchisView extends View {
                     pawnInSquare = gameBoard.pawnsInSquare(colour, square).indexOf(movablePawn);
                 else {
                     pawnInSquare = gameBoard.nextSpaceInSquare(colour, square);
-                    if (pawnInSquare < 0)
-                        pawnInSquare = gameBoard.pawnsInSquare(colour, square).get(0).getColour() ==
-                                movablePawn.getColour() ? 1 : 0;
+                    if (pawnInSquare < 0) {
+                        List<Pawn> aux = gameBoard.pawnsInSquare(colour,square);
+                        pawnInSquare = aux.get(aux.size()-1).getColour() ==
+                                movablePawn.getColour() ? aux.size()-1 : 0;
+                    }
                 }
                 if (square >= Pawn.REGULAR_SQUARES) {
                     int corridorPos = square - Pawn.REGULAR_SQUARES;
@@ -412,7 +414,7 @@ public class ParchisView extends View {
             pawnsInLast++;
         } else {
             int pawnInSquare = gameBoard.pawnsInSquare(colour, square).indexOf(pawn);
-            if(pawnInSquare < 0)
+            if (pawnInSquare < 0)
                 pawnInSquare = 1;
             if (square >= Pawn.REGULAR_SQUARES) {
                 int corridorPos = square - Pawn.REGULAR_SQUARES;
@@ -424,11 +426,11 @@ public class ParchisView extends View {
         }
     }
 
-    private PawnMovement findMovement(Pawn pawn){
+    private PawnMovement findMovement(Pawn pawn) {
         PawnMovement res = null;
         int i = 0;
-        while(res == null && i < this.movements.size()){
-            if(this.movements.get(i).getInitialSquare() == pawn.getSquare())
+        while (res == null && i < this.movements.size()) {
+            if (this.movements.get(i).getInitialSquare() == pawn.getSquare())
                 res = this.movements.get(i);
             else
                 i++;
@@ -473,20 +475,20 @@ public class ParchisView extends View {
                             finalPawn.getSquare(), coords, pawnSize, previousPawn.getColour());
                 }
                 this.movements.add(move);
-                if(previousPawn.getSquare() != Pawn.INITIAL_SQUARE)
+                if (previousPawn.getSquare() != Pawn.INITIAL_SQUARE)
                     gameBoard.removePawn(previousPawn);
                 if (finalPawn.getSquare() != Pawn.LAST_SQUARE &&
                         finalPawn.getSquare() != Pawn.INITIAL_SQUARE) {
-                    if(!gameBoard.spaceInSquare(finalPawn.getColour(),finalPawn.getSquare())) {
+                    if (!gameBoard.spaceInSquare(finalPawn.getColour(), finalPawn.getSquare())) {
                         List<Pawn> aux = gameBoard.pawnsInSquare(finalPawn.getColour(),
                                 finalPawn.getSquare());
                         int removePos = aux.get(1).getColour() != finalPawn.getColour() ? 1 : 0;
-                        gameBoard.removePawn(aux.get(removePos),true);
+                        gameBoard.removePawn(aux.get(removePos), true);
                     }
                     gameBoard.insertPawn(finalPawn);
                 }
             }
-            if(!move.isFinished()) {
+            if (!move.isFinished()) {
                 int coords[] = move.nextStep();
                 if (move.isSpecial())
                     canvas.drawBitmap(bigPawnBitmaps[previousPawn.getColour()], coords[0] - pawnSize / 2,
@@ -519,8 +521,21 @@ public class ParchisView extends View {
             drawPawn(previousPawn, canvas);
     }
 
-    public void updatePlayers(List<ParchisPlayer> players, boolean orderChanged) {
-       if (orderChanged || this.players.size() < players.size())
+    private void handleDisconnection(List<ParchisPlayer> players){
+        int i = 0;
+        while (i < this.players.size()){
+            ParchisPlayer pp = this.players.get(i);
+            if(players.indexOf(pp) < 0){
+                for(Pawn p: pp.getPawns())
+                    gameBoard.removePawn(p);
+                this.players.remove(pp);
+            } else
+                i++;
+        }
+    }
+
+    public void updatePlayers(List<ParchisPlayer> players, boolean disconnection) {
+        if (this.players.size() == 0)
             this.players = players;
         else if (this.players.size() > 0 &&
                 this.players.get(0).getColour() == ParchisPlayer.Colour.UNDEFINED) {
@@ -529,6 +544,8 @@ public class ParchisView extends View {
             invalidate();
         } else {
             this.updatedPlayers = players;
+            if(disconnection)
+                handleDisconnection(players);
             invalidate();
         }
     }
@@ -550,7 +567,7 @@ public class ParchisView extends View {
         int moveCode = 0;
         if (destinationMark.getSquare() == Pawn.LAST_SQUARE)
             moveCode = 1;
-        else if(eatenPawn != null)
+        else if (eatenPawn != null)
             moveCode = 2;
 
         showingDestination = false;
@@ -561,7 +578,7 @@ public class ParchisView extends View {
         return new Pair<Integer, Pawn>(moveCode, movePawn);
     }
 
-    public Pawn getEatenPawn(){
+    public Pawn getEatenPawn() {
         return new Pawn(eatenPawn.getColour(), Pawn.INITIAL_SQUARE, eatenPawn.getNumber());
     }
 
@@ -588,20 +605,19 @@ public class ParchisView extends View {
                 if (currentMovementShown == pawns.size())
                     currentMovementShown = 0;
                 Pawn pawn = pawns.get(currentMovementShown);
+                boolean skipPawn = false;
+                int pos = pawn.getSquare() + roll;
+                int colour = pawn.getColour();
                 if (pawn.getSquare() != Pawn.LAST_SQUARE) {
-                    boolean skipPawn = false;
-                    int pos = pawn.getSquare() + roll;
-                    int colour = pawn.getColour();
-                    if(pawn.getSquare() != Pawn.INITIAL_SQUARE) {
+                    if (pawn.getSquare() != Pawn.INITIAL_SQUARE) {
                         if (pawn.getSquare() <= Pawn.CORRIDOR_START[colour] &&
                                 pos > Pawn.CORRIDOR_START[colour]) // Enter corridor
                             pos = pos - Pawn.CORRIDOR_START[colour] + Pawn.REGULAR_SQUARES - 1;
                         else if (pawn.getSquare() < Pawn.REGULAR_SQUARES && pos >= Pawn.REGULAR_SQUARES)
                             pos = pos - Pawn.REGULAR_SQUARES;
-                        else if (pawn.getSquare() < Pawn.LAST_SQUARE && pos > Pawn.LAST_SQUARE) {
-                            i++;
+                        else if (pawn.getSquare() < Pawn.LAST_SQUARE && pos > Pawn.LAST_SQUARE)
                             skipPawn = true;
-                        } else if (pos == Pawn.LAST_SQUARE) {
+                        else if (pos == Pawn.LAST_SQUARE) {
                             if (!gameBoard.barrierBetween(pawn, pos)) {
                                 skipPawn = true;
                                 possibleMovement = true;
@@ -613,8 +629,10 @@ public class ParchisView extends View {
                             } else
                                 i++;
                         }
-                    } else
+                    } else if (roll == 5) {
                         pos = Pawn.STARTING_POSITIONS[colour];
+                    } else
+                        skipPawn = true;
                     if (!skipPawn && !gameBoard.barrierBetween(pawn, pos)) {
                         if (pawn.getSquare() != Pawn.INITIAL_SQUARE &&
                                 gameBoard.nextSpaceInSquare(colour, pos) == 0) { // Empty square
@@ -625,7 +643,7 @@ public class ParchisView extends View {
                             invalidate();
                         } else { // Check if a pawn could be eaten
                             boolean canEat = false;
-                            int j = gameBoard.pawnsInSquare(colour, pos).size()-1;
+                            int j = gameBoard.pawnsInSquare(colour, pos).size() - 1;
                             while (!canEat && j >= 0) {
                                 if (gameBoard.pawnsInSquare(colour, pos).get(j).getColour() !=
                                         pawns.get(currentMovementShown).getColour() &&
@@ -639,7 +657,7 @@ public class ParchisView extends View {
                                 possibleMovement = true;
                                 showingDestination = true;
                                 destinationMark = new Pawn(pawn.getColour(), pos, currentMovementShown);
-                                if(pawn.getSquare() == Pawn.INITIAL_SQUARE) {
+                                if (pawn.getSquare() == Pawn.INITIAL_SQUARE) {
                                     blockMoves = true;
                                     pawnToMove = player.firstHomePawn();
                                     currentMovementShown = pawnToMove.getNumber();
@@ -654,24 +672,30 @@ public class ParchisView extends View {
                 } else
                     i++;
             }
-        } else if(blockMoves)
+        } else if (blockMoves)
             possibleMovement = true;
 
         return possibleMovement;
     }
 
     public void returnPawnToHome(Pawn pawn) {
-        showingDestination = true;
         currentMovementShown = pawn.getNumber();
         destinationMark = new Pawn(pawn.getColour(), Pawn.INITIAL_SQUARE, pawn.getNumber());
         pawnToMove = pawn;
         invalidate();
     }
 
+    public void updatePlayersEatenPawn(ParchisPlayer player){
+        ParchisPlayer boardPlayer = findPlayerByColour(player.getColour().ordinal());
+        for(int i=0;i<player.getPawns().size();i++){
+            if(player.getPawns().get(i).getSquare() == Pawn.INITIAL_SQUARE &&
+                    boardPlayer.getPawns().get(i).getSquare() != Pawn.INITIAL_SQUARE
+                    )
+                gameBoard.removePawn(boardPlayer.getPawns().get(i));
+        }
+    }
+
 //TODO
-// - Fix eating (related to deleting/inserting pawns in gameBoard)
-// - Add 20 to roll and show it to other players
-// - Break barriers if player rolls a 6
 // - Handle disconnections
 // - Polish UI
 

@@ -50,10 +50,10 @@ public class ParchisActivity extends FrameworkGameActivity {
     private boolean showLastroll;
     private int lastRoll;
     private int lastPlayerIndex;
-    private boolean skipTurn;
     private Pawn lastMovedPawn;
-    private int currentStep;
+    private int sixsRolled;
     private int moveCode;
+    private boolean showingResults;
 
     @Override
     public void onCreate(Bundle savedBundledInstance) {
@@ -79,8 +79,6 @@ public class ParchisActivity extends FrameworkGameActivity {
 
         playerIndex = -1;
         showLastroll = false;
-        skipTurn = false;
-        moveCode = 0;
         this.newRound();
     }
 
@@ -90,7 +88,6 @@ public class ParchisActivity extends FrameworkGameActivity {
             JSONObject res = new JSONObject();
             res.put("last_roll", this.roll);
             res.put("last_player", this.playerIndex);
-            res.put("skip_turn", this.skipTurn);
             return res;
         } catch (JSONException e) {
             throw new FrameworkGameException("Error parsing commonData JSON", e);
@@ -100,28 +97,44 @@ public class ParchisActivity extends FrameworkGameActivity {
     @Override
     public void update(JSONArray players, JSONObject commonData) {
         try {
+            boolean disconnection = false;
             if (numPlayers == -1)
                 numPlayers = players.length();
-            boolean skip = commonData.getBoolean("skip_turn");
-            if (!skip) {
-                this.lastPlayerIndex = commonData.getInt("last_player");
-                if (this.lastPlayerIndex != -1 && this.lastPlayerIndex != this.playerIndex) {
-                    this.die.setVisibility(View.VISIBLE);
-                    this.spinningWheel.setVisibility(View.INVISIBLE);
-                    this.lastRoll = commonData.getInt("last_roll");
-                    this.showLastroll = true;
-                    rollDie(null);
-                }
-                this.playersList = new ArrayList<FrameworkPlayer>();
-                List<ParchisPlayer> auxList = new ArrayList<ParchisPlayer>();
-                for (int i = 0; i < players.length(); i++) {
-                    ParchisPlayer pp = new ParchisPlayer(players.getJSONObject(i));
-                    this.playersList.add(pp);
-                    auxList.add(pp);
-                }
-                if (playerIndex == -1)
-                    playerIndex = this.playersList.indexOf(this.player);
-                board.updatePlayers(auxList, false);
+            this.lastPlayerIndex = commonData.getInt("last_player");
+            if (this.lastPlayerIndex != -1 && this.lastPlayerIndex != this.playerIndex) {
+                this.die.setVisibility(View.VISIBLE);
+                this.spinningWheel.setVisibility(View.INVISIBLE);
+                this.lastRoll = commonData.getInt("last_roll");
+                this.showLastroll = true;
+                rollDie(null);
+            }
+            this.playersList = new ArrayList<FrameworkPlayer>();
+            List<ParchisPlayer> auxList = new ArrayList<ParchisPlayer>();
+            for (int i = 0; i < players.length(); i++) {
+                ParchisPlayer pp = new ParchisPlayer(players.getJSONObject(i));
+                this.playersList.add(pp);
+                auxList.add(pp);
+            }
+            if(players.length() != this.numPlayers){ // Handle disconnection
+                playerIndex = -1;
+                this.numPlayers = players.length();
+                disconnection = true;
+            }
+            if (playerIndex == -1)
+                playerIndex = this.playersList.indexOf(this.player);
+
+            if(this.lastPlayerIndex != this.playerIndex && this.lastRoll == 20) {
+                this.player = playersList.get(playerIndex);
+                board.updatePlayersEatenPawn((ParchisPlayer) this.player);
+            }
+            board.updatePlayers(auxList, disconnection);
+            if (disconnection) {
+                String toastMsg;
+                if (showingResults)
+                    toastMsg = playerIndex == -1 ? "You have lost" : "A player has lost";
+                else
+                    toastMsg = "A player has left the game";
+                Toast.makeText(this, toastMsg, Toast.LENGTH_LONG).show();
             }
         } catch (JSONException e) {
             throw new FrameworkGameException("Error parsing JSON in update", e);
@@ -130,17 +143,19 @@ public class ParchisActivity extends FrameworkGameActivity {
 
     @Override
     public void startStep(int phase, int step) {
-        currentStep = step;
-        if (step == 0 || this.roll == 6) {
-            this.skipTurn = false;
-            this.spinningWheel.setVisibility(View.INVISIBLE);
-            die.setImageResource(R.drawable.dice3droll);
-            this.die.setVisibility(View.VISIBLE);
-            this.rolled = false;    //user can press again
-        } else {
-            this.skipTurn = true;
-            this.finishTurn(false);
-        }
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                spinningWheel.setVisibility(View.INVISIBLE);
+                if (moveCode == 0) {
+                    die.setImageResource(R.drawable.dice3droll);
+                    die.setVisibility(View.VISIBLE);
+                    rolled = false;    //user can press again
+                } else
+                    showNextMove(null);
+            }
+        },500);
     }
 
     public void rollDie(View v) {
@@ -159,25 +174,29 @@ public class ParchisActivity extends FrameworkGameActivity {
                             roll = lastRoll;
                         else
                             roll = rng.nextInt(6) + 1;
-                        switch (roll) {
-                            case 1:
-                                die.setImageResource(R.drawable.one);
-                                break;
-                            case 2:
-                                die.setImageResource(R.drawable.two);
-                                break;
-                            case 3:
-                                die.setImageResource(R.drawable.three);
-                                break;
-                            case 4:
-                                die.setImageResource(R.drawable.four);
-                                break;
-                            case 5:
-                                die.setImageResource(R.drawable.five);
-                                break;
-                            case 6:
-                                die.setImageResource(R.drawable.six);
-                                break;
+                        if(roll <= 6) {
+                            switch (roll) {
+                                case 1:
+                                    die.setImageResource(R.drawable.one);
+                                    break;
+                                case 2:
+                                    die.setImageResource(R.drawable.two);
+                                    break;
+                                case 3:
+                                    die.setImageResource(R.drawable.three);
+                                    break;
+                                case 4:
+                                    die.setImageResource(R.drawable.four);
+                                    break;
+                                case 5:
+                                    die.setImageResource(R.drawable.five);
+                                    break;
+                                case 6:
+                                    die.setImageResource(R.drawable.six);
+                                    break;
+                            }
+                            if (!showLastroll && roll == 6)
+                                sixsRolled++;
                         }
                         Thread.sleep(1000);
                         if (showLastroll)
@@ -192,11 +211,11 @@ public class ParchisActivity extends FrameworkGameActivity {
         }
     }
 
-    private ParchisPlayer findPlayerByColour(int colour){
+    private ParchisPlayer findPlayerByColour(int colour) {
         ParchisPlayer res = null;
         int i = 0;
-        while(res == null && i <this.playersList.size()) {
-            if (((ParchisPlayer)this.playersList.get(i)).getColour().ordinal() == colour)
+        while (res == null && i < this.playersList.size()) {
+            if (((ParchisPlayer) this.playersList.get(i)).getColour().ordinal() == colour)
                 res = (ParchisPlayer) this.playersList.get(i);
             else
                 i++;
@@ -209,40 +228,33 @@ public class ParchisActivity extends FrameworkGameActivity {
         lastMovedPawn = move.second;
         moveCode = move.first;
         ((ParchisPlayer) this.player).getPawns().set(lastMovedPawn.getNumber(), lastMovedPawn);
-        if (moveCode != 0){
-            if(moveCode == 2) {
-                this.playersList.set(this.playersList.indexOf(this.player),this.player);
-                Pawn aux = board.getEatenPawn();
-                Pawn eatenPawn = new Pawn(aux.getColour(), Pawn.INITIAL_SQUARE, aux.getNumber());
-                ParchisPlayer eatenPlayer = findPlayerByColour(eatenPawn.getColour());
-                int index = this.playersList.indexOf(eatenPlayer);
-                eatenPlayer.getPawns().set(eatenPawn.getNumber(), eatenPawn);
-                this.playersList.set(index,eatenPlayer);
-                this.finishTurn(true);
-            }else
-                this.showNextMove(v);
-        } else
-            this.finishTurn(false);
+        if (moveCode == 2) {
+            this.playersList.set(this.playersList.indexOf(this.player), this.player);
+            Pawn aux = board.getEatenPawn();
+            Pawn eatenPawn = new Pawn(aux.getColour(), Pawn.INITIAL_SQUARE, aux.getNumber());
+            ParchisPlayer eatenPlayer = findPlayerByColour(eatenPawn.getColour());
+            int index = this.playersList.indexOf(eatenPlayer);
+            eatenPlayer.getPawns().set(eatenPawn.getNumber(), eatenPawn);
+            this.playersList.set(index, eatenPlayer);
+        }
+        this.finishTurn(moveCode == 2, moveCode != 0 || roll >= 6 && sixsRolled < 3);
     }
 
     public void showNextMove(View v) {
-        if (currentStep == 2 && roll == 6 && this.lastMovedPawn != null) {
+        if (sixsRolled == 3 && roll == 6 && this.lastMovedPawn != null) {
             board.returnPawnToHome(this.lastMovedPawn);
             this.confirmMove(v);
         } else {
-            int rollAux;
-            if (moveCode == 0)
-                rollAux = this.roll;
-            else
-                rollAux = 10;
-            boolean canMove = board.showNextMove(this.playerIndex, rollAux);
+            if (moveCode != 0)
+                this.roll = 10 * moveCode;
+            boolean canMove = board.showNextMove(this.playerIndex, this.roll);
             if (!canMove) {
                 Toast.makeText(FrameworkCapability.getContext(), "You can't move in this turn",
                         Toast.LENGTH_SHORT).show();
                 Handler handler = new Handler();
                 handler.postDelayed(new Runnable() {
                     public void run() {
-                        finishTurn(false);
+                        finishTurn(false, roll >= 6);
                     }
                 }, 1000);
             } else
@@ -254,6 +266,7 @@ public class ParchisActivity extends FrameworkGameActivity {
     @Override
     public void showResults(JSONObject winners, JSONArray players, JSONObject commonData) {
         this.spinningWheel.setVisibility(View.INVISIBLE);
+        showingResults = true;
     }
 
     @Override
@@ -261,6 +274,9 @@ public class ParchisActivity extends FrameworkGameActivity {
         this.player.newRound();
         this.board.newGame();
         this.numPlayers = -1;
+        moveCode = 0;
+        sixsRolled = 0;
+        showingResults = false;
         this.winnerLabel.setVisibility(View.INVISIBLE);
     }
 
@@ -290,14 +306,16 @@ public class ParchisActivity extends FrameworkGameActivity {
             this.newRound();
     }
 
-    private void finishTurn(boolean playersListModified) {
-        if (this.currentStep == 2)
+    private void finishTurn(boolean playersListModified, boolean additionalStep) {
+        if (!additionalStep) {
             this.lastMovedPawn = null;
-        moveCode = 0;
+            moveCode = 0;
+            sixsRolled = 0;
+        }
         this.die.setVisibility(View.INVISIBLE);
         this.buttonLayout.setVisibility(View.INVISIBLE);
         this.spinningWheel.setVisibility(View.VISIBLE);
-        FrameworkCapability.endOfTurn(playersListModified);
+        FrameworkCapability.endOfTurn(playersListModified, additionalStep);
     }
 
     @Override

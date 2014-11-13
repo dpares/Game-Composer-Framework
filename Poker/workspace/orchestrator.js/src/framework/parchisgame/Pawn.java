@@ -12,7 +12,7 @@ public class Pawn {
     public static final int INITIAL_SQUARE = 0;
     public static final int REGULAR_SQUARES = 68;
     public static final int LAST_SQUARE = 75;
-    public static final int STARTING_POSITIONS[] = {4, 21, 38, 55}; //{8, 13, 30, 48};
+    public static final int STARTING_POSITIONS[] =  {4, 21, 38, 55};
     public static final int CORRIDOR_START[] = {67, 16, 33, 50};
     private static final int SAFE_SQUARES[] = {4, 11, 17, 21, 28, 33, 38, 45, 50, 55, 62, 67};
 

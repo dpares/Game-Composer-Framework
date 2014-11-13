@@ -40,6 +40,7 @@ public class FrameworkCapability {
     private static boolean wantsRematch;
     private static boolean gameLeft;
     private static boolean sendAllPlayersData;
+    private static boolean additionalStep;
 
     private static JSONObject nullJSON() {
         try {
@@ -111,6 +112,10 @@ public class FrameworkCapability {
                     res.put("player_data", FrameworkGameActivity.getInstance().getPlayer().getJSON());
                 else
                     res.put("all_players_data", FrameworkGameActivity.getInstance().getAllPlayersJSON());
+                if(additionalStep)
+                    res.put("additional_step",true);
+                sendAllPlayersData = false;
+                additionalStep = false;
                 return res;
             } catch (JSONException e) {
                 throw new FrameworkGameException("Error sending turn result", e);
@@ -156,12 +161,13 @@ public class FrameworkCapability {
     }
 
     public static void endOfTurn(){
-        FrameworkCapability.endOfTurn(false);
+        FrameworkCapability.endOfTurn(false, false);
     }
 
-    public static void endOfTurn(boolean sendAllPlayersData) {
+    public static void endOfTurn(boolean sendAllPlayersData, boolean additionalStep) {
         playerDataAvailable = true;
         FrameworkCapability.sendAllPlayersData = sendAllPlayersData;
+        FrameworkCapability.additionalStep = additionalStep;
     }
 
     public static void leaveGame() {

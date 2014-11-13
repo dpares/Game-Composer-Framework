@@ -8,7 +8,7 @@ var UNDEFINED_COLOUR = 4;
 var config = {};
 config.initData = {activity_class : "framework.parchisgame.ParchisActivity", player_class : "framework.parchisgame.ParchisPlayer"};
 config.phases = 1;
-config.steps = [3];
+config.steps = [1];
 
 
 Game.prototype.newRound = function(players){
@@ -47,13 +47,11 @@ Game.prototype.nextPlayer = function(index,players){
 }
 
 Game.prototype.phaseSetUp = function(currentPhase,players){
-    if(currentPhase == 0){
-        for(i in players){
-            players[i].state.colour = i;
-            for(j in players[i].state.pawns)
-                players[i].state.pawns[j].colour = i;
-            players[i].device.frameworkCapability.setPlayerState(players[i].state);
-        }
+    for(i in players){
+        players[i].state.colour = i;
+        for(j in players[i].state.pawns)
+            players[i].state.pawns[j].colour = i;
+        players[i].device.frameworkCapability.setPlayerState(players[i].state);
     }
 }
 
