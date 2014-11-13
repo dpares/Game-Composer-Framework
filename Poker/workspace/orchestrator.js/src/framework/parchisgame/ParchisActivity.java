@@ -26,6 +26,7 @@ import java.util.Random;
 
 import framework.engine.FrameworkGameActivity;
 import framework.engine.FrameworkGameException;
+import framework.engine.FrameworkPlayer;
 
 /**
  * Created by fare on 07/11/14.
@@ -52,6 +53,7 @@ public class ParchisActivity extends FrameworkGameActivity {
     private boolean skipTurn;
     private Pawn lastMovedPawn;
     private int currentStep;
+    private int moveCode;
 
     @Override
     public void onCreate(Bundle savedBundledInstance) {
@@ -78,6 +80,7 @@ public class ParchisActivity extends FrameworkGameActivity {
         playerIndex = -1;
         showLastroll = false;
         skipTurn = false;
+        moveCode = 0;
         this.newRound();
     }
 
@@ -109,12 +112,16 @@ public class ParchisActivity extends FrameworkGameActivity {
                     this.showLastroll = true;
                     rollDie(null);
                 }
-                List<ParchisPlayer> playersList = new ArrayList<ParchisPlayer>();
-                for (int i = 0; i < players.length(); i++)
-                    playersList.add(new ParchisPlayer(players.getJSONObject(i)));
+                this.playersList = new ArrayList<FrameworkPlayer>();
+                List<ParchisPlayer> auxList = new ArrayList<ParchisPlayer>();
+                for (int i = 0; i < players.length(); i++) {
+                    ParchisPlayer pp = new ParchisPlayer(players.getJSONObject(i));
+                    this.playersList.add(pp);
+                    auxList.add(pp);
+                }
                 if (playerIndex == -1)
-                    playerIndex = playersList.indexOf(this.player);
-                board.updatePlayers(playersList, false);
+                    playerIndex = this.playersList.indexOf(this.player);
+                board.updatePlayers(auxList, false);
             }
         } catch (JSONException e) {
             throw new FrameworkGameException("Error parsing JSON in update", e);
@@ -132,7 +139,7 @@ public class ParchisActivity extends FrameworkGameActivity {
             this.rolled = false;    //user can press again
         } else {
             this.skipTurn = true;
-            this.finishTurn();
+            this.finishTurn(false);
         }
     }
 
@@ -185,25 +192,57 @@ public class ParchisActivity extends FrameworkGameActivity {
         }
     }
 
+    private ParchisPlayer findPlayerByColour(int colour){
+        ParchisPlayer res = null;
+        int i = 0;
+        while(res == null && i <this.playersList.size()) {
+            if (((ParchisPlayer)this.playersList.get(i)).getColour().ordinal() == colour)
+                res = (ParchisPlayer) this.playersList.get(i);
+            else
+                i++;
+        }
+        return res.clone();
+    }
+
     public void confirmMove(View v) {
-        lastMovedPawn = board.confirmMove();
+        Pair<Integer, Pawn> move = board.confirmMove();
+        lastMovedPawn = move.second;
+        moveCode = move.first;
         ((ParchisPlayer) this.player).getPawns().set(lastMovedPawn.getNumber(), lastMovedPawn);
-        this.finishTurn();
+        if (moveCode != 0){
+            if(moveCode == 2) {
+                this.playersList.set(this.playersList.indexOf(this.player),this.player);
+                Pawn aux = board.getEatenPawn();
+                Pawn eatenPawn = new Pawn(aux.getColour(), Pawn.INITIAL_SQUARE, aux.getNumber());
+                ParchisPlayer eatenPlayer = findPlayerByColour(eatenPawn.getColour());
+                int index = this.playersList.indexOf(eatenPlayer);
+                eatenPlayer.getPawns().set(eatenPawn.getNumber(), eatenPawn);
+                this.playersList.set(index,eatenPlayer);
+                this.finishTurn(true);
+            }else
+                this.showNextMove(v);
+        } else
+            this.finishTurn(false);
     }
 
     public void showNextMove(View v) {
-        if(currentStep == 2 && roll == 6 && this.lastMovedPawn != null) {
-            board.returnPawnToHome((ParchisPlayer) this.player, this.lastMovedPawn);
+        if (currentStep == 2 && roll == 6 && this.lastMovedPawn != null) {
+            board.returnPawnToHome(this.lastMovedPawn);
             this.confirmMove(v);
         } else {
-            boolean canMove = board.showNextMove(this.playerIndex, this.roll);
+            int rollAux;
+            if (moveCode == 0)
+                rollAux = this.roll;
+            else
+                rollAux = 10;
+            boolean canMove = board.showNextMove(this.playerIndex, rollAux);
             if (!canMove) {
                 Toast.makeText(FrameworkCapability.getContext(), "You can't move in this turn",
                         Toast.LENGTH_SHORT).show();
                 Handler handler = new Handler();
                 handler.postDelayed(new Runnable() {
                     public void run() {
-                        finishTurn();
+                        finishTurn(false);
                     }
                 }, 1000);
             } else
@@ -251,13 +290,14 @@ public class ParchisActivity extends FrameworkGameActivity {
             this.newRound();
     }
 
-    private void finishTurn() {
-        if(this.currentStep == 2)
+    private void finishTurn(boolean playersListModified) {
+        if (this.currentStep == 2)
             this.lastMovedPawn = null;
+        moveCode = 0;
         this.die.setVisibility(View.INVISIBLE);
         this.buttonLayout.setVisibility(View.INVISIBLE);
         this.spinningWheel.setVisibility(View.VISIBLE);
-        FrameworkCapability.endOfTurn();
+        FrameworkCapability.endOfTurn(playersListModified);
     }
 
     @Override

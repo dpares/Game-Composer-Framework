@@ -104,6 +104,11 @@ function handleDisconnection(action, device, event_value){
         action.finishAction();
 }
 
+function updatePlayerStates(playersStates){
+    for(i in players)
+        players[i].state = playersStates[i];
+}
+
 module.exports = {
 
     exceptionHandler: function(action, device, exception_value) {
@@ -207,7 +212,10 @@ module.exports = {
                                     if(handlingDisconnection)
                                         handlingDisconnection = false;
                                      else{
-                                        player.state = stepResult.player_data;
+                                        if(stepResult.hasOwnProperty("player_data"))
+                                            player.state = stepResult.player_data;
+                                        else if(stepResult.hasOwnProperty("all_players_data"))
+                                            updatePlayerStates(stepResult.all_players_data);
                                         gameController.updateCommonData(stepResult.common_data);
                                         currentStep++;
                                     }

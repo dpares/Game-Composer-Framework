@@ -70,7 +70,7 @@ public class ParchisPlayer extends FrameworkPlayer {
         this.currentState = ParchisState.DEFAULT;
         this.pawns = new ArrayList<Pawn>();
         for (int i = 0; i < 4; i++)
-            pawns.add(new Pawn(Colour.UNDEFINED.ordinal(), Pawn.INITIAL_SQUARE,i));
+            pawns.add(new Pawn(Colour.UNDEFINED.ordinal(), Pawn.INITIAL_SQUARE, i));
     }
 
     public List<Pawn> getPawns() {
@@ -110,5 +110,10 @@ public class ParchisPlayer extends FrameworkPlayer {
                 res++;
 
         return res;
+    }
+
+    @Override
+    public ParchisPlayer clone(){
+        return new ParchisPlayer(this.getJSON());
     }
 }

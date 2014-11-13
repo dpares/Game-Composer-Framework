@@ -19,6 +19,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.lang.reflect.Constructor;
+import java.util.List;
 
 /**
  * Created by fare on 07/11/14.
@@ -27,6 +28,7 @@ public abstract class FrameworkGameActivity extends Activity {
     protected static FrameworkGameActivity instance;
 
     protected FrameworkPlayer player;
+    protected List<FrameworkPlayer> playersList;
     protected String playerClassName;
 
     protected boolean pausedActivity = false;
@@ -56,6 +58,18 @@ public abstract class FrameworkGameActivity extends Activity {
 
     public FrameworkPlayer getPlayer() {
         return this.player;
+    }
+
+    public JSONArray getAllPlayersJSON(){
+        try {
+            JSONArray res = new JSONArray();
+            for (FrameworkPlayer fp : this.playersList)
+                res.put(fp.getJSON());
+
+            return res;
+        } catch (NullPointerException e){
+            throw new FrameworkGameException("Players list is null",e);
+        }
     }
 
     public void setPlayerState(JSONObject state) {
