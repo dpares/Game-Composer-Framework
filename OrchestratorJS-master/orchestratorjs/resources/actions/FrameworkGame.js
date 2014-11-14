@@ -12,11 +12,11 @@ function Player() {
     this.active = true;
 };
 
-function playersStatesArray(){
+function playersStatesArray(showInactive){
     var res = [];
     var i = 0;
     while(i < players.length){
-        if(players[i].active && ! handlingDisconnection)
+        if(players[i].active && ! handlingDisconnection || showInactive && !handlingDisconnection)
             res.push(players[i].state);
         if(!handlingDisconnection)
             i++;
@@ -62,7 +62,7 @@ function showResults(){
     while(j < players.length){
         var playerState;
         if(!handlingDisconnection)
-            playerState = players[j].device.frameworkCapability.showResults(json,playersStatesArray(),gameController.commonData);
+            playerState = players[j].device.frameworkCapability.showResults(json,playersStatesArray(true),gameController.commonData);
         if(!handlingDisconnection){
             players[j].state = playerState;
             if(!gameController.isActive(players[j].state))
@@ -231,8 +231,8 @@ module.exports = {
                 currentPlayer = -1;
                 gameController.computeResults(players);
                 showResults();
-                misc.sleep(4);
                 if(countActivePlayers() > 1){
+                    misc.sleep(4);
                     j = 0;
                     while(j < players.length){
                         if(!handlingDisconnection)
@@ -250,7 +250,7 @@ module.exports = {
             j = 0;
             while (j < players.length){
                 if(!handlingDisconnection)
-                    players[j].device.frameworkCapability.announceWinner(playersStatesArray(),winner);
+                    players[j].device.frameworkCapability.announceWinner(playersStatesArray(true),winner);
                 if(!handlingDisconnection)
                     j++;
                 if(handlingDisconnection)

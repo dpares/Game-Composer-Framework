@@ -118,7 +118,7 @@ public class ParchisView extends View {
         boardSize = w;
         if (boardSize > h) boardSize = h;
         offsetX = ((w - boardSize) / 2);
-        offsetY = ((h - boardSize) / 2);
+        offsetY = 0; // ((h - boardSize) / 2);
         scale = (boardSize * 1.0) / 439;
         pawnSize = (int) (19 * scale);
         boardBitmap = loadBitmap(r.getDrawable(R.drawable.parchisboard), boardSize);

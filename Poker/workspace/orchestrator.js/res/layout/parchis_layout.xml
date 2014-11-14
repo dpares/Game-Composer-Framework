@@ -4,6 +4,24 @@
     android:background="@drawable/parchisbackground"
     android:orientation="vertical">
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:id="@+id/winnerLabel"
+        android:layout_gravity="center_horizontal|bottom"
+        android:text="Your turn"
+        android:textColor="#000000"
+        android:textStyle="bold"
+        android:textSize="35dp"
+        android:layout_centerHorizontal="true"
+        android:autoText="false"
+        android:visibility="invisible"
+        android:layout_marginTop="10dp"
+        android:background="#fffffa1e"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp" />
+
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -22,21 +40,6 @@
         android:layout_height="0dp"
         android:layout_weight="0.26"
         >
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:id="@+id/winnerLabel"
-            android:layout_gravity="center_horizontal|bottom"
-            android:text="Player 1 wins"
-            android:textColor="#ffffff"
-            android:textStyle="bold|italic"
-            android:textSize="35dp"
-            android:layout_centerHorizontal="true"
-            android:autoText="false"
-            android:visibility="invisible"
-            android:layout_marginTop="10dp" />
 
         <LinearLayout
             android:id="@+id/spinningWheel"

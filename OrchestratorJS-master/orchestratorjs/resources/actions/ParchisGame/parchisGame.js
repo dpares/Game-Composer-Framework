@@ -56,6 +56,7 @@ Game.prototype.phaseSetUp = function(currentPhase,players){
 }
 
 Game.prototype.phaseEnd = function(currentPhase,players){
+    return true;
     var res = false;
     var i = 0;
     while (i < players.length && !res) {
@@ -81,7 +82,8 @@ Game.prototype.declareWinners = function(players){
     return this.winners;
 }
 
-Game.prototype.isActive = function(player){
+/* It's only checked in the end, so if a player hasn't finished yet he becomes inactive */
+Game.prototype.isActive = function(player){ 
     return player.status == playerStatus.FINISHED;
 }
 
