@@ -56,14 +56,17 @@ Game.prototype.phaseSetUp = function(currentPhase,players){
 }
 
 Game.prototype.phaseEnd = function(currentPhase,players){
-    return true;
     var res = false;
-    var i = 0;
-    while (i < players.length && !res) {
-        if (players[i].state.status == playerStatus.DEFAULT)
-            i++;
-        else
-            res = true;
+    if(this.countAvailablePlayers(players) <= 1)
+        res = true;
+    else {
+        var i = 0;
+        while (i < players.length && !res) {
+            if (players[i].state.status == playerStatus.DEFAULT)
+                i++;
+            else
+                res = true;
+        }
     }
     return res;
 }

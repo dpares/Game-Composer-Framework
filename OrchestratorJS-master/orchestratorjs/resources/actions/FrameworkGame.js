@@ -99,7 +99,6 @@ function handleDisconnection(action, device, event_value){
             handlingDisconnection = true;
         players = gameController.exceptionHandler(players, device, event_value);
     }
-
     if(players.length == 0)
         action.finishAction();
 }

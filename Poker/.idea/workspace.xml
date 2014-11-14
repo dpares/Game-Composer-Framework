@@ -79,14 +79,39 @@
       <file leaf-file-name="ParchisActivity.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/workspace/orchestrator.js/src/framework/parchisgame/ParchisActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.5294118" vertical-offset="3918" max-vertical-offset="4740">
-              <caret line="301" column="7" selection-start-line="301" selection-start-column="7" selection-end-line="301" selection-end-column="7" />
-              <folding>
-                <element signature="e#5587#6129#0" expanded="true" />
-                <element signature="e#6118#6119#0" expanded="true" />
-                <element signature="e#10430#10610#0" expanded="true" />
-                <element signature="e#10591#10592#0" expanded="true" />
-              </folding>
+            <state vertical-scroll-proportion="0.5646067" vertical-offset="3309" max-vertical-offset="4695">
+              <caret line="267" column="94" selection-start-line="267" selection-start-column="94" selection-end-line="267" selection-end-column="94" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="FrameworkGameActivity.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/workspace/orchestrator.js/src/framework/engine/FrameworkGameActivity.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="585" max-vertical-offset="2250">
+              <caret line="62" column="32" selection-start-line="62" selection-start-column="32" selection-end-line="62" selection-end-column="32" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="GameBoard.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/workspace/orchestrator.js/src/framework/parchisgame/GameBoard.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1545">
+              <caret line="100" column="20" selection-start-line="100" selection-start-column="20" selection-end-line="100" selection-end-column="20" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="FrameworkPlayer.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/workspace/orchestrator.js/src/framework/engine/FrameworkPlayer.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="285" max-vertical-offset="975">
+              <caret line="19" column="22" selection-start-line="19" selection-start-column="22" selection-end-line="19" selection-end-column="22" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -94,11 +119,9 @@
       <file leaf-file-name="ParchisView.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/workspace/orchestrator.js/src/framework/parchisgame/ParchisView.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="8020" max-vertical-offset="10605">
+            <state vertical-scroll-proportion="0.0" vertical-offset="8865" max-vertical-offset="10635">
               <caret line="591" column="51" selection-start-line="591" selection-start-column="51" selection-end-line="591" selection-end-column="51" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
+              <folding />
             </state>
           </provider>
         </entry>
@@ -106,7 +129,7 @@
       <file leaf-file-name="Pawn.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/workspace/orchestrator.js/src/framework/parchisgame/Pawn.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1215">
+            <state vertical-scroll-proportion="0.0" vertical-offset="210" max-vertical-offset="1380">
               <caret line="14" column="52" selection-start-line="14" selection-start-column="52" selection-end-line="14" selection-end-column="52" />
               <folding />
             </state>
@@ -116,7 +139,7 @@
       <file leaf-file-name="PokerActivity.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/workspace/orchestrator.js/src/framework/pokergame/PokerActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="3608" max-vertical-offset="4815">
+            <state vertical-scroll-proportion="0.0" vertical-offset="840" max-vertical-offset="5130">
               <caret line="56" column="8" selection-start-line="56" selection-start-column="8" selection-end-line="57" selection-end-column="94" />
               <folding />
             </state>
@@ -129,7 +152,7 @@
             <state />
           </provider>
           <provider editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1905">
+            <state vertical-scroll-proportion="0.0" vertical-offset="45" max-vertical-offset="1905">
               <caret line="3" column="51" selection-start-line="3" selection-start-column="51" selection-end-line="3" selection-end-column="51" />
               <folding />
             </state>
@@ -505,8 +528,8 @@
         </subPane>
       </pane>
       <pane id="AndroidView" />
-      <pane id="PackagesPane" />
       <pane id="Scope" />
+      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -522,7 +545,7 @@
     <property name="options.searchVisible" value="true" />
     <property name="recentsLimit" value="5" />
     <property name="restartRequiresConfirmation" value="true" />
-    <property name="ANDROID_EXTENDED_DEVICE_CHOOSER_SERIALS" value="TA9290F7KQ" />
+    <property name="ANDROID_EXTENDED_DEVICE_CHOOSER_SERIALS" value="TA9300C0O1" />
     <property name="LayoutCode.rearrangeEntriesJava" value="false" />
     <property name="dynamic.classpath" value="false" />
     <property name="FullScreen" value="false" />
@@ -900,12 +923,11 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="22" width="1280" height="715" extended-state="6" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32875606" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32888147" sideWeight="0.5" order="14" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39899832" sideWeight="0.4022617" order="3" side_tool="false" content_ui="tabs" />
@@ -915,7 +937,7 @@
       <window_info id="Gradle Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.34390652" sideWeight="0.5" order="9" side_tool="true" content_ui="tabs" />
       <window_info id="Build Variants" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32888147" sideWeight="0.4022617" order="12" side_tool="false" content_ui="tabs" />
-      <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3155259" sideWeight="0.3933764" order="13" side_tool="false" content_ui="tabs" />
+      <window_info id="Android" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3155259" sideWeight="0.3933764" order="13" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32888147" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -923,10 +945,11 @@
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24555735" sideWeight="0.4569378" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32554257" sideWeight="0.3933764" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Memory Monitor" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.39899832" sideWeight="0.59773827" order="15" side_tool="true" content_ui="tabs" />
+      <window_info id="Memory Monitor" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3155259" sideWeight="0.6066236" order="15" side_tool="true" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24958949" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32875606" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32888147" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
@@ -1001,13 +1024,6 @@
         <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/workspace/orchestrator.js/src/framework/engine/FrameworkGameException.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.2785146" vertical-offset="0" max-vertical-offset="377">
-          <caret line="7" column="16" selection-start-line="7" selection-start-column="16" selection-end-line="7" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/workspace/orchestrator.js/src/com/ojs/capabilities/frameworkCapability/settings/AvatarDialogPreference.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="3.6111112" vertical-offset="0" max-vertical-offset="2040">
@@ -1071,14 +1087,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.3313253" vertical-offset="8080" max-vertical-offset="11850">
           <caret line="576" column="0" selection-start-line="576" selection-start-column="0" selection-end-line="576" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/workspace/orchestrator.js/src/framework/engine/FrameworkPlayer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="179" max-vertical-offset="750">
-          <caret line="55" column="64" selection-start-line="55" selection-start-column="64" selection-end-line="55" selection-end-column="64" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1174,7 +1182,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.3723404" vertical-offset="205" max-vertical-offset="1725">
           <caret line="37" column="0" selection-start-line="37" selection-start-column="0" selection-end-line="37" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1189,23 +1196,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.9148936" vertical-offset="61" max-vertical-offset="585">
           <caret line="33" column="60" selection-start-line="33" selection-start-column="60" selection-end-line="33" selection-end-column="60" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/workspace/orchestrator.js/test/parchisgame/GameBoardTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.40957448" vertical-offset="341" max-vertical-offset="1155">
-          <caret line="37" column="37" selection-start-line="37" selection-start-column="37" selection-end-line="37" selection-end-column="37" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/workspace/orchestrator.js/src/framework/engine/FrameworkGameActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.98039216" vertical-offset="345" max-vertical-offset="2250">
-          <caret line="66" column="32" selection-start-line="66" selection-start-column="32" selection-end-line="66" selection-end-column="32" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1221,17 +1211,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="913" max-vertical-offset="1665">
           <caret line="116" column="49" selection-start-line="116" selection-start-column="49" selection-end-line="116" selection-end-column="49" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/workspace/orchestrator.js/src/framework/parchisgame/GameBoard.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.7251309" vertical-offset="1163" max-vertical-offset="1590">
-          <caret line="100" column="20" selection-start-line="100" selection-start-column="20" selection-end-line="100" selection-end-column="20" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1239,7 +1218,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-0.020942409" vertical-offset="563" max-vertical-offset="1260">
           <caret line="37" column="45" selection-start-line="37" selection-start-column="45" selection-end-line="37" selection-end-column="45" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1247,7 +1225,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-4.99729" vertical-offset="8759" max-vertical-offset="9885">
           <caret line="517" column="0" selection-start-line="517" selection-start-column="0" selection-end-line="517" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1266,9 +1243,53 @@
         <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/workspace/orchestrator.js/res/drawable-xhdpi/parchisbackground.png">
-      <provider selected="true" editor-type-id="images">
+    <entry file="file://$PROJECT_DIR$/workspace/orchestrator.js/res/layout/poker_layout.xml">
+      <provider selected="true" editor-type-id="android-designer">
         <state />
+      </provider>
+      <provider editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="12300" max-vertical-offset="12735">
+          <caret line="820" column="37" selection-start-line="820" selection-start-column="37" selection-end-line="820" selection-end-column="37" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/workspace/orchestrator.js/src/com/ojs/capabilities/frameworkCapability/FrameworkCapability.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="1.875" vertical-offset="555" max-vertical-offset="2565">
+          <caret line="96" column="0" selection-start-line="96" selection-start-column="0" selection-end-line="96" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/workspace/orchestrator.js/src/framework/engine/FrameworkGameException.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.2393617" vertical-offset="0" max-vertical-offset="376">
+          <caret line="7" column="16" selection-start-line="7" selection-start-column="16" selection-end-line="7" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/workspace/orchestrator.js/test/parchisgame/GameBoardTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="210" max-vertical-offset="1155">
+          <caret line="24" column="29" selection-start-line="24" selection-start-column="29" selection-end-line="24" selection-end-column="29" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/workspace/orchestrator.js/src/framework/engine/FrameworkPlayer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="74" max-vertical-offset="750">
+          <caret line="19" column="22" selection-start-line="19" selection-start-column="22" selection-end-line="19" selection-end-column="22" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/workspace/orchestrator.js/src/framework/parchisgame/ParchisView.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="8695" max-vertical-offset="10605">
+          <caret line="591" column="51" selection-start-line="591" selection-start-column="51" selection-end-line="591" selection-end-column="51" />
+          <folding />
+        </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/workspace/orchestrator.js/src/framework/parchisgame/Pawn.java">
@@ -1279,13 +1300,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/workspace/orchestrator.js/res/layout/poker_layout.xml">
-      <provider selected="true" editor-type-id="android-designer">
-        <state />
-      </provider>
-      <provider editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="12300" max-vertical-offset="12735">
-          <caret line="820" column="37" selection-start-line="820" selection-start-column="37" selection-end-line="820" selection-end-column="37" />
+    <entry file="file://$PROJECT_DIR$/workspace/orchestrator.js/src/framework/pokergame/PokerActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="465" max-vertical-offset="4815">
+          <caret line="56" column="8" selection-start-line="56" selection-start-column="8" selection-end-line="57" selection-end-column="94" />
           <folding />
         </state>
       </provider>
@@ -1301,42 +1319,32 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/workspace/orchestrator.js/src/framework/pokergame/PokerActivity.java">
+    <entry file="file://$PROJECT_DIR$/workspace/orchestrator.js/res/drawable-xhdpi/parchisbackground.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/workspace/orchestrator.js/src/framework/engine/FrameworkGameActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="465" max-vertical-offset="4815">
-          <caret line="56" column="8" selection-start-line="56" selection-start-column="8" selection-end-line="57" selection-end-column="94" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2250">
+          <caret line="62" column="32" selection-start-line="62" selection-start-column="32" selection-end-line="62" selection-end-column="32" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/workspace/orchestrator.js/src/framework/parchisgame/ParchisView.java">
+    <entry file="file://$PROJECT_DIR$/workspace/orchestrator.js/src/framework/parchisgame/GameBoard.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="8695" max-vertical-offset="10605">
-          <caret line="591" column="51" selection-start-line="591" selection-start-column="51" selection-end-line="591" selection-end-column="51" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/workspace/orchestrator.js/src/com/ojs/capabilities/frameworkCapability/FrameworkCapability.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-0.8062827" vertical-offset="1568" max-vertical-offset="2565">
-          <caret line="96" column="0" selection-start-line="96" selection-start-column="0" selection-end-line="96" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1545">
+          <caret line="100" column="20" selection-start-line="100" selection-start-column="20" selection-end-line="100" selection-end-column="20" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/workspace/orchestrator.js/src/framework/parchisgame/ParchisActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.5294118" vertical-offset="3918" max-vertical-offset="4740">
-          <caret line="301" column="7" selection-start-line="301" selection-start-column="7" selection-end-line="301" selection-end-column="7" />
-          <folding>
-            <element signature="e#5587#6129#0" expanded="true" />
-            <element signature="e#6118#6119#0" expanded="true" />
-            <element signature="e#10430#10610#0" expanded="true" />
-            <element signature="e#10591#10592#0" expanded="true" />
-          </folding>
+        <state vertical-scroll-proportion="0.5646067" vertical-offset="3309" max-vertical-offset="4695">
+          <caret line="267" column="94" selection-start-line="267" selection-start-column="94" selection-end-line="267" selection-end-column="94" />
+          <folding />
         </state>
       </provider>
     </entry>

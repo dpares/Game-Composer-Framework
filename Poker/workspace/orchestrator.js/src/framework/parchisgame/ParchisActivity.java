@@ -245,8 +245,9 @@ public class ParchisActivity extends FrameworkGameActivity {
             eatenPlayer.getPawns().set(eatenPawn.getNumber(), eatenPawn);
             this.playersList.set(index, eatenPlayer);
         }
-        this.finishTurn(moveCode == 2, moveCode != 0 || roll == 6 && sixsRolled < 3 || roll > 6 &&
-                sixsRolled > 0);
+        this.finishTurn(moveCode == 2, moveCode != 0 || roll == 6 && sixsRolled < 3 ||
+                ((roll > 6 && lastRoll == 6) && (roll != 10 ||
+                        ((ParchisPlayer) this.player).getFinishedPawns() < 4)));
     }
 
     public void showNextMove(View v) {
@@ -263,7 +264,8 @@ public class ParchisActivity extends FrameworkGameActivity {
                 Handler handler = new Handler();
                 handler.postDelayed(new Runnable() {
                     public void run() {
-                        finishTurn(false, roll == 6 || roll > 6 && sixsRolled > 0);
+                        finishTurn(false, roll == 6 || ((roll > 6 && lastRoll == 6) &&
+                                (roll!=10 || ((ParchisPlayer)player).getFinishedPawns() < 4)));
                     }
                 }, 1000);
             } else
@@ -291,7 +293,7 @@ public class ParchisActivity extends FrameworkGameActivity {
         this.winnerLabel.setVisibility(View.INVISIBLE);
     }
 
-    @Override
+    @Override // ¿Cambiar número por nombre?
     public void announceWinner(JSONArray players, Integer winner) {
         if (players.length() == 0)
             this.winnerLabel.setText("No winners");
