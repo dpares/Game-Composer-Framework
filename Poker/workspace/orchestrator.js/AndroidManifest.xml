@@ -85,15 +85,6 @@
             android:name="com.ojs.capabilities.guessingCapability.GuessingCapabilityActivity"
             android:label="Guess" >
         </activity>
-        
-        
-        
-        <activity
-            android:name="bmge.zombiegame.SampleGame"
-            android:configChanges="keyboard|keyboardHidden|orientation"
-            android:label="SampleGame"
-            android:screenOrientation="landscape" >
-        </activity>
 
         <activity
             android:name="framework.pokergame.PokerActivity"

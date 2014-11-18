@@ -28,12 +28,10 @@ public class PokerPlayer extends FrameworkPlayer {
     private ArrayList<Card> holeCards;
 
     public PokerPlayer(JSONObject initData, String name, String avatar, boolean spectate) {
-        this.active = !spectate;
+        super(initData,name,avatar,spectate);
         this.currentBet = 0;
         this.holeCards = new ArrayList<Card>();
         this.currentState = PokerState.DEFAULT;
-        this.name = name;
-        this.avatar = avatar;
         try{
             int initialFunds = initData.getInt("initial_funds");
             this.funds = this.active ? initialFunds : 0;
@@ -43,12 +41,11 @@ public class PokerPlayer extends FrameworkPlayer {
     }
 
     public PokerPlayer(JSONObject p) {
+        super(p);
         try {
             this.funds = p.getInt("funds");
             this.currentBet = p.getInt("current_bet");
             this.currentState = PokerState.values()[p.getInt("status")];
-            this.name = p.getString("name");
-            this.avatar = p.getString("avatar");
             this.holeCards = new ArrayList<Card>();
             JSONArray aux = p.getJSONArray("hole_cards");
             for (int i = 0; i < aux.length(); i++)

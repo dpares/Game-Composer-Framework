@@ -5,6 +5,7 @@ import android.graphics.drawable.Drawable;
 
 import com.ojs.capabilities.frameworkCapability.FrameworkCapability;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
@@ -16,6 +17,22 @@ public abstract class FrameworkPlayer {
     protected String avatar;
     protected boolean active;
     protected State currentState;
+
+    public FrameworkPlayer(JSONObject initData, String name, String avatar, boolean spectate){
+        this.active = !spectate;
+        this.name = name;
+        this.avatar = avatar;
+        this.newRound();
+    }
+
+    public FrameworkPlayer(JSONObject p){
+        try{
+            this.name = p.getString("name");
+            this.avatar = p.getString("avatar");
+        } catch (JSONException e) {
+            throw new FrameworkGameException("Error parsing JSON into Player", e);
+        }
+    }
 
     public interface State{};
 

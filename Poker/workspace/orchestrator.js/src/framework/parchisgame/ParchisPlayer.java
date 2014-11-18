@@ -23,17 +23,13 @@ public class ParchisPlayer extends FrameworkPlayer {
     private List<Pawn> pawns; // List of four pawns
 
     public ParchisPlayer(JSONObject initData, String name, String avatar, boolean spectate) {
-        this.active = !spectate;
-        this.name = name;
-        this.avatar = avatar;
-        this.newRound();
+        super(initData,name,avatar,spectate);
     }
 
     public ParchisPlayer(JSONObject p) {
+        super(p);
         try {
             this.currentState = ParchisState.values()[p.getInt("status")];
-            this.name = p.getString("name");
-            this.avatar = p.getString("avatar");
             JSONArray aux = p.getJSONArray("pawns");
             this.pawns = new ArrayList<Pawn>();
             this.colour = Colour.values()[p.getInt("colour")];
