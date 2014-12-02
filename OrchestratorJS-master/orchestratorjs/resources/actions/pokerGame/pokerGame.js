@@ -11,8 +11,8 @@ var playerStatus = {
 };
 
 var config = {};
-config.initData = {initial_funds : 1000, activity_class : "framework.pokergame.PokerActivity", 
-    player_class : "framework.pokergame.PokerPlayer"};
+config.initData = {initial_funds : 1000, activity_class : "composer.pokergame.PokerActivity", 
+    player_class : "composer.pokergame.PokerPlayer"};
 config.phases = 5;
 config.steps = [1,1,1,1,1];
 
@@ -33,7 +33,7 @@ Game.prototype.newRound = function(players){
     this.dealer = this.nextPlayer(this.dealer,players);
 
     players[this.dealer].state.status = playerStatus.DEALER;
-    players[this.dealer].device.frameworkCapability.setPlayerState(players[this.dealer].state);
+    players[this.dealer].device.composerCapability.setPlayerState(players[this.dealer].state);
 }
 
 function Game(players){
@@ -59,7 +59,7 @@ Game.prototype.nextPlayer = function(index,players){
     if(this.countAvailablePlayers(players) > 0){
         do{
             res++;
-            if(res == players.length)
+            if(res >= players.length)
                 res = 0;
             player = players[res].state;
         } while (!players[res].active || player.status == playerStatus.ALL_IN || player.status == playerStatus.FOLDED);
@@ -84,7 +84,7 @@ Game.prototype.phaseSetUp = function(currentPhase,players){
                 player.status = playerStatus.BIG_BLIND;
             for(var j=0;j<2;j++)
                 player.hole_cards.push(this.deck.draw());
-            players[i].device.frameworkCapability.setPlayerState(player);
+            players[i].device.composerCapability.setPlayerState(player);
         }    
     } else if(currentPhase == 2){
         this.deck.discard();

@@ -16,8 +16,8 @@ this.body = function (d1, d2) {
     var guessedValue = d2.guessingCapability.getGuess();
     	
   	if(initialValue == guessedValue)
-    	d2.talkingCapability.say("A WINNER IS YOU","sever","1.0");
+    	d2.talkingCapability.say("You win","sever","1.0");
     else
-      d2.talkingCapability.say("YOU DEFEATED","david","1.0");
+      d2.talkingCapability.say("You lose","david","1.0");
     
 };

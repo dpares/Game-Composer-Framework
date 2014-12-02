@@ -3,7 +3,7 @@ package pokergame;
 import org.junit.Test;
 import org.junit.Assert;
 
-import framework.pokergame.Card;
+import composer.pokergame.Card;
 
 /**
  * Created by fare on 18/09/14.

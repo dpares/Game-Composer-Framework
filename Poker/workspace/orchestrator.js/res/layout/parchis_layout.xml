@@ -27,11 +27,11 @@
         android:layout_height="0dp"
         android:layout_weight="0.74">
 
-        <framework.parchisgame.ParchisView
+        <composer.parchisgame.ParchisView
          android:layout_height="match_parent"
          android:layout_width="match_parent"
             android:id="@+id/board">
-         </framework.parchisgame.ParchisView>
+         </composer.parchisgame.ParchisView>
 
     </FrameLayout>
 
@@ -90,7 +90,7 @@
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Confirm\nMovement"
+                android:text="Confirm\nMove"
                 android:id="@+id/confirmButton"
                 android:background="@drawable/redbutton"
                 android:textColor="#ffffff"

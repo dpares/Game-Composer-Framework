@@ -27,16 +27,10 @@ public class GuessingCapability {
         Intent i = new Intent(GuessingCapability.ctx, GuessingCapabilityActivity.class);
         i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         GuessingCapability.value = "";
-        Log.d(OrchestratorJsActivity.TAG,"Antes de crear la actividad");
         GuessingCapability.ctx.startActivity(i);
-        Log.d(OrchestratorJsActivity.TAG,"Actividad creada");
     }
 
     public String getGuess() {
         return GuessingCapability.value.toString();
-    }
-
-    public void showResults(boolean winner) {
-        Log.d(OrchestratorJsActivity.TAG, winner?"WINNER":"LOSER");
     }
 }

@@ -3,8 +3,8 @@ package parchisgame;
 import org.junit.Test;
 import org.junit.Assert;
 
-import framework.parchisgame.GameBoard;
-import framework.parchisgame.Pawn;
+import composer.parchisgame.GameBoard;
+import composer.parchisgame.Pawn;
 
 /**
  * Created by fare on 11/11/14.

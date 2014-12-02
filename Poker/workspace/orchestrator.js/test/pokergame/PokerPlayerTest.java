@@ -5,8 +5,8 @@ import org.json.JSONObject;
 import org.junit.Test;
 import org.junit.Assert;
 
-import framework.engine.FrameworkGameException;
-import framework.pokergame.PokerPlayer;
+import composer.engine.ComposerGameException;
+import composer.pokergame.PokerPlayer;
 
 /**
  * Created by fare on 21/09/14.
@@ -31,7 +31,7 @@ public class PokerPlayerTest {
             Assert.assertEquals(p.getFunds(), 0);
             Assert.assertEquals(p.getBet(), 1000);
         } catch (JSONException e){
-            throw new FrameworkGameException("Error creating initData JSON",e);
+            throw new ComposerGameException("Error creating initData JSON",e);
         }
     }
 

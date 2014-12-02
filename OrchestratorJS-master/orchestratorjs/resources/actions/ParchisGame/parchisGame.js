@@ -6,7 +6,7 @@ var playerStatus = {
 var UNDEFINED_COLOUR = 4;
 
 var config = {};
-config.initData = {activity_class : "framework.parchisgame.ParchisActivity", player_class : "framework.parchisgame.ParchisPlayer"};
+config.initData = {activity_class : "composer.parchisgame.ParchisActivity", player_class : "composer.parchisgame.ParchisPlayer"};
 config.phases = 1;
 config.steps = [1];
 
@@ -38,7 +38,7 @@ Game.prototype.nextPlayer = function(index,players){
     if(this.countAvailablePlayers(players) > 0){
         do{
             res++;
-            if(res == players.length)
+            if(res >= players.length)
                 res = 0;
             player = players[res].state;
         } while (!players[res].active || player.status == playerStatus.FINISHED);
@@ -51,7 +51,7 @@ Game.prototype.phaseSetUp = function(currentPhase,players){
         players[i].state.colour = i;
         for(j in players[i].state.pawns)
             players[i].state.pawns[j].colour = i;
-        players[i].device.frameworkCapability.setPlayerState(players[i].state);
+        players[i].device.composerCapability.setPlayerState(players[i].state);
     }
 }
 

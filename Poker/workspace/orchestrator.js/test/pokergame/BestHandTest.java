@@ -1,18 +1,14 @@
 package pokergame;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.Assert;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import framework.pokergame.BestHand;
-import framework.pokergame.Card;
-import framework.pokergame.PokerPlayer;
+import composer.pokergame.BestHand;
+import composer.pokergame.Card;
+import composer.pokergame.PokerPlayer;
 
 /**
  * Created by fare on 21/09/14.

@@ -87,21 +87,21 @@
         </activity>
 
         <activity
-            android:name="framework.pokergame.PokerActivity"
+            android:name="composer.pokergame.PokerActivity"
             android:configChanges="keyboard|keyboardHidden|orientation"
             android:label="PokerActivity"
             android:screenOrientation="landscape" >
         </activity>
 
         <activity
-            android:name="framework.parchisgame.ParchisActivity"
+            android:name="composer.parchisgame.ParchisActivity"
             android:configChanges="keyboard|keyboardHidden|orientation"
             android:label="ParchisActivity"
             android:screenOrientation="portrait" >
         </activity>
 
         <activity
-            android:name="com.ojs.capabilities.frameworkCapability.settings.FrameworkSettingsActivity"
+            android:name=".capabilities.composerCapability.settings.ComposerSettingsActivity"
             android:configChanges="orientation"
             android:label="Settings"
             android:screenOrientation="portrait">
