@@ -136,17 +136,18 @@ module.exports = {
     body: function (devices, gameControllerPath) {
         var currentDevices = devices;
         Game = require(gameControllerPath);
+        players = [];
         do{      
             /// GAME INITIALIZATION	
             handlingDisconnection = false;
             playersInitialized = false;
             currentPlayer = -1;
-            players = [];
             if(players.length > 0){
                 currentDevices = [];
                 for(i in players)
                     currentDevices.push(players[i].device);
             }
+            players = [];
             j = 0;
             while(j < currentDevices.length) {
                 p(currentDevices[j].identity);
@@ -175,6 +176,7 @@ module.exports = {
             if(countActivePlayers() > 1)
                 showCurrentState();
             else{
+                j =0 ;
                 while(j < players.length){
                     if(!handlingDisconnection)
                         players[j].device.composerCapability.exitGame("Not enough players");
@@ -259,9 +261,9 @@ module.exports = {
             j = 0;
             while (j < players.length){
                 var wantsRematch;
-                if(!handlingDisconnection)
+                if(!handlingDisconnection){
                     wantsRematch = players[j].device.composerCapability.askForRematch();
-                while(!handlingDisconnection && wantsRematch.null){
+                }while(!handlingDisconnection && wantsRematch.null){
                     misc.sleep(1);
                     if(!handlingDisconnection)
                         wantsRematch = players[j].device.composerCapability.askForRematch();
@@ -272,11 +274,12 @@ module.exports = {
                     if(wantsRematch.value){
                         players[j].active = true;
                         j++;
-                    } else if(!handlingDisconnection)
+                    }
+                    else if(!handlingDisconnection)
                         players[j].device.composerCapability.exitGame("You have left the game");
                 }
             }
-            if(countActivePlayers() <= 1){
+            if(countActivePlayers <= 1){
                 j = 0;
                 while(j < players.length){
                     if(!handlingDisconnection)
@@ -287,7 +290,7 @@ module.exports = {
                         handlingDisconnection = false;
                 }
             }
-        } while (countActivePlayers() > 1);
+        } while (players.length > 1); // Number of active players will be checked after initialization
     },
 
 };
