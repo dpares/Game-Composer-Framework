@@ -77,14 +77,16 @@ Game.prototype.phaseSetUp = function(currentPhase,players){
             bigBlindPlayer = this.nextPlayer(this.dealer,players);
         }
         for(i in players){
-            var player = players[i].state;
-            if(i == smallBlindPlayer)
-                player.status = playerStatus.SMALL_BLIND;
-            else if(i == bigBlindPlayer)
-                player.status = playerStatus.BIG_BLIND;
-            for(var j=0;j<2;j++)
-                player.hole_cards.push(this.deck.draw());
-            players[i].device.composerCapability.setPlayerState(player);
+            if(players[i].active){
+                var player = players[i].state;
+                if(i == smallBlindPlayer)
+                    player.status = playerStatus.SMALL_BLIND;
+                else if(i == bigBlindPlayer)
+                    player.status = playerStatus.BIG_BLIND;
+                for(var j=0;j<2;j++)
+                    player.hole_cards.push(this.deck.draw());
+                players[i].device.composerCapability.setPlayerState(player);
+            }
         }    
     } else if(currentPhase == 2){
         this.deck.discard();

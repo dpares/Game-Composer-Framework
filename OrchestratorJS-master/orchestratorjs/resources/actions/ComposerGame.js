@@ -4,7 +4,7 @@ var misc = require('./misc.js');
 var players;
 var j, currentPlayer, numPlayers, currentPhase, currentStep;
 var Game, gameController ;
-var handlingDisconnection, playersInitialized;
+var handlingDisconnection, playersInitialized, disconnectingEveryone;
 
 function Player() { 
     this.device = null;
@@ -99,8 +99,12 @@ function handleDisconnection(action, device, event_value){
             handlingDisconnection = true;
         players = gameController.exceptionHandler(players, device, event_value);
     }
-    if(players.length == 0)
-        action.finishAction();
+    if(countActivePlayers() == 0 && !disconnectingEveryone){
+        disconnectingEveryone = true;
+        while(players.length > 0)
+            players[0].device.composerCapability.exitGame("Not enough players");
+        action.finishAction();   
+    }
 }
 
 function updatePlayerStates(playersStates){
