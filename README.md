@@ -13,10 +13,10 @@ The Game Composer Framework forces games to follow a certain architecture, in wh
 
 ### Using the Game Composer Framework ###
 
-* [Download and install Orchestrator.js](https://github.com/nikkis/OrchestratorJS).
-* Check out the sample games (Texas Hold'em and Parcheesi).
-* Read the developer's guide to learn which classes and methods must be created in order to use the framework.
+* [Download and install Orchestrator.js in your device](https://github.com/nikkis/OrchestratorJS).
+* Check out the sample games (Texas Hold'em and Parcheesi/Ludo).
+* Read the wiki to learn which classes and methods must be created in order to use the framework.
 
 ### Contact information ###
 
-* For any inquiries, please send an email to dpares (at) alu.uma.es.
+* For any inquiries, please send an email to dpares (at) gmail.com.
